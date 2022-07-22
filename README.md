@@ -5,6 +5,6 @@
 ## 각 문서 링크 
 [기능명세서, 요구사항 정의서, API명세서 통합본](https://docs.google.com/spreadsheets/d/1Snsq4_rEgos0y4JuI4C1bfJfTSqp9-xIvPWQTEl6qoY/edit#gid=111537547)
 
-[와이어프레임] (https://ovenapp.io/view/M10rj2Ij6jc580rV5fPBZKw8izPXFVDp/INGlZ)
+[와이어프레임](https://ovenapp.io/view/M10rj2Ij6jc580rV5fPBZKw8izPXFVDp/INGlZ)
 
-[스토리보드] (https://www.figma.com/file/UMAq04A8MwNMbEdVgHQgA2/%EB%94%94%EC%9E%90%EC%9D%B81?node-id=0%3A1)
+[스토리보드](https://www.figma.com/file/UMAq04A8MwNMbEdVgHQgA2/%EB%94%94%EC%9E%90%EC%9D%B81?node-id=0%3A1)

@@ -1,5 +1,3 @@
-![깃컨벤션](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/7d3059d1-038d-4f93-8883-dbbf34e1e8f4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220722%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220722T050516Z&X-Amz-Expires=86400&X-Amz-Signature=8ffe82c1c697e412210e25c05dc8ccf642104f5095810d744eb9a5e1839b5497&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
-
 ## 📌깃 컨벤션
 ### 💡 커밋룰
 #### Commit 메세지 작성 법
@@ -24,12 +22,10 @@ MERGE: 기능 개발 후 브랜치 병합
 
 ### 💡 브랜치
 ```
-Master:
-Develope:
-FE:
-BE:
-Hotfix:
-Release
+Master: 최종 코드 완성시 merge 한다.
+Develope: 각 FE, BE 브랜치에서 작업한 내용을 merge 한다.
+FE: 프론트앤드 작업. 세부 기능은 하위 브랜치 생성하여 작업 후 merge 한다.
+BE: 백앤드 작업. 세부 기능은 하위 브랜치 생성하여 작업 후 merge 한다. 
 ```
 ## 📌각 문서 링크 
 [기능명세서, 요구사항 정의서, API명세서 통합본](https://docs.google.com/spreadsheets/d/1Snsq4_rEgos0y4JuI4C1bfJfTSqp9-xIvPWQTEl6qoY/edit#gid=111537547)

@@ -1,13 +1,13 @@
-package com.web.curation;
+package com.sharespot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebCurationApplication {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WebCurationApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }

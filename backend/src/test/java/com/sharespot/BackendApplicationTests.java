@@ -1,14 +1,13 @@
-package com.web.curation;
+package com.sharespot;
 
 import org.junit.jupiter.api.Test;
-
-
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WebCurationApplicationTests {
+class BackendApplicationTests {
 
-	
-
+	@Test
+	void contextLoads() {
+	}
 
 }

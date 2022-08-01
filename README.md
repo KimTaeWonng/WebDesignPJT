@@ -25,6 +25,12 @@ Develope: 각 FE, BE 브랜치에서 작업한 내용을 merge 한다.
 FE: 프론트앤드 작업. 세부 기능은 하위 브랜치 생성하여 작업 후 merge 한다.
 BE: 백앤드 작업. 세부 기능은 하위 브랜치 생성하여 작업 후 merge 한다. 
 ```
+
+### 💡 브랜치 전략
+```
+BE or FE : 기능
+-ex) BE : 로그인, FE : 로그인 화면 구현
+```
 ## 📌각 문서 링크 
 [기능명세서, 요구사항 정의서, API명세서 통합본](https://docs.google.com/spreadsheets/d/1Snsq4_rEgos0y4JuI4C1bfJfTSqp9-xIvPWQTEl6qoY/edit#gid=111537547)
 

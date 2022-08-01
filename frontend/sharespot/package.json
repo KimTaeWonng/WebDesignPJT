@@ -48,9 +48,12 @@
     },
     "rules": {
       "prettier/prettier": [
-        "error",
+        "warn",
         {
-          "endOfLine": "auto"
+            "printWidth": 8000,
+            "tabWidth": 2,
+            "endOfLine": "auto",
+            "useTabs": true
         }
       ]
     }

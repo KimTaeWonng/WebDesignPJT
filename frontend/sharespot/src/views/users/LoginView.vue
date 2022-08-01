@@ -58,10 +58,12 @@
           </p>
         </div>
         <br />
-
         <div>
-          <v-btn color="#289672" dark width="80%">
-            카카오 계정으로 로그인
+          <!--카카오 로그인 버튼-->
+          <v-btn color="#99C5B9" dark width="80%">
+            <div class="aling-center">
+              <v-icon small>mdi-login</v-icon> 카카오 계정으로 로그인
+            </div>
           </v-btn>
         </div>
       </v-col>

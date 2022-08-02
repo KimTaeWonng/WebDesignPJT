@@ -13,5 +13,4 @@ import lombok.RequiredArgsConstructor;
 public class TestController {
 	private final TestService testService;
 	
-	
 }

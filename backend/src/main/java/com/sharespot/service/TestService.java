@@ -25,7 +25,7 @@ public class TestService {
         try {
         	TestEntity existTest = getTest(testEntity.getId());
             if (!ObjectUtils.isEmpty(existTest)) {
-                updatedTest = TestRepository.save(testEntity);  // JpaRepository¿¡¼­ Á¦°øÇÏ´Â save() ÇÔ¼ö
+                updatedTest = TestRepository.save(testEntity);  // JpaRepositoryï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ save() ï¿½Ô¼ï¿½
             }
         } catch (Exception e) {
             log.info("[Fail] e: " + e.toString());
@@ -33,13 +33,17 @@ public class TestService {
             return updatedTest;
         }
     }
+
+    public List<TestEntity> getAll(){
+        return testRepository.findAll();
+    }
 	
 	public TestEntity getTest(Integer id) {
-        return testRepository.getById(id);  // JpaRepository¿¡¼­ Á¦°øÇÏ´Â getById() ÇÔ¼ö
+        return testRepository.getById(id);  // JpaRepositoryï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ getById() ï¿½Ô¼ï¿½
     }
 	
 	public void deleteTest(Integer id) {
-        testRepository.deleteById(id);  // JpaRepository¿¡¼­ Á¦°øÇÏ´Â deleteById() ÇÔ¼ö
+        testRepository.deleteById(id);  // JpaRepositoryï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ deleteById() ï¿½Ô¼ï¿½
     }
 	
 }

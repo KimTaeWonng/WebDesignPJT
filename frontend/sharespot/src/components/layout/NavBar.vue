@@ -82,7 +82,7 @@ export default {
 
 #navBar {
   position: fixed;
-  bottom: 27px;
+  bottom: 0;
   right: 0;
 }
 

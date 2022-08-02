@@ -2,14 +2,18 @@
   <v-app>
     <v-main>
       <router-view />
+      <nav-bar></nav-bar>
     </v-main>
   </v-app>
 </template>
 
 <script>
-export default {
-  name: "App",
+import NavBar from "./components/layout/NavBar.vue";
 
+export default {
+  components: { NavBar },
+  name: "App",
+  component: "NavBar",
   data: () => ({
     //
   }),

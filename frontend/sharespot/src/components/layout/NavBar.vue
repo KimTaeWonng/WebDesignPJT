@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 게시글/그룹 등록 버튼 클릭시 나오는 메뉴-->
+    <!-- 게시글/그룹 등록 버튼 클릭시 나오는 메뉴 -->
     <div>
       <div v-if="isMakeMenuOpen" id="overlay" />
       <div
@@ -56,22 +56,19 @@ export default {
     };
   },
   methods: {
-    // 메뉴 클릭시 페이지 이동하는 함수
+    // 네브바 클릭시 페이지 이동하는 함수
     changeRouter(pageName) {
-      this.$router.push({ name: pageName });
-      this.isMakeMenuOpen = false;
-    },
-
-    moveRegister(pageName) {
-      this.isMakeMenuOpen = !this.isMakeMenuOpen;
-      this.$router.push({ name: pageName });
+      if (this.$route.path == "/" + pageName) {
+        this.isMakeMenuOpen = false;
+      } else {
+        this.$router.push({ name: pageName });
+        this.isMakeMenuOpen = false;
+      }
     },
 
     // 게시글/그룹 등록 버튼 클릭 시 메뉴 나오는 함수
     makeMenu() {
-      console.log(this.isMakeMenuOpen);
       this.isMakeMenuOpen = !this.isMakeMenuOpen;
-      console.log(this.isMakeMenuOpen);
     },
   },
 };
@@ -85,7 +82,7 @@ export default {
 
 #navBar {
   position: fixed;
-  bottom: 0;
+  bottom: 27px;
   right: 0;
 }
 

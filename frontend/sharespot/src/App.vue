@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-main>
+      <back-menu :title="test"></back-menu>
       <router-view />
       <nav-bar></nav-bar>
     </v-main>
@@ -9,14 +10,16 @@
 
 <script>
 import NavBar from "./components/layout/NavBar.vue";
+import BackMenu from "./components/layout/BackMenu.vue";
 
 export default {
-  components: { NavBar },
   name: "App",
-  component: "NavBar",
-  data: () => ({
-    //
-  }),
+  components: { NavBar, BackMenu },
+  data() {
+    return {
+      test: "안녕",
+    };
+  },
 };
 </script>
 <style>

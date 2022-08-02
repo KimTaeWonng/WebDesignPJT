@@ -11,8 +11,8 @@ title, isRight, type
 - 참고: isRight 속성은 boolean 타입인데 v-model 바인딩없이 true/false 하는 법을 몰라서... data()에 추가해서 사용하세요...! (알면알려주기)
 ### type: String
 - 오른쪽 버튼 종류를 나타낸다
-- groupDetail.vue 에서 사용하는 경우 : groupDetail<br>
-profileModify.vue 에서 사용하는 경우 : profileModify 로 설정한다.
+- GroupDetail.vue 에서 사용하는 경우 : groupDetail<br>
+ProfileModify.vue, GroupModify.vue 에서 사용하는 경우 : modify 로 값을 설정한다.
 
 ## 사용예시
 

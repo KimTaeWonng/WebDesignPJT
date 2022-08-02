@@ -1,18 +1,25 @@
 <template>
   <v-app>
     <v-main>
+      <back-menu title="안녕" type="groupDetail" :isRight="isRight"></back-menu>
       <router-view />
+      <nav-bar></nav-bar>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import NavBar from "./components/layout/NavBar.vue";
+import BackMenu from "./components/layout/BackMenu.vue";
+
 export default {
   name: "App",
-
-  data: () => ({
-    //
-  }),
+  components: { NavBar, BackMenu },
+  data() {
+    return {
+      isRight: true,
+    };
+  },
 };
 </script>
 <style>

@@ -9,12 +9,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,11 +35,10 @@ public class TestController {
 	@Autowired
 	private TestService testService;
 	
-	
 	@PostMapping()
-	public ResponseEntity<TestEntity> create() throws ParseException{
-		TestEntity testEntity = TestEntity.builder().id(1).name("kim").build();
-		
+	public ResponseEntity<TestEntity> create(@RequestBody TestEntity test) throws ParseException{
+		TestEntity testEntity = TestEntity.builder().name(test.getName()).build();
+		System.out.println(test.getName()+" "+ test.getId());
 		TestEntity savedTest = testService.createTest(testEntity);
 		return new ResponseEntity<TestEntity>(savedTest,HttpStatus.OK);
 	}
@@ -55,7 +56,7 @@ public class TestController {
 		return new ResponseEntity<>(test,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("{id}")
 	public ResponseEntity<Integer> delete(@PathVariable int id) {
 		testService.deleteTest(id);
 		return new ResponseEntity<>(id,HttpStatus.OK);

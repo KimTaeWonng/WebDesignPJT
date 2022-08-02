@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <back-menu title="안녕" type="groupDetail" :isRight="isRight"></back-menu>
+      <main-header></main-header>
+      <group-search-bar></group-search-bar>
       <router-view />
       <nav-bar></nav-bar>
     </v-main>
@@ -9,12 +10,13 @@
 </template>
 
 <script>
+import GroupSearchBar from "./components/layout/GroupSearchBar.vue";
 import NavBar from "./components/layout/NavBar.vue";
-import BackMenu from "./components/layout/BackMenu.vue";
+import MainHeader from "./components/main/MainHeader.vue";
 
 export default {
   name: "App",
-  components: { NavBar, BackMenu },
+  components: { NavBar, MainHeader, GroupSearchBar },
   data() {
     return {
       isRight: true,

@@ -2,7 +2,7 @@
   <div>
     <!-- 게시글/그룹 등록 버튼 클릭시 나오는 메뉴 -->
     <div>
-      <div v-if="isMakeMenuOpen" id="overlay" />
+      <div v-if="isMakeMenuOpen" id="overlay" @click="makeMenu()"></div>
       <div
         v-if="isMakeMenuOpen"
         class="text-center animate__animated animate__slideInUp"
@@ -101,9 +101,9 @@ export default {
 }
 
 #overlayBtns {
-  position: absolute;
-  left: 0%;
-  width: 100%;
+  position: fixed;
+  left: 33%;
+  width: 33%;
   bottom: 56px;
 }
 </style>

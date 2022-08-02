@@ -6,7 +6,17 @@
     <v-col class="text-center" cols="6">
       {{ title }}
     </v-col>
-    <v-col cols="3" v-if="isRight" @click="editFinish()"> 완료 </v-col>
+    <v-col cols="3" v-if="isRight">
+      <v-row v-if="type == 'groupDetail'">
+        <v-col cols="6">
+          <v-icon>mdi-share-variant-outline</v-icon>
+        </v-col>
+        <v-col cols="6" style="padding: 12px 0px">
+          <v-icon class="mr-4">mdi-dots-horizontal</v-icon>
+        </v-col>
+      </v-row>
+      <div v-if="type == 'profileModify'">완료</div>
+    </v-col>
   </v-row>
 </template>
 
@@ -16,6 +26,7 @@ export default {
   props: {
     title: String,
     isRight: Boolean,
+    type: String,
   },
 
   data() {

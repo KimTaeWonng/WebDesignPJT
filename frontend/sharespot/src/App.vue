@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <back-menu :title="test"></back-menu>
+      <back-menu title="안녕" type="groupDetail" :isRight="isRight"></back-menu>
       <router-view />
       <nav-bar></nav-bar>
     </v-main>
@@ -17,7 +17,7 @@ export default {
   components: { NavBar, BackMenu },
   data() {
     return {
-      test: "안녕",
+      isRight: true,
     };
   },
 };

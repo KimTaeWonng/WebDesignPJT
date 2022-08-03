@@ -7,8 +7,8 @@
       type="modify"
       class="mb-1"
     ></back-menu>
+    <!-- 프로필 사진 변경 start -->
     <v-row class="text-center" align="center">
-      <!-- 프로필 사진 변경 -->
       <v-col>
         <v-avatar color="grey lighten-2" size="70">
           <v-icon v-if="user.img == ''" color="#289672"> mdi-plus </v-icon>
@@ -35,6 +35,7 @@
       </v-col>
       <v-col cols="1"></v-col>
     </v-row>
+    <!-- 프로필 사진 변경 end -->
     <!-- 변경 폼 영역 start -->
     <!-- 계정 공개/비공개 여부 -->
     <v-row align="center">

@@ -29,7 +29,7 @@ public class UserController {
 	@PostMapping("/signup")
 	public ResponseEntity<User> signUp(@RequestBody User user) throws ParseException{
 		User userEntity = User.builder()
-				.id(user.getId())
+				.user_id(user.getUser_id())
 				.email(user.getEmail())
 				.password(user.getPassword())
 				.phone(user.getPhone())
@@ -39,11 +39,11 @@ public class UserController {
 				.nickname(user.getNickname())
 				.introduce(user.getIntroduce())
 				.profile_image(user.getProfile_image())
-				.isBadge(user.isBadge())
+				.BD(user.isBD())
 				.alarm(user.isAlarm())
-				.isGender(user.isGender())
-				.isBirth(user.isBirth())
-				.isPublic(user.isPublic())
+				.GD(user.isGD())
+				.BR(user.isBR())
+				.PB(user.isPB())
 				.user_grade(user.getUser_grade())
 				.build();
 		

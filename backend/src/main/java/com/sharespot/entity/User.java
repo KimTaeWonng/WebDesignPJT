@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,13 +18,14 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="user")
+@Table(name="user_table")
 public class User {
-	
+		
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer user_id;
 	
+	@NotNull
 	private String email;
 	private String password;
 	private String phone;
@@ -33,25 +35,17 @@ public class User {
 	private String nickname;
 	private String introduce;
 	private String profile_image;
-	private boolean isBadge;
+	@Column(name = "isBadge")
+	private boolean BD;
+	@Column(name = "alarm")
 	private boolean alarm;
-	private boolean isGender;
-	private boolean isBirth;
-	private boolean isPublic;
+	@Column(name = "isGender")
+	private boolean GD;
+	@Column(name = "isBirth")
+	private boolean BR;
+	@Column(name = "isPublic")
+	private boolean PB;
 	private Integer user_grade;
-	
-	public boolean isGender() {
-		return isGender;
-	}
-	public void setGender(boolean isGender) {
-		this.isGender = isGender;
-	}
-	public boolean isBirth() {
-		return isBirth;
-	}
-	public void setBirth(boolean isBirth) {
-		this.isBirth = isBirth;
-	}
 	
 	
 	

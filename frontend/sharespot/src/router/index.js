@@ -157,7 +157,7 @@ const routes = [
     component: GroupModify,
   },
   {
-    path: "/profile",
+    path: "/profile/:userid",
     name: "profile",
     component: Profile,
   },

@@ -39,11 +39,11 @@ public class UserController {
 				.nickname(user.getNickname())
 				.introduce(user.getIntroduce())
 				.profile_image(user.getProfile_image())
-				.BD(user.isBD())
-				.alarm(user.isAlarm())
-				.GD(user.isGD())
-				.BR(user.isBR())
-				.PB(user.isPB())
+				.BD(user.getBD())  			// isBadge
+				.alarm(user.getAlarm())  	// isalarm
+				.GD(user.getGD()) 			// isgender
+				.BR(user.getBR()) 			// isBirth
+				.PB(user.getPB())		 	// isPublic
 				.user_grade(user.getUser_grade())
 				.build();
 		
@@ -51,12 +51,12 @@ public class UserController {
 		return new ResponseEntity<User>(savedUser,HttpStatus.OK);
 	}
 	
-	@GetMapping("/idcheck")
+	@GetMapping("/idcheck/{email}")
 	public ResponseEntity<Boolean> checkid(@PathVariable String email) {
 		
 		boolean check = userService.idCheck(email);
 		
-		return new ResponseEntity<Boolean>(check,HttpStatus.OK);
+		return ResponseEntity.ok(userService.idCheck(email));
 		
 	}
 	

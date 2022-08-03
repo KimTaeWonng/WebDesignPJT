@@ -39,13 +39,9 @@ public class UserService {
 	public void deleteUser(Integer id) {
 		userRepository.deleteById(id);
 	}
-	
+		
 	public boolean idCheck(String email) {
-		if(userRepository.findByemail(email)!=null) {
-			return false;
-		}else {
-			return true;
-		}
+		return userRepository.existsByEmail(email);
 	}
 	
 	

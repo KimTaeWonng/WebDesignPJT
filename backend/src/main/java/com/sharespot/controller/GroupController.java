@@ -27,7 +27,7 @@ public class GroupController {
 
     @GetMapping("{gid}")
     public ResponseEntity<Optional<Group>> getGroup(@PathVariable int gid){
-        Optional<Group> group = groupService.findByGroup_id(gid);
+        Optional<Group> group = groupService.findByGroupId(gid);
         return new ResponseEntity<>(group, HttpStatus.OK);
     }
 

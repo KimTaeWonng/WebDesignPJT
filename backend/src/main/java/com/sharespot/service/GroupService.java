@@ -3,7 +3,6 @@ package com.sharespot.service;
 import com.sharespot.entity.Group;
 import com.sharespot.repo.GroupRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class GroupService {
     public List<Group> findAllGroup(){
         return groupRepository.findAll();
     }
-    public Optional<Group> findByGroup_id(Integer gid){
+    public Optional<Group> findByGroupId(Integer gid){
         return groupRepository.findById(gid);
     }
 

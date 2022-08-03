@@ -13,7 +13,6 @@ import NavBar from "./components/layout/NavBar.vue";
 import BackMenu from "./components/layout/BackMenu.vue";
 
 export default {
-  components: { HotSpotMenu },
   name: "App",
   components: { NavBar, BackMenu },
   data() {

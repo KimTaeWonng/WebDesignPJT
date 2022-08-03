@@ -11,15 +11,29 @@
       <!-- 프로필 사진 변경 -->
       <v-col>
         <v-avatar color="grey lighten-2" size="70">
-          <v-icon color="#289672"> mdi-plus </v-icon>
+          <v-icon v-if="user.img == ''" color="#289672"> mdi-plus </v-icon>
+          <v-img v-if="user.img != ''" :src="user.img"></v-img>
         </v-avatar>
       </v-col>
     </v-row>
     <v-row class="text-center" align="center">
-      <v-col
-        style="padding: 0; color: #289672; font-weight: bold; font-size: 13px"
-        >프로필 사진 변경</v-col
-      >
+      <v-col cols="1" style="margin: 0"></v-col>
+      <v-col cols="10" style="margin: 0">
+        <label for="file">
+          <div style="text-align: center; color: #289672; font-weight: bold">
+            프로필 사진 변경
+          </div>
+        </label>
+        <v-file-input
+          dense
+          hide-input
+          v-model="user.img"
+          color="#289672"
+          prepend-icon=""
+          id="file"
+        ></v-file-input>
+      </v-col>
+      <v-col cols="1"></v-col>
     </v-row>
     <!-- 변경 폼 영역 start -->
     <!-- 계정 공개/비공개 여부 -->
@@ -142,7 +156,7 @@
     <v-row align="center">
       <v-col cols="5" align="center" id="formTitle"> 대표 뱃지 (택3) </v-col>
     </v-row>
-    <v-row>대표 뱃지 영역</v-row>
+    <v-row algin="center"> </v-row>
   </v-container>
 </template>
 
@@ -157,8 +171,8 @@ export default {
     return {
       isRight: true,
       user: {
-        nickName: "예원",
-        introduce: "한줄 소개",
+        nickName: "",
+        introduce: "",
         phone: "",
         gender: "",
         /*birth: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -166,6 +180,7 @@ export default {
           .substr(0, 10),*/
         PB: "",
         BR: "",
+        img: "",
       },
       modal: false,
     };

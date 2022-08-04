@@ -32,7 +32,7 @@ public class GroupController {
     }
 
     @PostMapping
-    public ResponseEntity<Group> createGroup(@RequestBody Group group){
+    public ResponseEntity<Integer> createGroup(@RequestBody Group group){
         Group groupEntity = Group.builder()
                 .group_manager(group.getGroup_manager())
                 .group_name(group.getGroup_name())
@@ -43,8 +43,8 @@ public class GroupController {
                 .group_age_max(group.getGroup_age_max())
                 .group_image(group.getGroup_image())
                 .build();
-        Group savedGroup = groupService.createGroup(groupEntity);
-        return new ResponseEntity<Group>(savedGroup, HttpStatus.OK);
+        groupService.createGroup(groupEntity);
+        return new ResponseEntity<Integer>(1, HttpStatus.OK);
     }
 
     @DeleteMapping("{gid}")

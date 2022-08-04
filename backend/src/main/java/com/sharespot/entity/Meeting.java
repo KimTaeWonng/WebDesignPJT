@@ -22,18 +22,19 @@ public class Meeting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT UNSIGNED")
-    private Integer meeting_id;
+    private Integer meetingId;
 
-    private Integer group_id;
+    @Column(columnDefinition = "group_id")
+    private Integer groupId;
 
     @NotBlank(message = "정모 제목을 입력해주세요")
-    private String meeting_title;
-    private BigDecimal post_lat;
-    private BigDecimal post_lng;
-    private String meeting_url;
-    private Integer meeting_money;
-    private Date meeting_day;
+    private String meetingTitle;
+    private BigDecimal meetingLat;
+    private BigDecimal meetingLng;
+    private String meetingUrl;
+    private Integer meetingMoney;
+    private Date meetingDay;
 
-    @NotBlank(message = "정모 인원을 입력해주세요")
-    private Integer meeting_people;
+//    @NotBlank(message = "정모 인원을 입력해주세요")
+    private Integer meetingPeople;
 }

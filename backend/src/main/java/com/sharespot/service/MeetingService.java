@@ -17,11 +17,8 @@ public class MeetingService {
     private MeetingRepository meetingRepository;
 
     public List<Meeting> findAllMeetings(Integer groupNo){    	
-    	return meetingRepository.findByGroup_idBy(groupNo);
+    	return meetingRepository.findByGroupId(groupNo);
     }
-//    public List<Meeting> findAllMeetings(int groupNo){    	
-//    	List<Meeting> meeting = meetingRepository.findByGroup_idAndMeeting_id(null, null)
-//    }
     
     public Optional<Meeting> findByMeetingId(Integer mid){
         return meetingRepository.findById(mid);
@@ -39,13 +36,13 @@ public class MeetingService {
         if(mMeeting.isPresent()){
             Meeting meeting = mMeeting.get();
 
-            meeting.setMeeting_title(value.getMeeting_title());
-            meeting.setPost_lat(value.getPost_lat());
-            meeting.setPost_lng(value.getPost_lng());
-            meeting.setMeeting_url(value.getMeeting_url());
-            meeting.setMeeting_money(value.getMeeting_money());
-            meeting.setMeeting_day(value.getMeeting_day());
-            meeting.setMeeting_people(value.getMeeting_people());
+            meeting.setMeetingTitle(value.getMeetingTitle());
+            meeting.setMeetingLat(value.getMeetingLat());
+            meeting.setMeetingLng(value.getMeetingLng());
+            meeting.setMeetingUrl(value.getMeetingUrl());
+            meeting.setMeetingMoney(value.getMeetingMoney());
+            meeting.setMeetingDay(value.getMeetingDay());
+            meeting.setMeetingPeople(value.getMeetingPeople());
             meetingRepository.save(meeting);
 
             return 1;

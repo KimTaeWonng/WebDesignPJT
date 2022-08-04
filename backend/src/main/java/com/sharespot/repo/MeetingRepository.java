@@ -7,5 +7,5 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
-	public List<Meeting> findByGroup_idBy(Integer group_id);
+	public List<Meeting> findByGroupId(Integer groupId);
 }

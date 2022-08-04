@@ -60,8 +60,8 @@ public class User {
 	private String profile_image;
 	@Column(name = "BD")
 	private Integer BD;
-	@Column(name = "alarm")
-	private Integer alarm;
+	@Column(name = "AL")
+	private Integer AL;
 	@Column(name = "GD")
 	private Integer GD;
 	@Column(name = "BR")
@@ -70,9 +70,8 @@ public class User {
 	private Integer PB;
 	private Integer user_grade;
 	
+	@OneToOne
+	@JoinColumn(name ="user_id")
+	private Alarm alarm;
 	
-	
-	
-	
-
 }

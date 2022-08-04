@@ -147,13 +147,14 @@
 </template>
 
 <script>
+
 export default {
   components: {},
   name: "MainHeader",
 
   data() {
     return {
-      dialog: true,
+      dialog: false,
       notifications: false,
       sound: true,
       widgets: false,

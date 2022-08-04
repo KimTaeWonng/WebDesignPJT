@@ -1,14 +1,18 @@
 <template>
  <v-container>
+  <back-menu
+      title="회원가입"
+      class="mb-1"
+    ></back-menu>
     <v-row class="text-center">
 
       <v-col
         cols="12"
         sm="6"
       >
-        <div>
+        <!-- <div>
           <p style="font-weight:bold; text-align:center; margin-top:10%;">회원가입</p>
-        </div>
+        </div> -->
     
         <p style="text-align:left; margin-left:3%; font-weight:bold;">아이디 (이메일)</p>
         <div style="margin-left:5%; margin-right:5%; line-height:0;">
@@ -149,7 +153,10 @@
 </template>
 
 <script>
+import BackMenu from "@/components/layout/BackMenu.vue";
+
 export default {
+  components: { BackMenu },
   name: "SignUpView",
   data () {
       return {

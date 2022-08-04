@@ -122,7 +122,8 @@ const routes = [
     component: PostRegister,
   },
   {
-    path: "/post/detail/:postno",
+    // /:postno 추가해야 함!
+    path: "/post/detail",
     name: "postDetail",
     component: PostDetail,
   },
@@ -147,17 +148,20 @@ const routes = [
     component: GroupRegister,
   },
   {
-    path: "/group/detail/:groupno",
+    // /:groupno 추가해야 함!
+    path: "/group/detail",
     name: "groupDetail",
     component: GroupDetail,
   },
   {
-    path: "/group/modify/:groupno",
+    // /:groupno 추가해야 함!
+    path: "/group/modify",
     name: "groupModify",
     component: GroupModify,
   },
   {
-    path: "/profile/:userid",
+    // /:userid 추가해야 함!
+    path: "/profile",
     name: "profile",
     component: Profile,
   },

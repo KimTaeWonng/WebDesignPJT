@@ -39,7 +39,7 @@
         </div>
         </v-row>
         </v-card> -->
-
+    <back-menu title="설정"></back-menu>
     <v-list>
       <template v-for="(item, index) in accountitems">
         <v-subheader 
@@ -117,9 +117,11 @@
 </template>
 
 <script>
-export default {
-    name: 'S07P12A505Settings',
+import BackMenu from "@/components/layout/BackMenu.vue";
 
+export default {
+  name: 'S07P12A505Settings',
+  components: { BackMenu },
       data: () => ({
       accountitems: [
         { header: 'Account Settings' },

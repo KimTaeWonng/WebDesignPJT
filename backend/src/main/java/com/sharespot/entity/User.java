@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name="user_table")
 public class User {
@@ -31,16 +32,16 @@ public class User {
 	private Integer user_id;
 	
 	
-	@NotEmpty(message = "이메일을 입력해주세요")
+	@NotBlank(message = "이메일을 입력해주세요")
 	@Email(message = "이메일 주소가 올바르지 않습니다.")
 	private String email;
 	
-	@NotEmpty(message = "비밀번호를 입력해주세요")
+	@NotBlank(message = "비밀번호를 입력해주세요")
 	@Size(min = 8, max = 20, message = "비밀번호는 8~20자로 입력해주세요")
 	private String password;
 	
 	@Pattern(regexp = "(01[016789])(\\d{3,4})(\\d{4})", message ="올바른 휴대폰 번호를 입력해주세요.")
-	@NotEmpty(message = "전화번호를 입력해주세요")
+	@NotBlank(message = "전화번호를 입력해주세요")
 	private String phone;
 	private Integer gender;
 	
@@ -48,10 +49,11 @@ public class User {
 	private Date birth;
 	
 	@Size(min = 2, max = 6, message = "올바른 이름을 입력해주세요")
-	@NotEmpty(message = "이름을 입력해주세요")
+	@NotBlank(message = "이름을 입력해주세요")
 	private String name;
 	
 	@Size(min = 2, max = 10, message = "별명은 10자 이내로 입력해주세요")
+	@NotBlank(message = "공백은 제거해주세요")
 	private String nickname;
 	
 	private String introduce;

@@ -3,7 +3,7 @@
     <!-- 변경: userInfo 받아오면 바꾸자 -->
     <back-menu
       title="프로필 수정"
-      :isRight="isRight"
+      :isRight="isRight" 
       type="modify"
       class="mb-1"
     ></back-menu>

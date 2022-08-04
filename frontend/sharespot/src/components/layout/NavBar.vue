@@ -1,6 +1,8 @@
 <template>
   <div>
     <!-- 게시글/그룹 등록 버튼 클릭시 나오는 메뉴 -->
+  <div style="height: 56px;">
+  </div>
     <div v-if="isMakeMenuOpen" id="overlay" @click="makeMenu()"></div>
     <div
       v-if="isMakeMenuOpen"

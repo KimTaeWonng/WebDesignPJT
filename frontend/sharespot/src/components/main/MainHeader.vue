@@ -147,6 +147,7 @@
 </template>
 
 <script>
+
 export default {
   components: {},
   name: "MainHeader",

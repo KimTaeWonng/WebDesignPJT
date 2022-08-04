@@ -1,29 +1,23 @@
 <template>
-    <div>
-        메인피드
-    </div>
+  <v-container>
+    <main-header></main-header>
+  </v-container>
 </template>
 
 <script>
+import MainHeader from "@/components/main/MainHeader.vue";
 export default {
-    name: 'S07P12A505MainList',
+  components: { MainHeader },
+  name: "S07P12A505MainList",
 
-    data() {
-        return {
-            
-        };
-    },
+  data() {
+    return {};
+  },
 
-    mounted() {
-        
-    },
+  mounted() {},
 
-    methods: {
-        
-    },
+  methods: {},
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

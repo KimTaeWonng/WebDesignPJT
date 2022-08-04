@@ -1,19 +1,21 @@
 <template>
-    <div>
-        이용약관
-        <post-card class="mx-4"></post-card>
-    </div>
+    <v-container>
+       <back-menu
+      title="이용약관"
+      class="mb-1"
+    ></back-menu>
+    </v-container>
 </template>
 
 <script>
-import PostCard from "@/components/post/PostCard.vue";
+import BackMenu from "@/components/layout/BackMenu.vue";
 
 export default {
+    components: { BackMenu },
     name: 'S07P12A505SettingsService',
-    components: { PostCard },
+
     data() {
         return {
-            
         };
     },
 

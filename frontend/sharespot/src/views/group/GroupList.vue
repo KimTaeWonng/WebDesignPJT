@@ -1,26 +1,28 @@
 <template>
-    <div>
+  <v-container>
+    <v-row class="text-center">
+      <v-col cols="12">
         그룹화면
-    </div>
+        <GroupItem></GroupItem>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import GroupItem from './GroupItem.vue';
+
+
 export default {
-    name: 'S07P12A505GroupList',
-
+    name: "GroupList",
+    componentes: { GroupItem },
     data() {
-        return {
-            
-        };
+        return {};
     },
-
     mounted() {
-        
     },
-
-    methods: {
-        
-    },
+    methods: {},
+    components: { GroupItem }
 };
 </script>
 

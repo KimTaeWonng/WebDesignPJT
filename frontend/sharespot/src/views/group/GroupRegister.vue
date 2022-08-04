@@ -1,26 +1,25 @@
 <template>
-    <div>
-        그룹 생성
-    </div>
+  <v-container>
+    <v-row class="text-center">
+      <v-col cols="12">
+        그룹생성
+				<GroupInput></GroupInput>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import GroupInput from './GroupInput.vue';
 export default {
-    name: 'S07P12A505GroupRegister',
-
+    name: "GroupRegister",
     data() {
-        return {
-            
-        };
+        return {};
     },
-
     mounted() {
-        
     },
-
-    methods: {
-        
-    },
+    methods: {},
+    components: { GroupInput }
 };
 </script>
 

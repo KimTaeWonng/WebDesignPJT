@@ -1,26 +1,26 @@
 <template>
-    <div>
-        그룹 상세조회
-    </div>
+  <v-container>
+    <v-row class="text-center">
+      <v-col cols="12">
+        그룹상세조회
+				<GroupInfo></GroupInfo>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import GroupInfo from './GroupInfo.vue';
+
 export default {
-    name: 'S07P12A505GroupDetail',
-
+    name: "GroupDetail",
     data() {
-        return {
-            
-        };
+        return {};
     },
-
     mounted() {
-        
     },
-
-    methods: {
-        
-    },
+    methods: {},
+    components: { GroupInfo }
 };
 </script>
 

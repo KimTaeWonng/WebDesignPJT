@@ -79,5 +79,9 @@ public class UserService {
 		return userRepository.existsByEmail(email);
 	}
 	
+	public User login(String email,String password) {
+		return userRepository.findByEmailAndPassword(email,password);
+	}
+	
 	
 }

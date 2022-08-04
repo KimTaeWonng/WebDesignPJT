@@ -3,6 +3,7 @@
     <v-row class="text-center">
       <v-col cols="12">
         <v-row>
+          <!-- 그룹 대표 이미지로 대체 -->
           <v-img
               :src="require('/src/assets/groupinfo.png')"
               class="mt-3"
@@ -14,6 +15,7 @@
 
         <div style="text-align:left; vertical-align:middle;">
           <div style="font-weight:bold; margin-top:3%; margin-left:3%; font-size:5vw;" class="d-flex justify-content-between">
+            <!-- 그룹 이름으로 대체 -->
             <p style="float:left;">[보드게임] 강남보드모임 GB</p>
             <v-btn color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
               가입  
@@ -23,6 +25,7 @@
   
         
         <div style="margin-left:3%; text-align:left; font-size:3.3vw; font-weight:bold;">
+          <!-- 그룹 설명으로 대체 -->
 					보드게임 소모임입니다. <br>
 					주요 활동지 : 강남, 역삼
 				</div>
@@ -30,6 +33,7 @@
         <br>
 
         <div style="margin-left:3%; text-align:left; font-size:3.3vw; font-weight:bold;">
+          <!-- 그룹 설명으로 대체 -->
 					보드게임, 방탈출, 다트, 피크닉, 스포츠관람, 볼링 등 하고 <br>
           싶었던 것들, 혼자 하기 힘들었던 것들! <br>
           함께 즐겨요~ <br>
@@ -42,6 +46,7 @@
           <p style="text-align: left; margin-left:3%; margin-top:3%; font-weight:bold; font-size:5vw;">
             모임 일정
             <span class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;">add_circle_outline</span>
+            <MeetingListItem></MeetingListItem>
           </p>
         </div>
 
@@ -50,9 +55,14 @@
   </v-container>
 </template>
 
+
 <script>
+import MeetingListItem from '@/components/group/MeetingListItem.vue';
+
 export default {
-    name: "GrouInfo",
+  components: { MeetingListItem },
+    name: "GroupInfo",
+
     data() {
         return {};
     },

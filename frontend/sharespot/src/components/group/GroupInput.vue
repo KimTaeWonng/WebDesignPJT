@@ -40,10 +40,11 @@
         <div>
           <p style="text-align: left; margin-left: 3%">연령대</p>
           <v-row style="margin-left: 5%; margin-right: 5%;">
-            <v-text-field outlined style="width:15%;"></v-text-field>
+            <!-- 정규 표현식 필요 -->
+            <v-text-field outlined style="width:10%;"></v-text-field>
             <p style="margin-top:5%;">년생~</p>
 
-            <v-text-field outlined style="width:15%;"></v-text-field>
+            <v-text-field outlined style="width:10%;"></v-text-field>
             <p style="margin-top:5%;">년생</p>
           </v-row>
 

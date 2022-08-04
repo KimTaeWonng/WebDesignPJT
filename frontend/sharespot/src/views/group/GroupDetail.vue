@@ -3,16 +3,17 @@
     <v-row class="text-center">
       <v-col cols="12">
         그룹상세조회
-				<GroupInfo></GroupInfo>
+				<group-info></group-info>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import GroupInfo from './GroupInfo.vue';
+import GroupInfo from '@/components/group/GroupInfo.vue';
 
 export default {
+  components: { GroupInfo },
     name: "GroupDetail",
     data() {
         return {};
@@ -20,7 +21,7 @@ export default {
     mounted() {
     },
     methods: {},
-    components: { GroupInfo }
+
 };
 </script>
 

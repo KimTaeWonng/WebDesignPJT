@@ -1,16 +1,16 @@
 <template>
     <div>
         이용약관
-        <post-card class="mx-4"></post-card>
+        <post-input-item></post-input-item>
     </div>
 </template>
 
 <script>
-import PostCard from "@/components/post/PostCard.vue";
+import PostInputItem from '../../components/post/PostInputItem.vue';
 
 export default {
     name: 'S07P12A505SettingsService',
-    components: { PostCard },
+    components: { PostInputItem },
     data() {
         return {
             

@@ -16,9 +16,13 @@ public class MeetingService {
     @Autowired
     private MeetingRepository meetingRepository;
 
-//    public List<Meeting> findAllMeetings(int groupNo){
-//        return meetingRepository.findById(groupNo);
+    public List<Meeting> findAllMeetings(Integer groupNo){    	
+    	return meetingRepository.findByGroup_idBy(groupNo);
+    }
+//    public List<Meeting> findAllMeetings(int groupNo){    	
+//    	List<Meeting> meeting = meetingRepository.findByGroup_idAndMeeting_id(null, null)
 //    }
+    
     public Optional<Meeting> findByMeetingId(Integer mid){
         return meetingRepository.findById(mid);
     }

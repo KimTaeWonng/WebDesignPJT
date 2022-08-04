@@ -23,7 +23,13 @@ public class MeetingController {
     private MeetingService meetingService;
 
     @GetMapping("/{groupNo}/meetings")
-    public ResponseEntity<Optional<Meeting>> getAllMeetings(@PathVariable int groupNo, int mid){
+    public ResponseEntity<List<Meeting>> getAllMeeting(@PathVariable int groupNo){
+        List<Meeting> meetings = meetingService.findAllMeetings(groupNo);
+        return new ResponseEntity<>(meetings, HttpStatus.OK);
+    }
+    
+    @GetMapping("/{groupNo}/meetings/{mid}")
+    public ResponseEntity<Optional<Meeting>> getMeeting(@PathVariable int groupNo, int mid){
         Optional<Meeting> meetings = meetingService.findByMeetingId(mid);
         return new ResponseEntity<>(meetings, HttpStatus.OK);
     }

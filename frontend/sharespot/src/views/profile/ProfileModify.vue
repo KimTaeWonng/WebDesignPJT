@@ -25,11 +25,13 @@
           </div>
         </label>
         <v-file-input
+          @change="previewImg(user.img)"
           dense
           hide-input
           v-model="user.img"
           color="#289672"
           prepend-icon=""
+          ref="userImg"
           id="file"
         ></v-file-input>
       </v-col>
@@ -161,6 +163,7 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script>
 import BackMenu from "@/components/layout/BackMenu.vue";
 
@@ -187,11 +190,26 @@ export default {
     };
   },
 
-  mounted() {},
-
   methods: {
     test() {
-      console.log(this.user);
+      console.log(this.user.img);
+    },
+
+    previewImg(img) {
+      // fileData: reader.result로 나온 토큰 값을 this.user.img에 넣어준다.
+      const fileData = (data) => {
+        this.user.img = data;
+      };
+
+      const reader = new FileReader();
+      reader.readAsDataURL(img); // Web API의 함수
+      reader.addEventListener(
+        "load",
+        function () {
+          fileData(reader.result); // 파일의 내용을 반환
+        },
+        false
+      );
     },
   },
 };

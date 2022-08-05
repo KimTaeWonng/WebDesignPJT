@@ -9,7 +9,6 @@
 import PostInputItem from '../../components/post/PostInputItem.vue';
 
 export default {
-    components: { BackMenu },
     name: 'S07P12A505SettingsService',
     components: { PostInputItem },
     data() {

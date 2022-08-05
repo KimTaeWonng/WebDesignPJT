@@ -56,7 +56,7 @@ public class UserController {
 				.phone(user.getPhone()).gender(user.getGender()).birth(user.getBirth()).name(user.getName())
 				.nickname(user.getNickname()).introduce(user.getIntroduce()).profile_image(user.getProfile_image())
 				.BD(user.getBD()) // isBadge
-				.alarm(user.getAlarm()) // isalarm
+				.AL(user.getAL()) // isalarm
 				.GD(user.getGD()) // isgender
 				.BR(user.getBR()) // isBirth
 				.PB(user.getPB()) // isPublic
@@ -188,7 +188,7 @@ public class UserController {
 				.phone(user.getPhone()).gender(user.getGender()).birth(user.getBirth()).name(user.getName())
 				.nickname(user.getNickname()).introduce(user.getIntroduce()).profile_image(user.getProfile_image())
 				.BD(user.getBD()) // isBadge
-				.alarm(user.getAlarm()) // isalarm
+				.AL(user.getAL()) // isalarm
 				.GD(user.getGD()) // isgender
 				.BR(user.getBR()) // isBirth
 				.PB(user.getPB()) // isPublic

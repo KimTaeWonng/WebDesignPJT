@@ -61,7 +61,7 @@ public class User {
 	@Column(name = "BD")
 	private Integer BD;
 	@Column(name = "AL")
-	private Integer alarm;
+	private Integer AL;
 	@Column(name = "GD")
 	private Integer GD;
 	@Column(name = "BR")

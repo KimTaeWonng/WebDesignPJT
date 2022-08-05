@@ -53,7 +53,7 @@ public class GroupController {
     }
 
     @PutMapping("{gid}")
-    public ResponseEntity<Integer> updateGroup(@RequestBody Group group){
+    public ResponseEntity<Integer> updateGroup(@RequestBody Group group, @PathVariable int gid){
         Group groupEntity = Group.builder()
                 .group_manager(group.getGroup_manager())
                 .group_name(group.getGroup_name())
@@ -65,7 +65,7 @@ public class GroupController {
                 .group_image(group.getGroup_image())
                 .build();
 
-        int result = groupService.updateGroup(group.getGroup_id(), groupEntity);
+        int result = groupService.updateGroup(gid, groupEntity);
 
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
 

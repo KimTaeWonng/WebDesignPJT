@@ -2,6 +2,8 @@ package com.sharespot.service;
 
 import com.sharespot.entity.Group;
 import com.sharespot.repo.GroupRepository;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,11 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class GroupService {
 
     @Autowired
-    private GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
 
     public List<Group> findAllGroup(){
         return groupRepository.findAll();

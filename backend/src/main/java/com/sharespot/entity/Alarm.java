@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -24,8 +26,7 @@ import lombok.experimental.SuperBuilder;
 public class Alarm {
 	
 	@Id
-	private Integer user_id;
-	
+	private Integer user_id;	
 	private Integer is_heart;
 	private Integer is_comment;
 	private Integer is_follow;

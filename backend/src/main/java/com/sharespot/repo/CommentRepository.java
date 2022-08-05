@@ -1,12 +1,11 @@
 package com.sharespot.repo;
 
-
-import com.sharespot.entity.Post;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import com.sharespot.entity.Comment;
 
-public interface PostRepository extends JpaRepository<Post, Integer> {
+@Repository
+public interface CommentRepository extends JpaRepository<Comment, Integer>{
+
 }

@@ -1,6 +1,7 @@
 package com.sharespot.controller;
 
 import com.sharespot.entity.Meeting;
+import com.sharespot.repo.MeetingRepository;
 import com.sharespot.service.MeetingService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/group")
-@AllArgsConstructor
 public class MeetingController {
 
     @Autowired

@@ -11,19 +11,18 @@ export default {
     components: { BackMenu },
     name: 'S07P12A505GroupDetail',
 
+export default {
+  components: { GroupInfo },
+    name: "GroupDetail",
     data() {
         return {
             isRight: true,
         };
     },
-
     mounted() {
-        
     },
+    methods: {},
 
-    methods: {
-        
-    },
 };
 </script>
 

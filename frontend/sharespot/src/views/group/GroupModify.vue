@@ -11,19 +11,17 @@ export default {
     components: { BackMenu },
     name: 'S07P12A505GroupModify',
 
+export default {
+    name: "GroupModify",
     data() {
         return {
-            
+          isRight: true,
         };
     },
-
     mounted() {
-        
     },
-
-    methods: {
-        
-    },
+    methods: {},
+    components: { BackMenu, GroupInput }
 };
 </script>
 

@@ -36,7 +36,9 @@
           <!-- 현재/전체 참여자로 대체 -->
 					<div style="margin-left:5%; margin-top:3%;" class="d-flex justify-content-between">
 						<p style="color:#8CC7B3;">3/40명</p> 
-						<v-chip color="#8CC7B3" style="margin-left:3%; font-weight:bold; color:white;">참여가능</v-chip>
+            <router-link to="/group/detail" style="text-decoration:none;">
+						  <v-chip color="#8CC7B3" style="margin-left:3%; font-weight:bold; color:white;">참여가능</v-chip>
+            </router-link>
 					</div>
 				</v-card>
       </v-col>

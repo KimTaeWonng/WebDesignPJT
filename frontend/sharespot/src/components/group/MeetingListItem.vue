@@ -2,7 +2,102 @@
   <v-container>
     <v-row class="text-center">
       <v-col cols="12">
-        <v-card style="text-align:left; font-size:3vw;">
+        <v-card style="text-align:left; font-size:3vw;" @click.stop="dialog = true">
+                <v-dialog
+        v-model="dialog"
+        max-width="290"
+      >
+        <v-card>      
+          <br>
+          <div style="font-weight:bold; font-size:4vw;" class="text-center">
+            불금 보드게임은 국룰이죠 (4명)
+          </div>
+
+          <br>
+
+          <div style="margin-left:3%; font-weight:bold; font-size:5vw;">
+            <p>참가자</p>
+            <div>
+              <v-img :src="require('/src/assets/profileSample.png')" contain width="10%" height="10%" style="float:left;"/>
+              <p style="font-size:4vw;">맞집찾아삼만리 <span style="color: #289672;">운영진</span></p>
+            </div>
+            <div>
+              <v-img :src="require('/src/assets/profileSample.png')" contain width="10%" height="10%" style="float:left;"/>
+              <p style="font-size:4vw;">가모라</p>
+            </div>
+            <div>
+              <v-img :src="require('/src/assets/profileSample.png')" contain width="10%" height="10%" style="float:left;"/>
+              <p style="font-size:4vw;">토끼공듀</p>
+            </div>
+          </div>
+          <br>
+
+          <div>
+            <p style="margin-left:3%; font-weight:bold; font-size:5vw;">모임 정보 <v-icon style="color: #289672;">mdi-square-edit-outline</v-icon> </p>
+          </div>
+
+
+          <div style="margin-left:5%; margin-right:5%;">
+            <v-text-field
+                filled
+                rounded
+                dense
+                placeholder="2022.07.22"
+                prepend-icon="calendar_today"
+              ></v-text-field>
+
+              <v-text-field
+                filled
+                rounded
+                dense
+                placeholder="오후 07:00"
+                prepend-icon="schedule"
+              ></v-text-field>
+
+                <v-text-field
+                filled
+                rounded
+                dense
+                placeholder="정모 장소"
+                prepend-icon="mdi-map-marker-outline"
+              ></v-text-field>
+              
+              <v-text-field
+                filled
+                rounded
+                dense
+                placeholder="지도 URL"
+                style="margin-left:12%;"
+              ></v-text-field>
+
+                <v-text-field
+                filled
+                rounded
+                dense
+                placeholder="정모비"
+                prepend-icon="mdi-currency-krw"
+              ></v-text-field>
+
+                <v-text-field
+                filled
+                rounded
+                dense
+                placeholder=""
+                prepend-icon="person_outline"
+              ></v-text-field>
+          </div>
+
+          <div class="text-center">
+            <v-btn color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false"> 
+              확인
+            </v-btn>
+          </div>
+          <br>
+
+        </v-card>
+      </v-dialog>
+
+
           <div style="margin-left:3%;">
             <div>
               <br>
@@ -53,7 +148,9 @@
 export default {
     name: "MeetingListItem",
     data() {
-        return {};
+        return {
+          dialog: false,
+        };
     },
     mounted() {
     },

@@ -45,7 +45,88 @@
         <div>
           <p style="text-align: left; margin-left:3%; margin-top:3%; font-weight:bold; font-size:5vw;">
             모임 일정
-            <span class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;">add_circle_outline</span>
+            <span class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;" @click.stop="dialog = true">add_circle_outline</span>
+
+            <v-dialog
+        v-model="dialog"
+        max-width="290"
+      >
+        <v-card>
+          <div style="margin-left:5%; margin-right:5%;">
+            <br>
+            <p class="text-center" style="font-weight:bold; font-size:5vw;">정모 생성하기</p>
+          
+            <v-col cols="12">
+              <v-text-field
+                placeholder="정모 이름"
+                filled
+                rounded
+                dense
+              ></v-text-field>
+        
+            <v-text-field
+              filled
+              rounded
+              dense
+              placeholder="정모 날짜"
+              prepend-icon="calendar_today"
+            ></v-text-field>
+
+            <v-text-field
+              filled
+              rounded
+              dense
+              placeholder="정모 시간"
+              prepend-icon="schedule"
+            ></v-text-field>
+
+              <v-text-field
+              filled
+              rounded
+              dense
+              placeholder="정모 장소"
+              prepend-icon="mdi-map-marker-outline"
+            ></v-text-field>
+            
+            <v-text-field
+              filled
+              rounded
+              dense
+              placeholder="지도 URL"
+              style="margin-left:15%;"
+            ></v-text-field>
+
+              <v-text-field
+              filled
+              rounded
+              dense
+              placeholder="정모비"
+              prepend-icon="mdi-currency-krw"
+            ></v-text-field>
+
+              <v-text-field
+              filled
+              rounded
+              dense
+              placeholder="정모 인원"
+              prepend-icon="person_outline"
+            ></v-text-field>
+
+              <div class="text-center">
+                <v-btn color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false"> 
+                  생성하기
+                </v-btn>
+              </div>
+
+            </v-col>
+        </div>
+        
+      
+
+        </v-card>
+      </v-dialog>
+
+
             <MeetingListItem></MeetingListItem>
           </p>
         </div>
@@ -64,7 +145,9 @@ export default {
     name: "GroupInfo",
 
     data() {
-        return {};
+        return {
+          dialog: false,
+        };
     },
     mounted() {
     },

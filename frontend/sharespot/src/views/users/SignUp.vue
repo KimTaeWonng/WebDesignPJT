@@ -16,6 +16,7 @@
             :error-messages="errors"
             label="아이디(이메일)"
             required
+            color="#289672"
           ></v-text-field>
         </validation-provider>
 
@@ -23,7 +24,10 @@
         <validation-provider
           v-slot="{ errors }"
           name="비밀번호"
-          rules="required|confirmed:confirmPwd"
+          :rules="{
+            required: true,
+            minmax: [8, 20],
+          }"
         >
           <v-text-field
             class="mt-3"
@@ -34,15 +38,15 @@
             :error-messages="errors"
             label="비밀번호"
             required
-            ref=""
+            color="#289672"
           ></v-text-field>
         </validation-provider>
 
         <!-- 비밀번호 확인 입력 -->
         <validation-provider
           v-slot="{ errors }"
-          name="confirmPwd"
-          rules="required"
+          name="비밀번호확인"
+          rules="required|confirmed:비밀번호"
         >
           <v-text-field
             class="mt-3"
@@ -52,6 +56,7 @@
             label="비밀번호 확인"
             v-model="confirmPwd"
             required
+            color="#289672"
           ></v-text-field>
         </validation-provider>
 
@@ -71,6 +76,7 @@
             :error-messages="errors"
             label="이름"
             required
+            color="#289672"
           ></v-text-field>
         </validation-provider>
 
@@ -90,6 +96,7 @@
             :error-messages="errors"
             label="닉네임"
             required
+            color="#289672"
           ></v-text-field>
         </validation-provider>
 
@@ -108,6 +115,7 @@
             :error-messages="errors"
             label="전화번호"
             required
+            color="#289672"
           ></v-text-field>
         </validation-provider>
 
@@ -182,7 +190,7 @@
 
         <v-row class="mt-2">
           <v-col cols="6">
-            <v-btn color="#99C5B9" dark width="100%"> 이전 </v-btn>
+            <v-btn color="#99C5B9" dark width="100%" @click="clear"> 초기화 </v-btn>
           </v-col>
           <v-col cols="6">
             <div>
@@ -240,15 +248,6 @@ extend("idCheck", {
   message: "중복된 아이디가 있습니다."
 });
 
-// extend("pwdCheck", {
-//   validate(value){
-//     console.log("res:");
-//     console.log("val:" + value);
-//     return false;
-//   },
-//   message: "비밀번호 확인이 틀렸습니다."
-// });
-
 extend("max", {
   ...max,
   message: "{_field_}은 {length}자 이내로 입력해주세요.",
@@ -298,6 +297,17 @@ export default {
   methods: {
     submit(){
       this.$refs.observer.validate()
+    },
+    clear(){
+      this.user.email = '';
+      this.user.password = '';
+      this.confirmPwd = '';
+      this.user.name = '';
+      this.user.phone = '';
+      this.user.nickname = '';
+      this.user.gender = '';
+      this.user.birth = '';
+      this.$refs.observer.reset()
     },
     async registUser() {
       

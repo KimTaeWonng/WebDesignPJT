@@ -1,11 +1,17 @@
 <template>
-    <div>
-        게시글 상세조회
-    </div>
+    <v-container>
+        <back-menu
+      title="게시물"
+      class="mb-1"
+    ></back-menu>
+    </v-container>
 </template>
 
 <script>
+import BackMenu from "@/components/layout/BackMenu.vue";
+
 export default {
+    components: { BackMenu },
     name: 'S07P12A505PostDetail',
 
     data() {

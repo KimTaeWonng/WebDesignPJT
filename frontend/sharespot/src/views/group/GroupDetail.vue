@@ -1,22 +1,23 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        그룹상세조회
-				<group-info></group-info>
-      </v-col>
-    </v-row>
-  </v-container>
+    <v-container>
+    <back-menu title="보드게임조아조아" :isRight="true" type="groupDetail" class="mb-1"></back-menu>
+    </v-container>
 </template>
 
 <script>
-import GroupInfo from '@/components/group/GroupInfo.vue';
+import BackMenu from "@/components/layout/BackMenu.vue";
+
+export default {
+    components: { BackMenu },
+    name: 'S07P12A505GroupDetail',
 
 export default {
   components: { GroupInfo },
     name: "GroupDetail",
     data() {
-        return {};
+        return {
+            isRight: true,
+        };
     },
     mounted() {
     },

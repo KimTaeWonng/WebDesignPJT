@@ -1,30 +1,24 @@
 <template>
   <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        그룹생성
-				<group-input></group-input>
-      </v-col>
-    </v-row>
+    <back-menu title="그룹 생성" class="mb-1"></back-menu>
   </v-container>
 </template>
 
 <script>
-import GroupInput from '@/components/group/GroupInput.vue';
+import BackMenu from "@/components/layout/BackMenu.vue";
 
 export default {
-  components: { GroupInput },
+  components: { BackMenu },
+  name: "S07P12A505GroupRegister",
 
-    name: "GroupRegister",
-    data() {
-        return {};
-    },
-    mounted() {
-    },
-    methods: {},
-}
+  data() {
+    return {};
+  },
+
+  mounted() {},
+
+  methods: {},
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,21 +1,19 @@
 <template>
   <div>
     <!-- 게시글/그룹 등록 버튼 클릭시 나오는 메뉴 -->
-    <div>
-      <div v-if="isMakeMenuOpen" id="overlay" @click="makeMenu()"></div>
-      <div
-        v-if="isMakeMenuOpen"
-        class="text-center animate__animated animate__slideInUp"
-        id="overlayBtns"
-      >
-        <div class="my-5">
-          <v-btn rounded @click="changeRouter('postRegister')"
-            >게시글생성</v-btn
-          >
-        </div>
-        <div class="my-5">
-          <v-btn rounded @click="changeRouter('groupRegister')">그룹생성</v-btn>
-        </div>
+  <div style="height: 56px;">
+  </div>
+    <div v-if="isMakeMenuOpen" id="overlay" @click="makeMenu()"></div>
+    <div
+      v-if="isMakeMenuOpen"
+      class="text-center animate__animated animate__slideInUp"
+      id="overlayBtns"
+    >
+      <div class="my-5">
+        <v-btn rounded @click="changeRouter('postRegister')">게시글생성</v-btn>
+      </div>
+      <div class="my-5">
+        <v-btn rounded @click="changeRouter('groupRegister')">그룹생성</v-btn>
       </div>
     </div>
     <!-- 하단 네비바 -->

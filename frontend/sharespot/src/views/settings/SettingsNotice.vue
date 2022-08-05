@@ -1,5 +1,6 @@
 <template>
     <v-container>
+    <back-menu title="알림"></back-menu>
     <v-list>
       <div v-for="item in accountitems" :key="item.id">
         <v-list-item class="my-3">
@@ -29,9 +30,11 @@
 </template>
 
 <script>
+import BackMenu from "@/components/layout/BackMenu.vue";
+
 export default {
     name: 'SettingsInfo',
-
+    components: { BackMenu },
     data: () => ({
     accountitems: [
     {

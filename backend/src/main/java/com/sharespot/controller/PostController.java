@@ -52,8 +52,14 @@ public class PostController {
 			.classWhere(post.getClassWhere())
 			.uploadTime(post.getUploadTime())
 			.build();
-		postRepository.save(postEntity);
-		return new ResponseEntity<Integer>(1, HttpStatus.OK);
+		int result = 1;
+		try {
+			postRepository.save(postEntity);
+		} catch (Exception e) {
+			result = 0;
+		}
+		
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	@PutMapping("/posts/{postNo}")
 	public ResponseEntity<Integer> updatePost(@RequestBody Post post, @PathVariable int postNo){
@@ -80,5 +86,14 @@ public class PostController {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/posts/{postNo}")
+	public ResponseEntity<Integer> deletePost(@PathVariable int postNo){
+		int result = 0;
+		if(postRepository.findById(postNo).isPresent()) {
+			postRepository.deleteById(postNo);
+			result = 1;
+		}
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
 	
 }

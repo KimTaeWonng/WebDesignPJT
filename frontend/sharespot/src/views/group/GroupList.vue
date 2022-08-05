@@ -1,8 +1,8 @@
 <template>
   <v-container>
+    <group-search-bar></group-search-bar>
     <v-row class="text-center">
       <v-col cols="12">
-        그룹화면
         <group-item></group-item>
       </v-col>
     </v-row>
@@ -11,9 +11,11 @@
 
 <script>
 import GroupItem from '@/components/group/GroupItem.vue';
+import GroupSearchBar from '@/components/layout/GroupSearchBar.vue';
+
 
 export default {
-  components: { GroupItem },
+  components: { GroupItem, GroupSearchBar },
     name: "GroupList",
 
     data() {

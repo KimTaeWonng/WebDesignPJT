@@ -14,51 +14,37 @@
         ></v-text-field>
       </v-col>
       <!-- MY 버튼-->
-      <v-col cols="2" align="center" @click="showMyGroup()">
+      <v-col cols="2" align="center">
         <span style="color: #289672" @click.stop="dialog = true">MY</span>
 
-        <v-dialog
-        v-model="dialog"
-        max-width="290"
-      >
-        <v-card
-    class="mx-auto"
-    max-width="500"
-  >
-    
-    <br>
-    <div style="font-weight:bold; font-size:5vw;" class="text-center">
-      가입 모임 보기
-    </div>
+        <v-dialog v-model="dialog" max-width="290">
+          <v-card class="mx-auto" max-width="500">
+            <br />
+            <div style="font-weight: bold; font-size: 5vw" class="text-center">
+              가입 모임 보기
+            </div>
 
-    <v-list>
-      <v-list-group
-        v-for="item in items"
-        :key="item.title"
-      >
-        <template v-slot:activator>
-          <v-list-item-content style="font-weight:bold; font-size:4vw;">
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-          </v-list-item-content>
-        </template>
+            <v-list>
+              <v-list-group v-for="item in items" :key="item.title">
+                <template v-slot:activator>
+                  <v-list-item-content
+                    style="font-weight: bold; font-size: 4vw"
+                  >
+                    <v-list-item-title v-text="item.title"></v-list-item-title>
+                  </v-list-item-content>
+                </template>
 
-        <v-list-item
-          v-for="child in item.items"
-          :key="child.title"
-        >
-          <v-list-item-content style="font-weight:bold; font-size:3vw;">
-            <v-list-item-title v-text="child.title"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-group>
-    </v-list>
-  </v-card>
-
-
-
-    
-      </v-dialog>
-
+                <v-list-item v-for="child in item.items" :key="child.title">
+                  <v-list-item-content
+                    style="font-weight: bold; font-size: 3vw"
+                  >
+                    <v-list-item-title v-text="child.title"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-group>
+            </v-list>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </div>
@@ -74,32 +60,32 @@ export default {
       dialog: false,
       items: [
         {
-          action: 'mdi-ticket',
+          action: "mdi-ticket",
           items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
+            { title: "7월 27일 강남 보드게임 정모~~" },
+            { title: "7월 28일 역삼 보드게임 정모해용" },
+            { title: "7월 29일 사당 보드게임 정모~~" },
           ],
-          title: '[보드게임] 강남보드모임 GB',
+          title: "[보드게임] 강남보드모임 GB",
         },
         {
-          action: 'mdi-silverware-fork-knife',
+          action: "mdi-silverware-fork-knife",
           active: true,
           items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
+            { title: "7월 27일 강남 보드게임 정모~~" },
+            { title: "7월 28일 역삼 보드게임 정모해용" },
+            { title: "7월 29일 사당 보드게임 정모~~" },
           ],
-          title: '[보드게임] 강남보드모임 GB',
+          title: "[보드게임] 강남보드모임 GB",
         },
         {
-          action: 'mdi-school',
+          action: "mdi-school",
           items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
+            { title: "7월 27일 강남 보드게임 정모~~" },
+            { title: "7월 28일 역삼 보드게임 정모해용" },
+            { title: "7월 29일 사당 보드게임 정모~~" },
           ],
-          title: '[보드게임] 강남보드모임 GB',
+          title: "[보드게임] 강남보드모임 GB",
         },
       ],
     };
@@ -115,11 +101,6 @@ export default {
     // searchContent로 검색하는 함수
     search(searchContent) {
       console.log(searchContent);
-    },
-
-    // 내가 가입한 그룹 리스트를 보여주는 함수
-    showMyGroup() {
-      console.log("click");
     },
   },
 };

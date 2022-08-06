@@ -13,8 +13,40 @@
             <v-icon>mdi-share-variant-outline</v-icon>
           </v-col>
           <v-col cols="6" style="padding: 12px 0px">
-            <v-icon class="mr-4">mdi-dots-horizontal</v-icon>
+            <v-icon class="mr-4" @click.stop="dialog = true">mdi-dots-horizontal</v-icon>
           </v-col>
+
+          <v-dialog
+        v-model="dialog"
+        max-width="200"
+      >
+        <v-card>
+          <div class="text-center" style="font-weight:bold; font-size:4vw; align-items:center;">
+            <v-col @click.stop="dialog = false()">
+              <span style="color:#FF0000;">그룹 신고</span>
+            </v-col>
+
+            <v-divider></v-divider>
+            <v-col>
+              <span>가입한 멤버 보기</span>
+            </v-col>
+            
+            <v-divider></v-divider>
+
+            <v-col>
+              <span>정산하기</span>
+            </v-col>
+
+            <v-divider></v-divider>
+
+            <v-col>
+              <span>그룹 나가기</span>
+            </v-col>
+          </div>
+        </v-card>
+      </v-dialog>
+
+
         </v-row>
         <div v-if="type == 'modify'" style="color: #289672; font-weight: bold">
           완료
@@ -34,7 +66,10 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      dialog: false,
+      dialog2: false,
+    };
   },
 
   mounted() {},

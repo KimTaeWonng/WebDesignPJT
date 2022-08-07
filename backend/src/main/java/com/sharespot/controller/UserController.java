@@ -64,8 +64,9 @@ public class UserController {
 
 		try {
 			User savedUser = userService.createUser(userEntity);
-			String token = jwtService.create("email", user.getEmail(), "Authorization");
+			String token = jwtService.create("user_id", user.getUser_id(), "Authorization");
 			result.put("Authorization", token);
+			result.put("message", SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("message", FAIL);

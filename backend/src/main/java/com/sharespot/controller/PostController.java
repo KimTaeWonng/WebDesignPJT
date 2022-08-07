@@ -3,6 +3,7 @@ package com.sharespot.controller;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +27,21 @@ public class PostController {
 	private PostRepository postRepository;
 	
 	@GetMapping("/posts")
+	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
 	public ResponseEntity<List<Post>> getAllPost(){
 		List<Post> posts = postRepository.findAll();
 		return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
 	}
 	
 	@GetMapping("/posts/{postNo}")
+	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 댓글</b>을 반환한다.")
 	public ResponseEntity<Optional<Post>> getPost(@PathVariable int postNo){
 		Optional<Post> post = postRepository.findById(postNo);
 		return new ResponseEntity<Optional<Post>>(post, HttpStatus.OK);
 	}
 	
 	@PostMapping("/posts")
+	@ApiOperation(value = "게시글 작성", notes = "<b>게시글을 작성</b>한다.")
 	public ResponseEntity<Integer> createPost(@RequestBody Post post){
 		Post postEntity = Post.builder()
 			.userId(post.getUserId())
@@ -62,6 +66,7 @@ public class PostController {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	@PutMapping("/posts/{postNo}")
+	@ApiOperation(value = "게시글 수정", notes = "<b>해당 게시글을 수정</b>한다.")
 	public ResponseEntity<Integer> updatePost(@RequestBody Post post, @PathVariable int postNo){
 		Optional<Post> option = postRepository.findById(postNo);
 		int result = 0;
@@ -87,6 +92,7 @@ public class PostController {
 	}
 	
 	@DeleteMapping("/posts/{postNo}")
+	@ApiOperation(value = "게시글 삭제", notes = "<b>해당 게시글을 삭제</b>한다.")
 	public ResponseEntity<Integer> deletePost(@PathVariable int postNo){
 		int result = 0;
 		if(postRepository.findById(postNo).isPresent()) {

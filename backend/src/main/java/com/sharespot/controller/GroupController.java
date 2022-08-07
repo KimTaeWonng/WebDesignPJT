@@ -2,6 +2,7 @@ package com.sharespot.controller;
 
 import com.sharespot.entity.Group;
 import com.sharespot.service.GroupService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,18 +21,21 @@ public class GroupController {
     private GroupService groupService;
 
     @GetMapping
+    @ApiOperation(value = "그룹목록", notes = "<b>그룹 전체 목록</b>을 반환한다.")
     public ResponseEntity<List<Group>> getAllGroups(){
         List<Group> groups = groupService.findAllGroup();
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
     @GetMapping("{gid}")
+    @ApiOperation(value = "그룹", notes = "해당 그룹id의 <b>그룹</b>을 반환한다.")
     public ResponseEntity<Optional<Group>> getGroup(@PathVariable int gid){
         Optional<Group> group = groupService.findByGroupId(gid);
         return new ResponseEntity<>(group, HttpStatus.OK);
     }
 
     @PostMapping
+    @ApiOperation(value = "그룹작성", notes = "<b>그룹</b>을 작성한다.")
     public ResponseEntity<Integer> createGroup(@RequestBody Group group){
         Group groupEntity = Group.builder()
                 .group_manager(group.getGroup_manager())
@@ -48,11 +52,13 @@ public class GroupController {
     }
 
     @DeleteMapping("{gid}")
+    @ApiOperation(value = "그룹삭제", notes = "해당 <b>그룹</b>을 삭제한다.")
     public ResponseEntity<Integer> deleteGroup(@PathVariable int gid){
         return new ResponseEntity<Integer>(groupService.deleteGroup(gid), HttpStatus.OK);
     }
 
     @PutMapping("{gid}")
+    @ApiOperation(value = "그룹수정", notes = "해당 <b>그룹</b>을 수정한다.")
     public ResponseEntity<Integer> updateGroup(@RequestBody Group group, @PathVariable int gid){
         Group groupEntity = Group.builder()
                 .group_manager(group.getGroup_manager())

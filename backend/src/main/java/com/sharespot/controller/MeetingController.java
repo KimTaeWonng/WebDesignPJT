@@ -3,6 +3,7 @@ package com.sharespot.controller;
 import com.sharespot.entity.Meeting;
 import com.sharespot.repo.MeetingRepository;
 import com.sharespot.service.MeetingService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,18 +28,21 @@ public class MeetingController {
     private MeetingService meetingService;
 
     @GetMapping("/{groupNo}/meetings")
+    @ApiOperation(value = "정모목록", notes = "해당 그룹의 <b>정기모임 전체 목록</b>을 반환한다.")
     public ResponseEntity<List<Meeting>> getAllMeeting(@PathVariable int groupNo){
         List<Meeting> meetings = meetingService.findAllMeetings(groupNo);
         return new ResponseEntity<>(meetings, HttpStatus.OK);
     }
     
     @GetMapping("/{groupNo}/meetings/{mid}")
+    @ApiOperation(value = "정모", notes = "해당 <b>정기모임</b>을 반환한다.")
     public ResponseEntity<Optional<Meeting>> getMeeting(@PathVariable int groupNo, int mid){
         Optional<Meeting> meetings = meetingService.findByMeetingId(mid);
         return new ResponseEntity<>(meetings, HttpStatus.OK);
     }
 
     @PostMapping("/{groupNo}/meetings")
+    @ApiOperation(value = "정모작성", notes = "<b>정기모임</b>을 작성한다.")
     public ResponseEntity<Integer> createMeeting(@PathVariable int groupNo, @RequestBody Meeting meeting){
         Meeting meetingEntity = Meeting.builder()
         		.groupId(meeting.getGroupId())
@@ -56,6 +60,7 @@ public class MeetingController {
     }
     
     @PutMapping("/{groupNo}/meetings/{mid}")
+    @ApiOperation(value = "정모수정", notes = "해당 <b>정기모임</b>을 수정한다.")
     public ResponseEntity<Integer> updateMeeting(@PathVariable int groupNo, int mid, @RequestBody Meeting meeting){
         Meeting meetingEntity = Meeting.builder()
         		.groupId(meeting.getGroupId())
@@ -74,6 +79,7 @@ public class MeetingController {
     }
     
     @DeleteMapping("/{groupNo}/meetings/{mid}")
+    @ApiOperation(value = "정모삭제", notes = "해당 <b>정기모임</b>을 삭제한다.")
     public ResponseEntity<Integer> deleteMeeting(@PathVariable int groupNo, int mid){
         return new ResponseEntity<Integer>(meetingService.deleteMeeting(mid), HttpStatus.OK);
     }

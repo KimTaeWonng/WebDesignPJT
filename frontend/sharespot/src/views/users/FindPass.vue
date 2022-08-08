@@ -1,11 +1,12 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
+    <v-container>
+      <back-menu
+      title="비밀번호 재발급"
+      class="mb-1"
+    ></back-menu>
+    
+      <v-row class="text-center">
       <v-col cols="12">
-        <div style="margin-top:10%;">
-          비밀번호 재발급
-        </div>
-      
 
         <div style="margin-top:10%;">
           <span class="material-icons" style="color:rgb(40,150,114); font-size:700%;">
@@ -137,13 +138,15 @@
 
       </v-col>
     </v-row>
-  </v-container>
 
-  
+    </v-container> 
 </template>
-
+  
 <script>
+import BackMenu from "@/components/layout/BackMenu.vue";
+
 export default {
+    components: { BackMenu },
     name: 'FindPass',
 
     data() {

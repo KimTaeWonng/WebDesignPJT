@@ -1,12 +1,13 @@
 <template>
     <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <div style="margin-top:10%;">
-          비밀번호 재설정
-        </div>
-      
+      <back-menu
+      title="비밀번호 재설정"
+      class="mb-1"
+    ></back-menu>
 
+      <v-row class="text-center">
+      <v-col cols="12">
+    
         <div style="margin-top:10%;">
           <span class="material-icons"  style="color:rgb(40,150,114); font-size:700%;">
             lock_reset
@@ -90,11 +91,15 @@
 
       </v-col>
     </v-row>
-  </v-container>
+
+    </v-container>
 </template>
 
 <script>
+import BackMenu from "@/components/layout/BackMenu.vue";
+
 export default {
+    components: { BackMenu },
     name: 'S07P12A505ResetPass',
 
     data() {

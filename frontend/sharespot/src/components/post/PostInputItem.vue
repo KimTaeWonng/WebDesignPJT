@@ -79,6 +79,7 @@
           :key="item.header"
           v-text="item.header"
           class="font-weight-bold"
+          align="center"
         ></v-subheader>
 
         <v-divider
@@ -86,32 +87,55 @@
           :key="index"
         ></v-divider>
 
-        <v-list-item
-          v-else
-          :key="item.title"
-          class="my-1"
-        > 
-          <v-list-item-avatar :color="item.bgc">
-                <v-icon :color="item.color">
-                    {{ item.icon }}
-                </v-icon>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-            <v-list-item-subtitle  v-text="item.subtitle"></v-list-item-subtitle>
-          </v-list-item-content>
+<!-- 안에 들어가는 내용 -->
+    <v-list-item
+      v-else
+      :key="item.title"
+      class="my-1"
+    > 
+      <v-item-group mandatory>
+        <v-container>
+          <v-row>
+            <v-col
+              v-for="n in 3"
+              :key="n"
+              cols="12"
+              md="4"
+            >
+              <v-item v-slot="{ active, toggle }">
+                <v-card
+                  :color="active ? 'primary' : ''"
+                  class="d-flex align-center"
+                  dark
+                  height="30"
+                  @click="toggle"
+                >
+                  <v-scroll-y-transition>
+                    <div
+                      v-if="active"
+                      class="text-h2 flex-grow-1 text-center"
+                    >
+                      Active
+                    </div>
+                  </v-scroll-y-transition>
+                </v-card>
+              </v-item>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-item-group>
         </v-list-item>
       </template>
     </v-list>
 
 
         <!-- 분류 제목 + 버튼 여기까지  -->
-        <v-divider></v-divider>
-        <v-card-actions class="d-flex justify-end">
+        
+        <v-card-actions class="d-flex justify-end" style="background-color: #ffffff">
           <!-- 초기화 버튼 회색 배경 넣어주기  -->
-          <v-btn
-            style="color:#999999; font-weight: bolder;"
+        <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
+        <v-btn
+            style="background-color:#F3F3F3;"
             text
             @click="dialog = false"
           >
@@ -173,13 +197,13 @@ export default {
       dialogm1: '',
       dialog: false,
       tagitems: [
-        { header: 'Account Settings' },
+        { header: '대분류' },
                {
-          bgc: "blue lighten-3",
-          icon: "mdi-account-outline",
-          color: "white",
-          title: '프로필 변경',
-          subtitle: '개인 정보 변경',
+          id1: "식당",
+          id2: "카페",
+          id3: "문화",
+          id4: '여행',
+          id5: '생활',
         },
         { divider: true},
         {

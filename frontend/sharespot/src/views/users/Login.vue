@@ -34,8 +34,10 @@
             rows="1"
             row-height="15"
           ></v-textarea>
-          <p style="text-align: right; color: #289672">
-            비밀번호를 잊으셨나요?
+          <p style="text-align: right;">
+            <router-link to="/users/findpass" style="color: #289672; text-decoration:none;">
+              비밀번호를 잊으셨나요?
+            </router-link>
           </p>
         </div>
       </v-col>

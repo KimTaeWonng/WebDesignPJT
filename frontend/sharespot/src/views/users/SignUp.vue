@@ -203,6 +203,48 @@
               >
                 가입하기
               </v-btn>
+              
+                  <v-dialog
+        v-model="dialog"
+        max-width="290"
+      >
+        <v-card>
+          <div>
+            <br>
+            <br>
+          </div>
+
+          <div class="text-center" style="color:rgb(40,150,114);">
+            <span class="material-icons" style="font-size:80px;">
+              task_alt
+            </span>
+          </div>
+        
+
+          <div class="text-center">
+            <div style="font-weight:bold;">
+              관리자 <span>님의</span>
+            </div>
+            가입이 완료되었습니다! 
+          </div>
+
+          <div class="text-center" style="margin-top:10%;">
+            <router-link to="/users/login" style="color:white; text-decoration: none">
+              <v-btn color="rgb(40,150,114)" dark>
+                확인
+              </v-btn>
+            </router-link>
+          </div>
+
+          <div>
+            <br>
+            <br>
+          </div>
+
+        </v-card>
+      </v-dialog>
+              
+
             </div>
           </v-col>
         </v-row>

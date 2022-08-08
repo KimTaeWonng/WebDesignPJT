@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="text-center">
       <v-col cols="12">
-        <div style="margin-top: 30%; margin-left: 25%">
+        <div align="center">
           <v-img
             :src="require('/src/assets/logo.png')"
             class="my-3"
@@ -49,10 +49,10 @@
 
         <br />
         <div>
-          <p style="font-size: 10px; font-weight: bold">
+          <p style="font-size: 15px; font-weight: bold">
             계정이 없으신가요?
             <router-link
-              to="/about"
+              to="/users/signup"
               style="color: #289672; text-decoration: none"
             >
               회원가입</router-link
@@ -62,8 +62,8 @@
         <br />
         <div>
           <!--카카오 로그인 버튼-->
-          <v-btn color="#99C5B9" dark width="80%">
-            <div class="aling-center">
+          <v-btn color="#99C5B9" dark width="80%" @click="kakaoLogin()">
+            <div class="align-center">
               <v-icon small>mdi-login</v-icon> 카카오 계정으로 로그인
             </div>
           </v-btn>
@@ -76,5 +76,46 @@
 <script>
 export default {
   name: "LoginView",
+  methods: {
+    kakaoLogin(){
+      
+      // Kakao Developers에서 JavaScript 키 할당
+      window.Kakao.init('272f421bb03463e4fb2a7f69398737a9') 
+
+      if (window.Kakao.Auth.getAccessToken()) {
+        window.Kakao.API.request({
+          url: '/v1/user/unlink',
+          success: function (response) {
+            console.log(response)
+          },
+          fail: function (error) {
+            console.log(error)
+          },
+        })
+        window.Kakao.Auth.setAccessToken(undefined)
+      }
+
+
+      window.Kakao.Auth.login({
+        success: function () {
+          window.Kakao.API.request({
+            url: '/v2/user/me',
+            data: {
+              property_keys: ["kakao_account.email", "kakao_account.gender"]
+            },
+            success: async function (response) {
+              console.log(response);
+            },
+            fail: function (error) {
+              console.log(error)
+            },
+          })
+        },
+        fail: function (error) {
+          console.log(error)
+        },
+      })
+    }
+  },
 };
 </script>

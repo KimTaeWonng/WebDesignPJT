@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <div class="mr-5 ml-5 mt-3">
     <v-row no-gutters>
       <span class="font-weight-black text-center">{{ user.nickname }}</span>
       <!-- 변경: 소유한 뱃지에 따라 등급 부여해야 됨! -->
@@ -20,15 +21,15 @@
       <v-col cols="8">
         <v-row>
           <v-col cols="4" align="center">
-            <div>{{ user.postCnt }}</div>
+            <div style="font-weight: 800">{{ user.postCnt }}</div>
             <div style="font-size: 13px">게시글</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollower()">
-            <div>{{ user.followerCnt }}</div>
+            <div style="font-weight: 800">{{ user.followerCnt }}</div>
             <div style="font-size: 13px">팔로워</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollowing()">
-            <div>{{ user.followingCnt }}</div>
+            <div style="font-weight: 800">{{ user.followingCnt }}</div>
             <div style="font-size: 13px">팔로잉</div>
           </v-col>
         </v-row>
@@ -59,6 +60,7 @@
     <v-row no-gutters>
       <div class="mt-3" style="font-size: 13px">{{ user.introduce }}</div>
     </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -75,7 +77,7 @@ export default {
         postCnt: "438",
         followerCnt: "298",
         followingCnt: "321",
-        introduce: "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!!",
+        introduce: "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
       },
     };
   },

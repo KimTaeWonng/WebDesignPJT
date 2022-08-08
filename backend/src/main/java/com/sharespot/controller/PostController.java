@@ -5,16 +5,11 @@ import java.util.Optional;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sharespot.entity.Post;
 import com.sharespot.repo.PostRepository;
@@ -37,7 +32,15 @@ public class PostController {
 	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 댓글</b>을 반환한다.")
 	public ResponseEntity<Optional<Post>> getPost(@PathVariable int postNo){
 		Optional<Post> post = postRepository.findById(postNo);
-		return new ResponseEntity<Optional<Post>>(post, HttpStatus.OK);
+		return new ResponseEntity<>(post, HttpStatus.OK);
+	}
+
+	@GetMapping("/posts/user/{userId}")
+	@ApiOperation(value = "유저의 게시글리스트 조회", notes = "해당 userId의 게시글 목록을 반환한다.")
+	public ResponseEntity<List<Object[]>> getUserPost(@PathVariable int userId){
+		List<Object[]> post = postRepository.findByUserId(userId);
+		return new ResponseEntity<>(post, HttpStatus.OK);
+
 	}
 	
 	@PostMapping("/posts")
@@ -101,5 +104,13 @@ public class PostController {
 		}
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/search/posts/new")
+	@ApiOperation(value = "게시글 페이지네이션 조회", notes = "<b>게시글</b>page와 size로 조회 한다.")
+	public Page<Post> getAllPosts(@RequestParam("page") Integer page, @RequestParam("size") Integer size){
+		PageRequest pageRequest = PageRequest.of(page, size);
+		return postRepository.findAll(pageRequest);
+	}
+
+
 }

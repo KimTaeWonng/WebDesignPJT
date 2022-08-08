@@ -36,7 +36,7 @@ public class MeetingController {
     
     @GetMapping("/{groupNo}/meetings/{mid}")
     @ApiOperation(value = "정모", notes = "해당 <b>정기모임</b>을 반환한다.")
-    public ResponseEntity<Optional<Meeting>> getMeeting(@PathVariable int groupNo, int mid){
+    public ResponseEntity<Optional<Meeting>> getMeeting(@PathVariable int groupNo, @PathVariable int mid){
         Optional<Meeting> meetings = meetingService.findByMeetingId(mid);
         return new ResponseEntity<>(meetings, HttpStatus.OK);
     }

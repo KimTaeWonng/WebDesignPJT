@@ -29,7 +29,6 @@ public class PostService {
 		List<Post> curatioN2 = new ArrayList<>();
 		List<Post> curatioN3 = new ArrayList<>();
 		List<Post> curatioN4 = new ArrayList<>();
-		
 
 		if (big.length() != 0) {
 			for (Post p : all) {
@@ -40,7 +39,6 @@ public class PostService {
 		} else {
 			curatioN1 = postRepository.findAll();
 		}
-		
 
 		if (small.length != 0) {
 			for (Post p : curatioN1) {
@@ -55,11 +53,10 @@ public class PostService {
 			curatioN2 = postRepository.findAll();
 		}
 
-
-		if (who.length != 0) {
+		if (who.length !=0) {
 			for (Post p : curatioN2) {
 				for (String s : who) {
-					if (p.getClassWho().contains(s)) {
+					if (p.getClassWho().equals(s)) {
 						curatioN3.add(p);
 						break;
 					}
@@ -67,12 +64,12 @@ public class PostService {
 			}
 		} else if (big.length() == 0) {
 			curatioN3 = postRepository.findAll();
-		}		
+		}
 
-		if (where.length != 0) {
+		if (where.length!=0) {
 			for (Post p : curatioN3) {
 				for (String s : where) {
-					if (p.getClassWhere().contains(s)) {
+					if (p.getClassWhere().equals(s)) {
 						curatioN4.add(p);
 						break;
 					}

@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class Badge {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT UNSIGNED")
     private Integer userId;
 

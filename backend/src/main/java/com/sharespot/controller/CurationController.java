@@ -19,6 +19,7 @@ import com.sharespot.service.JwtServiceImpl;
 import com.sharespot.service.PostService;
 import com.sharespot.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -31,6 +32,7 @@ public class CurationController {
 	private PostService postService;
 	
 	@PostMapping("/posts/category/{big}/{small}")
+	@ApiOperation(value = "큐레이션 탐색", notes = "대분류와 소분류는 무조건 넣어야함(소분류부터 복수 선택 가능)")
 	public ResponseEntity<List<Post>> curationList(@PathVariable String big, @PathVariable String[] small, @RequestParam(name = "who", required = false, defaultValue = "혼자, 친구, 가족, 연인") String[] who, @RequestParam (name = "where", required = false, defaultValue = "집, 헬스장" )String[] where){
 		
 		List<Post> curationResult = postService.CurationList(big, small, who, where);

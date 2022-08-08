@@ -149,17 +149,17 @@ public class UserController {
 	
 	
 	@GetMapping("/{userid}/profile")  //로그인한 유저의 정보를 불러온다
-	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable int id ,@ApiParam(value = "인증할 회원의 아이디.", required = true) 
+	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable int userid ,@ApiParam(value = "인증할 회원의 아이디.", required = true) 
 			HttpServletRequest request) {
 		//logger.debug("userid : {} ", userid);
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(!jwtService.getUserId().equals(id)) {
+			if(!jwtService.getUserId().equals(userid)) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
 					//	로그인 사용자 정보.
-					Optional<User> userInfo = userService.getUser(id);
+					Optional<User> userInfo = userService.getUser(userid);
 					result.put("userInfo", userInfo);
 					result.put("message", SUCCESS);
 					status = HttpStatus.ACCEPTED;

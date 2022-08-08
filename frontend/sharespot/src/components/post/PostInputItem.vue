@@ -57,6 +57,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
+          
           color="primary"
           dark
           v-bind="attrs"
@@ -72,61 +73,74 @@
       <v-card>
         <v-card-text style="margin-top:15%; font-weight:bolder;">태그 추가 (항목 당 1개씩 골라주세요)</v-card-text>   
         <!-- 분류 제목 + 버튼 -->
-      <v-list>
-      <template v-for="(item, index) in tagitems">
-        <v-subheader 
-          v-if="item.header"
-          :key="item.header"
-          v-text="item.header"
-          class="font-weight-bold"
-          align="center"
-        ></v-subheader>
-
-        <v-divider
-          v-else-if="item.divider"
-          :key="index"
-        ></v-divider>
-
-<!-- 안에 들어가는 내용 -->
-    <v-list-item
-      v-else
-      :key="item.title"
-      class="my-1"
-    > 
-      <v-item-group mandatory>
-        <v-container>
-          <v-row>
-            <v-col
-              v-for="n in 3"
-              :key="n"
-              cols="12"
-              md="4"
-            >
-              <v-item v-slot="{ active, toggle }">
-                <v-card
-                  :color="active ? 'primary' : ''"
-                  class="d-flex align-center"
-                  dark
-                  height="30"
-                  @click="toggle"
-                >
-                  <v-scroll-y-transition>
-                    <div
-                      v-if="active"
-                      class="text-h2 flex-grow-1 text-center"
-                    >
-                      Active
-                    </div>
-                  </v-scroll-y-transition>
-                </v-card>
-              </v-item>
-            </v-col>
-          </v-row>
-        </v-container>
+       <v-item-group>
+        <v-subheader>대분류</v-subheader>
+        <v-item
+          v-for="n in 5"
+          :key="n"
+          v-slot="{ active, toggle }"
+        >
+          <v-btn
+            
+            active-class="purple--text"
+            :input-value="active"
+            @click="toggle, selectBig(n)"
+          >
+            {{ categorys.tag[n-1].big_name }}
+          </v-btn>
+        </v-item>
       </v-item-group>
-        </v-list-item>
-      </template>
-    </v-list>
+
+      <v-item-group>
+        <v-subheader>소분류</v-subheader>
+        <v-item
+          v-for="i in this.smalls.category"
+          :key="i"
+          v-slot="{ active, toggle }"
+        >
+          <v-btn
+            active-class="purple--text"
+            :input-value="active"
+            @click="toggle"
+          >
+            {{ i.small_name }}
+          </v-btn>
+        </v-item>
+      </v-item-group>
+
+      <v-item-group>
+        <v-subheader>누구랑</v-subheader>
+        <v-item
+          v-for="(who, i) in whos"
+          :key="i"
+          v-slot="{ active, toggle }"
+        >
+          <v-btn
+            active-class="purple--text"
+            :input-value="active"
+            @click="toggle"
+          >
+            {{ who }}
+          </v-btn>
+        </v-item>
+      </v-item-group>
+
+      <v-item-group>
+        <v-subheader>어디서</v-subheader>
+        <v-item
+          v-for="(where, i) in wheres"
+          :key="i"
+          v-slot="{ active, toggle }"
+        >
+          <v-btn
+            active-class="purple--text"
+            :input-value="active"
+            @click="toggle"
+          >
+            {{ where }}
+          </v-btn>
+        </v-item>
+      </v-item-group>
 
 
         <!-- 분류 제목 + 버튼 여기까지  -->
@@ -137,7 +151,7 @@
         <v-btn
             style="background-color:#F3F3F3;"
             text
-            @click="dialog = false"
+            @click="test()"
           >
             초기화
           </v-btn>
@@ -177,7 +191,7 @@
 
 
 <script>
-
+import tag from "@/assets/json/tag.json";
 
 export default {
   name: 'PostInputItem',
@@ -196,50 +210,31 @@ export default {
       modal: false,
       dialogm1: '',
       dialog: false,
-      tagitems: [
-        { header: '대분류' },
-               {
-          id1: "식당",
-          id2: "카페",
-          id3: "문화",
-          id4: '여행',
-          id5: '생활',
-        },
-        { divider: true},
-        {
-          bgc: "green lighten-2",
-          icon: "mdi-lock-outline",
-          color: "white",
-          title: '비밀번호 재설정',
-          subtitle: '비밀번호 변경',
-        },
-        { divider: true},
-          { header: 'Account Settings22' },
-               {
-          bgc: "blue lighten-3",
-          icon: "mdi-account-outline",
-          color: "white",
-          title: '프로필 변경',
-          subtitle: '개인 정보 변경',
-        },
-        { divider: true},
-        {
-          bgc: "green lighten-2",
-          icon: "mdi-lock-outline",
-          color: "white",
-          title: '비밀번호 재설정',
-          subtitle: '비밀번호 변경',
-        },
-        { divider: true},
 
-      ],
+      categorys: tag, // 대분류,소분류 태그 json
+      smalls: [],
+      whos: ["가족", "친구", "연인", "혼자"],
+      wheres: ["서울", "경기", "인천", "강원", "제주", "대전", "충북", "충남/세종", "부산", "울산", "경남", "대구", "경북", "광주", "전남", "전주/전북"],
     };
   },
-
+  computed: {
+    
+  },
   methods: {
-        test() {
-      console.log(this.user);
+    test() {
+      // console.log(this.user);
+      const data = this.categorys;
+      console.log(data);
+      console.log(data.tag);
+      console.log(data.tag[0]);
+      console.log(data.tag[0].big_id);
     },
+    selectBig(n){
+      console.log(this.categorys);
+      this.smalls = this.categorys.tag[n-1];
+      console.log(n);
+      console.log(this.smalls);
+    }
   },
 
 }

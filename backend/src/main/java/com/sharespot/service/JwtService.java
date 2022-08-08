@@ -6,7 +6,7 @@ public interface JwtService {
 	
 	<T> String create(String key, T data, String subject);
 	Map<String,Object> get();
-	String getUserId();
+	int getUserId();
 	boolean isUsable(String jwt);
 
 }

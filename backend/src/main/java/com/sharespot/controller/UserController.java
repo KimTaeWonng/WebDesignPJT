@@ -89,7 +89,7 @@ public class UserController {
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(jwtService.getUserId().equals(id)) {
+			if(jwtService.getUserId() == id) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
 					//	로그인 사용자 정보.
@@ -148,14 +148,15 @@ public class UserController {
 
 	
 	
-	@GetMapping("/{userid}/profile")  //로그인한 유저의 정보를 불러온다
-	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable int userid ,@ApiParam(value = "인증할 회원의 아이디.", required = true) 
+	@GetMapping("/info/{userid}")  //로그인한 유저의 정보를 불러온다
+	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable ("userid") int userid ,@ApiParam(value = "인증할 회원의 아이디.", required = true) 
 			HttpServletRequest request) {
 		//logger.debug("userid : {} ", userid);
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
+		System.out.println(userid);
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(!jwtService.getUserId().equals(userid)) {
+			if(jwtService.getUserId() != userid) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
 					//	로그인 사용자 정보.
@@ -198,7 +199,7 @@ public class UserController {
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(jwtService.getUserId().equals(userEntity.getUser_id())) {
+			if(jwtService.getUserId() != userEntity.getUser_id()) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
 					//	로그인 사용자 정보.
@@ -232,6 +233,7 @@ public class UserController {
 		HttpStatus status = null;
 		try {
 			User loginUser = userService.login(user.getEmail(), user.getPassword());
+			logger.debug("로그인 토큰정보 : {}", user.getEmail());
 			if (loginUser != null) {
 				String token = jwtService.create("userid", loginUser.getUser_id(), "Authorization");// key, data,
 																									// subject
@@ -240,10 +242,12 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {
+				
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
+			System.out.println("==== catch 입장=====");
 			logger.error("로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

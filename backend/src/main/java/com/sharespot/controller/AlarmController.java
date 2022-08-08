@@ -73,7 +73,7 @@ public class AlarmController {
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if (!jwtService.getUserId().equals(userid)) {
+			if (jwtService.getUserId() != userid) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
 					// 로그인 사용자 정보.
@@ -110,7 +110,7 @@ public class AlarmController {
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if (jwtService.getUserId().equals(alarmEntity.getUser_id())) {
+			if (jwtService.getUserId() != alarmEntity.getUser_id()) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
 					// 로그인 사용자 정보.

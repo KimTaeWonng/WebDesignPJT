@@ -44,11 +44,7 @@
 
       <v-col cols="12">
         <div>
-          <router-link to="/main/mainlist" style="color:white; text-decoration: none">
-            <v-btn color="rgb(40,150,114)" dark width="35%"> 
-              로그인
-            </v-btn>
-          </router-link>
+          <v-btn color="rgb(40,150,114)" dark width="35%"> 로그인 </v-btn>
         </div>
 
         <br />
@@ -56,34 +52,22 @@
           <p style="font-size: 10px; font-weight: bold">
             계정이 없으신가요?
             <router-link
-              to="/users/signup"
+              to="/about"
               style="color: #289672; text-decoration: none"
             >
               회원가입</router-link
             >
           </p>
         </div>
-
         <br />
-
         <div>
           <!--카카오 로그인 버튼-->
-          <router-link to="/main/mainlist" style="color:white; text-decoration: none">
-            <v-col cols="12">
-              <v-btn color="#99C5B9" dark>
-                <div class="d-flex justify-content-between" style="width:100%;">
-                  <v-col cols="2">
-                    <v-icon small>mdi-login</v-icon> 
-                  </v-col>
-                  <v-col cols="4">
-                    카카오 계정으로 로그인
-                  </v-col>
-                </div>
-              </v-btn>
-            </v-col>
-          </router-link>
+          <v-btn color="#99C5B9" dark width="80%">
+            <div class="aling-center">
+              <v-icon small>mdi-login</v-icon> 카카오 계정으로 로그인
+            </div>
+          </v-btn>
         </div>
-        
       </v-col>
     </v-row>
   </v-container>

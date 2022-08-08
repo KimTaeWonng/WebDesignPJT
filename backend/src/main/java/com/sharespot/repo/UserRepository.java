@@ -1,5 +1,6 @@
 package com.sharespot.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	boolean existsByEmail(String email);
 	Optional<User> findByemail(String email);
 	User findByEmailAndPassword(String email, String password);
+	List<User> findByNicknameContainingOrIntroduceContaining(String searchWord,String searchWord2);
 }

@@ -54,6 +54,7 @@ public class MeetingController {
         		.meetingTitle(meeting.getMeetingTitle())
         		.meetingUrl(meeting.getMeetingUrl())
         		.build();
+        
         meetingService.createMeeting(meetingEntity);
     	
     	return new ResponseEntity<Integer>(1, HttpStatus.OK);

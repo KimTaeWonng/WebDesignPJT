@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sharespot.entity.Post;
+import com.sharespot.entity.User;
 import com.sharespot.repo.PostRepository;
+import com.sharespot.repo.UserRepository;
 
 @RestController
 @RequestMapping("/main")
@@ -25,6 +27,9 @@ public class PostController {
 
 	@Autowired
 	private PostRepository postRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@GetMapping("/posts")
 	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
@@ -100,6 +105,14 @@ public class PostController {
 			result = 1;
 		}
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/search-user/{searchWord}")
+	@ApiOperation(value = "유저 검색 결과", notes = "<b>검색 결과 조건에 맞는 유저를 조회</b>한다.")
+	public ResponseEntity<List<User>> searchUser(@PathVariable String searchWord){
+		List<User> searchList = userRepository.findByNicknameContainingOrIntroduceContaining(searchWord,searchWord); 
+		
+		return new ResponseEntity<List<User>>(searchList,HttpStatus.OK);
 	}
 	
 }

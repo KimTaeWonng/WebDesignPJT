@@ -49,7 +49,8 @@
 
             <v-dialog
         v-model="dialog"
-        max-width="290"
+        width="80%"
+        height="80%"
       >
         <v-card>
           <div style="margin-left:5%; margin-right:5%;">
@@ -93,7 +94,7 @@
               rounded
               dense
               placeholder="지도 URL"
-              style="margin-left:15%;"
+              prepend-icon="mdi-map"
             ></v-text-field>
 
               <v-text-field
@@ -113,7 +114,7 @@
             ></v-text-field>
 
               <div class="text-center">
-                <v-btn color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false"> 
+                <v-btn color="rgb(40,150,114)" dark width="35%" height="10vw" @click.stop="dialog = false" style="font-size:3.3vw;"> 
                   생성하기
                 </v-btn>
               </div>

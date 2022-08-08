@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.sharespot.entity.Comment;
 
+import java.util.List;
+
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer>{
-
+    public List<Comment> findByPostId(Integer postNo);
 }

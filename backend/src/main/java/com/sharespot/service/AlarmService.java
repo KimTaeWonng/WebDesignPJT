@@ -14,8 +14,9 @@ import com.sharespot.repo.AlarmRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
+
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class AlarmService {
 

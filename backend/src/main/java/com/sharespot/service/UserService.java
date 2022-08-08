@@ -83,5 +83,9 @@ public class UserService {
 		return userRepository.findByEmailAndPassword(email,password);
 	}
 	
+	public List<User> getUsersBySearch(String searchWord,String searchWord2){
+		return userRepository.findByNicknameContainingOrIntroduceContaining(searchWord,searchWord2);
+	}
+	
 	
 }

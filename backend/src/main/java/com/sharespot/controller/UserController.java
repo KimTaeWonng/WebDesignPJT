@@ -42,10 +42,10 @@ public class UserController {
 	private static final String FAIL = "fail";
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
 	private JwtServiceImpl jwtService;
+	
+	@Autowired
+	private UserService userService;
 
 	@PostMapping("/signup")   //회원 등록
 	public ResponseEntity<Map<String, Object>> signUp(@RequestBody User user) throws ParseException {
@@ -148,7 +148,7 @@ public class UserController {
 
 	
 	
-	@GetMapping("/info/{userid}")  //로그인한 유저의 정보를 불러온다
+	@GetMapping("/{userid}/profile")  //로그인한 유저의 정보를 불러온다
 	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable int id ,@ApiParam(value = "인증할 회원의 아이디.", required = true) 
 			HttpServletRequest request) {
 		//logger.debug("userid : {} ", userid);

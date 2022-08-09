@@ -1,16 +1,15 @@
 <template>
-    <div>
-        이용약관
-        <post-input-item></post-input-item>
-    </div>
+    <v-container>
+        <back-menu title="이용약관"></back-menu>
+    </v-container>
 </template>
 
 <script>
-import PostInputItem from '../../components/post/PostInputItem.vue';
+import BackMenu from "@/components/layout/BackMenu.vue";
 
 export default {
     name: 'S07P12A505SettingsService',
-    components: { PostInputItem },
+    components: { BackMenu },
     data() {
         return {
         };

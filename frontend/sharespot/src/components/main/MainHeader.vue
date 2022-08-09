@@ -7,7 +7,9 @@
       </v-col>
       <!-- 로고 -->
       <v-col cols="6">
-        <span style="color: #289672; font-weight: bold">Share Spot</span>
+        <span style="color: #289672; font-weight: bold; font-size: 5vw"
+          >Share Spot</span
+        >
       </v-col>
       <!-- 돋보기/설정 버튼 -->
       <v-col cols="3">
@@ -147,7 +149,6 @@
 </template>
 
 <script>
-
 export default {
   components: {},
   name: "MainHeader",

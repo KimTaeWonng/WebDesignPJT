@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <router-view />
-    <div v-if="this.show">
-      <nav-bar></nav-bar>
-    </div>
+    <!-- <div v-if="this.show"> -->
+    <nav-bar></nav-bar>
+    <!-- </div> -->
   </v-app>
 </template>
 
@@ -19,35 +19,35 @@ export default {
   },
 
   computed: {
-    isLogin() {
-      if (sessionStorage.length != 0) {
-        return JSON.parse(sessionStorage.getItem("vuex")).userStore.isLogin;
-      }
-      return false;
-    },
+    // isLogin() {
+    //   if (sessionStorage.length != 0) {
+    //     return JSON.parse(sessionStorage.getItem("vuex")).userStore.isLogin;
+    //   }
+    //   return false;
+    // },
   },
 
   created() {
-    if (this.isLogin) {
-      this.show = true;
-    }
+    // if (this.isLogin) {
+    //   this.show = true;
+    // }
   },
 
   watch: {
-    $route(to) {
-      if (
-        !(
-          to.name == "login" ||
-          to.name == "signUp" ||
-          to.name == "findPass" ||
-          to.name == "resetPass"
-        )
-      ) {
-        this.show = true;
-      } else {
-        this.show = false;
-      }
-    },
+    // $route(to) {
+    //   if (
+    //     !(
+    //       to.name == "login" ||
+    //       to.name == "signUp" ||
+    //       to.name == "findPass" ||
+    //       to.name == "resetPass"
+    //     )
+    //   ) {
+    //     this.show = true;
+    //   } else {
+    //     this.show = false;
+    //   }
+    // },
   },
 };
 </script>

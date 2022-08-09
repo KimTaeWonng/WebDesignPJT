@@ -4,29 +4,36 @@
       <v-carousel
         :show-arrows="false"
         cycle
-        height="550"
+        height="530"
         hide-delimiter-background
+        hide-delimiters
         interval="4000"
+        class="mt-5"
       >
         <v-carousel-item v-for="i in 5" :key="i">
-          <v-sheet height="100%" color="grey">
-            <v-row class="fill-height" align="center" justify="center">
-              <v-img height="65%" :src="getImg()" />
-              <div class="text-h4 text-center" style="font-weight: bold">
+          <v-sheet height="100%">
+            <v-row align="center" justify="center">
+              <div class="text-h4 text-center mt-5" style="font-weight: bold">
                 <!-- carousel: 첫 줄-->
-                <div class="animate__animated mb-3" :class="mainStyle[i - 1]">
+                <div
+                  class="animate__animated mt-3 mb-3"
+                  :class="mainStyle[i - 1]"
+                >
                   <span> {{ mainContent1[i - 1] }}</span>
                   <span style="color: #289672">{{ mainContent2[i - 1] }}</span>
                   <span>{{ mainContent3[i - 1] }}</span>
                 </div>
                 <!-- carousel: 두번째 줄-->
-                <p
-                  class="text-h4 animate__animated mb-10"
-                  :class="subStyle[i - 1]"
-                >
+                <p class="text-h4 animate__animated" :class="subStyle[i - 1]">
                   {{ subContent[i - 1] }}
                 </p>
               </div>
+              <v-img
+                class="animate__animated"
+                :class="imgStyle[i - 1]"
+                height="65%"
+                :src="getImg(i)"
+              />
             </v-row>
           </v-sheet>
         </v-carousel-item>
@@ -71,6 +78,13 @@ export default {
         "animate__fadeInRight",
         "animate__bounce",
       ],
+      imgStyle: [
+        "animate__slideInUp",
+        "animate__slideInLeft",
+        "animate__",
+        "animate__slideInDown",
+        "animate__slideInRight",
+      ],
       mainContent1: ["당신의 ", "나만의 ", "다양한 ", "원하는 ", "취향이 "],
       mainContent2: ["순간", "장소", "뱃지", "장소", "비슷"],
       mainContent3: ["을,", "를", "를", "를", "한"],
@@ -90,8 +104,8 @@ export default {
     goLogin() {
       this.$router.push({ name: "login" });
     },
-    getImg() {
-      return require("@/assets/" + 1 + ".png");
+    getImg(i) {
+      return require("@/assets/" + i + ".png");
     },
   },
 };

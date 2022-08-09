@@ -1,34 +1,37 @@
 <template>
   <v-list>
-    <template v-for="(item, i) in posts">
-      <v-list-item :key="i">
-        <post-card></post-card>
-      </v-list-item>
-    </template>
+
+
+        <post-card v-for="(post, i) in posts" :key="i" v-bind="post" ></post-card>
+
   </v-list>
 </template>
 
 <script>
 import { http } from "@/js/http.js";
+import { mapState } from "vuex";
 
 import PostCard from "../post/PostCard.vue";
+
+const userStore = "userStore";
+
 export default {
   components: { PostCard },
   name: "SharespotMainPostList",
-
+  
   data() {
     return {
       posts: [],
+      post: {},
     };
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
   async created() {
-    // const data = JSON.parse(sessionStorage.getItem("vuex"));
-    // const userid = data.memberStore.userInfo.userid;
-    // this.userid = userid;
 
     try {
-      const response = await http.get("/main/posts");
-      console.log(response);
+      const response = await http.get(`/main/posts/follow/${this.userInfo.user_id}`);
       console.log(response.data);
       this.posts = response.data;
     } catch (error) {

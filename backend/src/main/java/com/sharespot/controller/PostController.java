@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.sharespot.entity.Follow;
 import com.sharespot.entity.Post;
+import com.sharespot.entity.Scrap;
 import com.sharespot.entity.User;
 import com.sharespot.repo.FollowRepository;
 import com.sharespot.repo.PostRepository;
+import com.sharespot.repo.ScrapRepository;
 import com.sharespot.repo.UserRepository;
 
 @RestController
@@ -31,6 +33,9 @@ public class PostController {
 	
 	@Autowired
 	private FollowRepository followRepository;
+	
+	@Autowired
+	private ScrapRepository scrapRepository;
 	
 	@GetMapping("/posts")
 	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
@@ -148,6 +153,43 @@ public class PostController {
 		}
 		
 		return new ResponseEntity<List<Post>>(savedPost,HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/posts/scrap/{userId}")
+	@ApiOperation(value = "스크랩 유저 게시글", notes = "유저가 스크랩한 게시글들만 조회")
+	public ResponseEntity<List<Post>> scrapList(@RequestParam int userId){
+		
+		List<Scrap> scrap_list = scrapRepository.findByUserId(userId);
+		
+		List<Post> savedPost = new ArrayList<Post>();
+		
+		for(Scrap s : scrap_list) {
+			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(s.getPostId());
+			
+			for(Post p :post) {
+				savedPost.add(p);
+			}
+		}
+		
+		return new ResponseEntity<List<Post>>(savedPost,HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/posts/scrap/{postId}")
+	@ApiOperation(value = "게시글 스크랩하기", notes = "유저가 스크랩 게시글을 추가")
+	public ResponseEntity<Integer> scrapPush(@RequestParam int userId, @RequestParam int postId){
+		
+		Scrap scrapEntity = Scrap.builder().userId(userId).postId(postId).build();
+		
+		int result = 1;
+		try {
+			scrapRepository.save(scrapEntity);
+		} catch (Exception e) {
+			result = 0;
+		}
+		
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		
 	}
 

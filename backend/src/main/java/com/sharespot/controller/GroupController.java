@@ -46,6 +46,7 @@ public class GroupController {
                 .group_age_min(group.getGroup_age_min())
                 .group_age_max(group.getGroup_age_max())
                 .group_image(group.getGroup_image())
+                .group_nick(group.getGroup_nick())
                 .build();
         groupService.createGroup(groupEntity);
         return new ResponseEntity<Integer>(1, HttpStatus.OK);
@@ -69,6 +70,7 @@ public class GroupController {
                 .group_age_min(group.getGroup_age_min())
                 .group_age_max(group.getGroup_age_max())
                 .group_image(group.getGroup_image())
+                .group_nick(group.getGroup_nick())
                 .build();
 
         int result = groupService.updateGroup(gid, groupEntity);

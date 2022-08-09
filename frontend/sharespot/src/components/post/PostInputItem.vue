@@ -58,8 +58,8 @@
           </v-row>
         </template>
         <v-card>
-          <v-card-title style="font-weight: bolder; font-size: 5vw"
-            >태그 추가 (항목 당 1개씩)</v-card-title
+          <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
+            >태그 추가 </v-card-title
           >
 
           <!-- 분류 제목 + 버튼 -->
@@ -86,6 +86,7 @@
             <v-subheader>소분류</v-subheader>
             <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
               <v-btn
+              width="64px"
                 height="64px"
                 elevation="0"
                 style="margin: 5px"

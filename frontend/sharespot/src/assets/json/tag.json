@@ -1,7 +1,7 @@
 {
   "tag": [
     {
-      "big_name": "식당",
+      "big_name": "맛집",
       "big_id": 1,
       "category": [
         {
@@ -37,7 +37,7 @@
     {
       "big_name": "카페",
       "big_id": 2,
-      "category ": [
+      "category": [
         {
           "small_id": 1,
           "small_name": "커피"
@@ -59,7 +59,7 @@
     {
       "big_name": "문화",
       "big_id": 3,
-      "category ": [
+      "category": [
         {
           "small_id": 1,
           "small_name": "영화/영상"
@@ -77,7 +77,7 @@
     {
       "big_name": "여행",
       "big_id": 4,
-      "category ": [
+      "category": [
         {
           "small_id": 1,
           "small_name": "관광명소"
@@ -103,7 +103,7 @@
     {
       "big_name": "생활",
       "big_id": 5,
-      "category ": [
+      "category": [
         {
           "small_id": 1,
           "small_name": "마트/시장"

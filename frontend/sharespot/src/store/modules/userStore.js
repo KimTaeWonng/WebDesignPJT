@@ -36,7 +36,6 @@ const userStore = {
                         let token = response.data["Authorization"];
                         commit("SET_IS_LOGIN", true);
                         commit("SET_IS_LOGIN_ERROR", false);
-                        console.log(token) // 로그인 유저의 토큰 확인
                         sessionStorage.setItem("Authorization", token);
                     } else {
                         commit("SET_IS_LOGIN", false);
@@ -49,12 +48,9 @@ const userStore = {
             let decode_token = jwt_decode(token);
             await findById(
                 decode_token.userid,
-                //console.log(decode_token.userid), // 로그인한 유저의 ID 출력
                 (response) => {
-                    console.log(response);
                     if (response.data.message === "success") {
                         commit("SET_USER_INFO", response.data.userInfo);
-                        //console.log(response.data.userInfo);
                     } else {
                         console.log("유저 정보 없음");
                     }

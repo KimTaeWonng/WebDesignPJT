@@ -138,7 +138,7 @@ public class PostController {
 	
 	@GetMapping("/posts/follow/{userId}")
 	@ApiOperation(value = "팔로잉 유저 게시글", notes = "팔로잉한 유저가 쓴 게시글들만 조회")
-	public ResponseEntity<List<Post>> followList(@RequestParam int userId){
+	public ResponseEntity<List<Post>> followList(@PathVariable int userId){
 		
 		List<Follow> followr_list = followRepository.findByUserId(userId);
 		
@@ -158,7 +158,7 @@ public class PostController {
 	
 	@GetMapping("/posts/scrap/{userId}")
 	@ApiOperation(value = "스크랩 유저 게시글", notes = "유저가 스크랩한 게시글들만 조회")
-	public ResponseEntity<List<Post>> scrapList(@RequestParam int userId){
+	public ResponseEntity<List<Post>> scrapList(@PathVariable int userId){
 		
 		List<Scrap> scrap_list = scrapRepository.findByUserId(userId);
 		
@@ -176,9 +176,9 @@ public class PostController {
 		
 	}
 	
-	@GetMapping("/posts/scrap/{postId}")
+	@GetMapping("/posts/scrap/{postId}/{userId}")
 	@ApiOperation(value = "게시글 스크랩하기", notes = "유저가 스크랩 게시글을 추가")
-	public ResponseEntity<Integer> scrapPush(@RequestParam int userId, @RequestParam int postId){
+	public ResponseEntity<Integer> scrapPush(@PathVariable int userId, @PathVariable int postId){
 		
 		Scrap scrapEntity = Scrap.builder().userId(userId).postId(postId).build();
 		

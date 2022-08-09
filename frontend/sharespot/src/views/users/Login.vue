@@ -1,121 +1,102 @@
 <template>
   <v-container>
     <v-row class="text-center">
-      <v-col cols="12">
-        <div align="center">
-          <v-img
-            :src="require('/src/assets/logo.png')"
-            class="my-3"
-            contain
-            width="70%"
-            height="70%"
-          />
-        </div>
+      <div style="margin-top: 20%">
+        <img src="@/assets/logo.png" style="width: 50%; height: auto" />
+      </div>
+    </v-row>
+    <v-row justify="center" v-if="isLoginError">
+      <v-alert dense outlined type="error">
+        <strong>아이디</strong> 혹은 <strong>비밀번호</strong>를 확인해주세요.
+      </v-alert>
+    </v-row>
+    <v-row class="ml-4 mr-4 mb-4">
+      <v-text-field
+        label="아이디(이메일)"
+        v-model="user.email"
+        class="input-group--focused"
+        color="#289672"
+      ></v-text-field>
+    </v-row>
+    <v-row class="ml-4 mr-4">
+      <v-text-field
+        :append-icon="isPwdShow ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="isPwdShow ? 'text' : 'password'"
+        label="비밀번호"
+        v-model="user.password"
+        class="input-group--focused"
+        @click:append="isPwdShow = !isPwdShow"
+        @keyup.enter="confirm"
+        color="#289672"
+      ></v-text-field>
+    </v-row>
+    <v-row justify="end" class="mr-5 mb-5">
+      <router-link
+        to="/users/findpass"
+        style="color: #289672; text-decoration: none"
+      >
+        비밀번호를 잊으셨나요?
+      </router-link>
+    </v-row>
 
-        <p style="text-align: left; margin-left: 3%">아이디 (이메일)</p>
-        <div style="margin-left: 5%; margin-right: 5%; line-height: 0">
-          <v-textarea
-            label=""
-            auto-grow
-            outlined
-            rows="1"
-            row-height="15"
-          ></v-textarea>
-        </div>
-
-        <br />
-
-        <p style="text-align: left; margin-left: 3%">비밀번호</p>
-        <div style="margin-left: 5%; margin-right: 5%; line-height: 0">
-          <v-textarea
-            label=""
-            auto-grow
-            outlined
-            rows="1"
-            row-height="15"
-          ></v-textarea>
-          <p style="text-align: right;">
-            <router-link to="/users/findpass" style="color: #289672; text-decoration:none;">
-              비밀번호를 잊으셨나요?
-            </router-link>
-          </p>
-        </div>
-      </v-col>
-
-      <v-col cols="12">
-        <div>
-          <v-btn color="rgb(40,150,114)" dark width="35%"> 로그인 </v-btn>
-        </div>
-
-        <br />
-        <div>
-          <p style="font-size: 15px; font-weight: bold">
-            계정이 없으신가요?
-            <router-link
-              to="/users/signup"
-              style="color: #289672; text-decoration: none"
-            >
-              회원가입</router-link
-            >
-          </p>
-        </div>
-        <br />
-        <div>
-          <!--카카오 로그인 버튼-->
-          <v-btn color="#99C5B9" dark width="80%" @click="kakaoLogin()">
-            <div class="align-center">
-              <v-icon small>mdi-login</v-icon> 카카오 계정으로 로그인
-            </div>
-          </v-btn>
-        </div>
-      </v-col>
+    <v-row justify="center" class="mb-5 mt-10">
+      <v-btn color="#289672" dark width="35%" @click="confirm"> 로그인 </v-btn>
+    </v-row>
+    <v-row justify="center" class="mb-5">
+      <p style="font-size: 4vw; font-weight: bold">
+        계정이 없으신가요?
+        <router-link
+          to="/users/signup"
+          style="color: #289672; text-decoration: none"
+        >
+          회원가입</router-link
+        >
+      </p>
+    </v-row>
+    <v-row justify="center" class="mb-5">
+      <v-btn color="#99C5B9" dark width="80%">
+        <v-col cols="1"> <v-icon small>mdi-login</v-icon></v-col>
+        <v-col cols="11">카카오 계정으로 로그인</v-col>
+      </v-btn>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   name: "LoginView",
+  data() {
+    return {
+      user: {
+        email: null,
+        password: null,
+      },
+      isPwdShow: false,
+    };
+  },
+  computed: {
+    ...mapState(userStore, ["isLogin", "isLoginError"]),
+  },
   methods: {
-    kakaoLogin(){
-      
-      // Kakao Developers에서 JavaScript 키 할당
-      window.Kakao.init('272f421bb03463e4fb2a7f69398737a9') 
-
-      if (window.Kakao.Auth.getAccessToken()) {
-        window.Kakao.API.request({
-          url: '/v1/user/unlink',
-          success: function (response) {
-            console.log(response)
-          },
-          fail: function (error) {
-            console.log(error)
-          },
-        })
-        window.Kakao.Auth.setAccessToken(undefined)
+    ...mapActions(userStore, ["userConfirm", "getUserInfo"]),
+    async confirm() {
+      // 토큰 서버에서 생성 후 저장
+      await this.userConfirm(this.user);
+      // 토큰 받아오기
+      let token = sessionStorage.getItem("Authorization");
+      if (this.isLogin) {
+        // 현재 토큰과 로그인한 유저가 일치하는지 확인
+        await this.getUserInfo(token);
+        // 메인 화면으로 이동
+        this.$router.push({ name: "mainList" });
       }
-
-
-      window.Kakao.Auth.login({
-        success: function () {
-          window.Kakao.API.request({
-            url: '/v2/user/me',
-            data: {
-              property_keys: ["kakao_account.email", "kakao_account.gender"]
-            },
-            success: async function (response) {
-              console.log(response);
-            },
-            fail: function (error) {
-              console.log(error)
-            },
-          })
-        },
-        fail: function (error) {
-          console.log(error)
-        },
-      })
-    }
+    },
   },
 };
 </script>
+
+<style scoped></style>

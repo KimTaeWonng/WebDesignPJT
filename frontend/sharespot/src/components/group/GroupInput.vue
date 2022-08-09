@@ -122,14 +122,26 @@
                     rules="required"
                     >
                     <v-radio-group v-model="group.gender" :error-messages="errors" required row>
-                      <v-radio label="남" value="radio-1" color="rgb(40,150,114)"></v-radio>
-                      <v-radio label="여" value="radio-2" color="rgb(40,150,114)"></v-radio>
-                      <v-radio label="모두" value="radio-3" color="rgb(40,150,114)"></v-radio>
+                      <v-radio label="남" value="1" color="rgb(40,150,114)"></v-radio>
+                      <v-radio label="여" value="2" color="rgb(40,150,114)"></v-radio>
+                      <v-radio label="모두" value="0" color="rgb(40,150,114)"></v-radio>
                     </v-radio-group>
                   </validation-provider>
                 </div>
               </div>
-
+              
+              
+              <div>
+                <p style="text-align: left; margin-left: 3%; font-size:4.5vw;">정원</p>
+                <validation-provider 
+                    v-slot="{ errors }" 
+                    name="정원"
+                    rules="required"
+                    >
+                  <v-select :items="items" required :error-messages="errors" v-model="group.limit"></v-select>
+                </validation-provider>
+              </div>
+              
               <div>
                 <v-btn
                   type="submit"
@@ -142,8 +154,6 @@
                 </v-btn>
               </div>
 
-
-        
           </form>
         </validation-observer>
       </v-col>
@@ -185,6 +195,8 @@ export default {
       return {
         image: '',
 
+        items: [ 10, 20, 30, 50, 100, 200, 300 ],
+
         group: {
           name: '',
           content: '',
@@ -209,7 +221,7 @@ export default {
 
       async registGroup() {
       
-      const response = await http.post("/group/register", this.group);
+      const response = await http.post("/group", this.group);
       console.log(response.data);
       console.log(this.group);
 

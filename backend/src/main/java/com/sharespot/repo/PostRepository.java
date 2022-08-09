@@ -19,5 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     @Query(value = FIND_USER_POST, nativeQuery = true)
     public List<Object[]> findByUserId(int userId);
+    
+    public List<Post> findAllByOrderByUploadTimeDesc();
 
 }

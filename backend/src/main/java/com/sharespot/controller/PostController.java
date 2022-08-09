@@ -1,5 +1,6 @@
 package com.sharespot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.sharespot.entity.Follow;
 import com.sharespot.entity.Post;
 import com.sharespot.entity.User;
+import com.sharespot.repo.FollowRepository;
 import com.sharespot.repo.PostRepository;
 import com.sharespot.repo.UserRepository;
 
@@ -25,6 +28,9 @@ public class PostController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private FollowRepository followRepository;
 	
 	@GetMapping("/posts")
 	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
@@ -123,6 +129,26 @@ public class PostController {
 	public Page<Post> getAllPosts(@RequestParam("page") Integer page, @RequestParam("size") Integer size){
 		PageRequest pageRequest = PageRequest.of(page, size);
 		return postRepository.findAll(pageRequest);
+	}
+	
+	@GetMapping("/posts/follow/{userId}")
+	@ApiOperation(value = "팔로잉 유저 게시글", notes = "팔로잉한 유저가 쓴 게시글들만 조회")
+	public ResponseEntity<List<Post>> followList(@RequestParam int userId){
+		
+		List<Follow> followr_list = followRepository.findByUserId(userId);
+		
+		List<Post> savedPost = new ArrayList<Post>();
+		
+		for(Follow f : followr_list) {
+			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(f.getFollowerId());
+			
+			for(Post p :post) {
+				savedPost.add(p);
+			}
+		}
+		
+		return new ResponseEntity<List<Post>>(savedPost,HttpStatus.OK);
+		
 	}
 
 }

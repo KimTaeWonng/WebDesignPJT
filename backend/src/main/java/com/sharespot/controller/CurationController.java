@@ -39,4 +39,12 @@ public class CurationController {
 		
 		return new ResponseEntity<List<Post>>(curationResult,HttpStatus.OK);
 	}
+	
+	@GetMapping()
+	@ApiOperation(value = "기본조회", notes = "기본은 최신순 정렬이다")
+	public ResponseEntity<List<Post>> curationDefault(){
+		List<Post> curationResult = postService.defaultList();
+		
+		return new ResponseEntity<List<Post>>(curationResult,HttpStatus.OK);
+	}
 }

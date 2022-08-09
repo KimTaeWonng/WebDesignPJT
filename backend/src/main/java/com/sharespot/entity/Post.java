@@ -29,6 +29,7 @@ public class Post {
 	private Integer postId;
 
 	private Integer userId;
+	private String nickname;
 
 	@NotBlank(message = "게시글 내용을 입력해주세요")
 	private String content;
@@ -41,5 +42,8 @@ public class Post {
 	private String classWho;
 	private String classWhere;
 	private Date uploadTime;
+	
+	private Integer likecnt;
+	private Integer commentcnt;
 
 }

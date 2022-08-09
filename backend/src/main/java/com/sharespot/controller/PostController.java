@@ -51,7 +51,6 @@ public class PostController {
 	public ResponseEntity<List<Object[]>> getUserPost(@PathVariable int userId){
 		List<Object[]> post = postRepository.findByUserId(userId);
 		return new ResponseEntity<>(post, HttpStatus.OK);
-
 	}
 	
 	@PostMapping("/posts")
@@ -59,6 +58,7 @@ public class PostController {
 	public ResponseEntity<Integer> createPost(@RequestBody Post post){
 		Post postEntity = Post.builder()
 			.userId(post.getUserId())
+				.nickname(post.getNickname())
 			.content(post.getContent())
 			.postLat(post.getPostLat())
 			.postLng(post.getPostLng())
@@ -69,6 +69,8 @@ public class PostController {
 			.classWho(post.getClassWho())
 			.classWhere(post.getClassWhere())
 			.uploadTime(post.getUploadTime())
+				.likeCnt(post.getLikeCnt())
+				.commentCnt(post.getCommentCnt())
 			.build();
 		int result = 1;
 		try {

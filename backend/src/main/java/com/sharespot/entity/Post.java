@@ -43,7 +43,7 @@ public class Post {
 	private String classWhere;
 	private Date uploadTime;
 	
-	private Integer likecnt;
-	private Integer commentcnt;
+	private Integer likeCnt;
+	private Integer commentCnt;
 
 }

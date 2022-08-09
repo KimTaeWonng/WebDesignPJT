@@ -1,0 +1,130 @@
+{
+  "tag": [
+    {
+      "big_name": "맛집",
+      "big_id": 1,
+      "category": [
+        {
+          "small_id": 1,
+          "small_name": "한식"
+        },
+        {
+          "small_id": 2,
+          "small_name": "중식"
+        },
+        {
+          "small_id": 3,
+          "small_name": "일식"
+        },
+        {
+          "small_id": 4,
+          "small_name": "양식"
+        },
+        {
+          "small_id": 5,
+          "small_name": "분식"
+        },
+        {
+          "small_id": 6,
+          "small_name": "아시안"
+        },
+        {
+          "small_id": 7,
+          "small_name": "기타"
+        }
+      ]
+    },
+    {
+      "big_name": "카페",
+      "big_id": 2,
+      "category": [
+        {
+          "small_id": 1,
+          "small_name": "커피"
+        },
+        {
+          "small_id": 2,
+          "small_name": "디저트"
+        },
+        {
+          "small_id": 3,
+          "small_name": "반려동물"
+        },
+        {
+          "small_id": 4,
+          "small_name": "이색카페"
+        }
+      ]
+    },
+    {
+      "big_name": "문화",
+      "big_id": 3,
+      "category": [
+        {
+          "small_id": 1,
+          "small_name": "영화/영상"
+        },
+        {
+          "small_id": 2,
+          "small_name": "문화시설"
+        },
+        {
+          "small_id": 3,
+          "small_name": "스포츠/레저"
+        }
+      ]
+    },
+    {
+      "big_name": "여행",
+      "big_id": 4,
+      "category": [
+        {
+          "small_id": 1,
+          "small_name": "관광명소"
+        },
+        {
+          "small_id": 2,
+          "small_name": "축제"
+        },
+        {
+          "small_id": 3,
+          "small_name": "공원"
+        },
+        {
+          "small_id": 4,
+          "small_name": "숙박"
+        },
+        {
+          "small_id": 5,
+          "small_name": "테마파크"
+        }
+      ]
+    },
+    {
+      "big_name": "생활",
+      "big_id": 5,
+      "category": [
+        {
+          "small_id": 1,
+          "small_name": "마트/시장"
+        },
+        {
+          "small_id": 2,
+          "small_name": "백화점"
+        },
+        {
+          "small_id": 3,
+          "small_name": "여가시설"
+        },
+        {
+          "small_id": 4,
+          "small_name": "공공시설"
+        },
+        {
+          "small_id": 5,
+          "small_name": "교육"
+        }
+      ]
+    }
+  ]
+}

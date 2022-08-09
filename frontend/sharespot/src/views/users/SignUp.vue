@@ -429,15 +429,12 @@ export default {
       }
 
       const response = await http.post("/users/signup", this.user);
-      console.log(response.data);
-      console.log(this.user);
+      // console.log(response.data);
+      // console.log(this.user);
 
       if (response.data.message == "success") {
-        console.log("success")
-        alert("ShareSpot의 가족이 되신 것을 환영합니다."); 
-        this.$router.push({ name: "mainList" });
+        this.dialog = true;
       } else {
-        console.log("fail")
         alert("ShareSpot 가입에 실패했습니다.");
       }
 

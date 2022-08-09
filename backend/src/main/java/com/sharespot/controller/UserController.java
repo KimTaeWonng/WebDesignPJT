@@ -88,9 +88,11 @@ public class UserController {
 		
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
+		System.out.println("통신 들어옴");
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
 			if(jwtService.getUserId() == id) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
+			System.out.println(id);
 				try {
 					//	로그인 사용자 정보.
 					userService.deleteUser(id);
@@ -156,7 +158,7 @@ public class UserController {
 		HttpStatus status = HttpStatus.ACCEPTED;
 		System.out.println(userid);
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(jwtService.getUserId() != userid) {
+			if(jwtService.getUserId() == userid) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
 					//	로그인 사용자 정보.

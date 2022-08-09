@@ -89,8 +89,9 @@ export default {
       // 토큰 받아오기
       let token = sessionStorage.getItem("Authorization");
       if (this.isLogin) {
+        // 현재 토큰과 로그인한 유저가 일치하는지 확인
         await this.getUserInfo(token);
-        //console.log(token);
+        // 메인 화면으로 이동
         this.$router.push({ name: "mainList" });
       }
     },

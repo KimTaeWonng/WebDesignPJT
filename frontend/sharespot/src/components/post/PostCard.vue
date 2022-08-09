@@ -3,38 +3,34 @@
     <!-- 개인프로필 표시 -->
     <v-list-item style="padding:0%;">
         <!-- :alt="`${chat.title} avatar`"  이거 ${user.username} 이런식으로 불러오기-->
-      <v-col cols="2" allign="center">
+      <v-col style="padding: 12px 0px 0px 0px" cols="2" align="center">
       <v-list-item-avatar>
           <v-img
             src="https://cdn.vuetifyjs.com/images/lists/1.jpg"
           ></v-img>
       </v-list-item-avatar>
       </v-col>
-      <v-col cols="8">
+      <v-col style="padding: 12px 0px 0px 0px" cols="8">
       <div>
       <v-list-item-content href="">
         <v-list-item-title>
-          <div style="font-weight:bold;">하위</div>
+          <div style="font-weight: 600;" class="mb-0.4">{{post.nickname}}</div>
         </v-list-item-title>
         <!--  이거 ${user.username} 이런식으로 불러오기 + 아래는 위치정보 -->
-        <v-list-item-subtitle style="font-weight:lighter; font-size: 10px;">서울 강남구 역삼대로 110 </v-list-item-subtitle>
+        <v-list-item-subtitle style="font-size: 12px;">{{post.postGpsName}} </v-list-item-subtitle>
       </v-list-item-content>
       </div>
       </v-col>
 
       <!-- 옵션 버튼 -->
-      <v-col>
+      <v-col style="padding: 0px 0px 0px 0px" align="right">
       <v-btn @click="showOption()" id="dotBtn" icon>
         <v-icon style="padding:0%" align="right">mdi-dots-horizontal</v-icon>
       </v-btn>
       </v-col>
     </v-list-item>
     <!-- <router-link :to="{ name: 'postDetail', params: { postPk: post.id }}"></router-link> -->
-  <v-card
-    :loading="loading"
-    class="mx-auto"
-    max-width="374"
-  >
+
     <template slot="progress">
       <v-progress-linear
         color="deep-purple"
@@ -45,8 +41,9 @@
 
     <!-- 사진 -->
     <v-img
-      height="250"
-      src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+      :aspect-ratio="1/1"
+      
+      :src="this.post.image"
     ></v-img>
 <!-- @click="likeMovie(moviePk)" -->
 <!-- 좋아요 버튼 -->
@@ -56,8 +53,8 @@
         mdi-heart-outline
       </v-icon>
     </v-btn>
-    <span style="font-size: 12px; font-weight:lighter;">100개
-      <!-- {{ likeCount }}}개 로 데이터 수정 예정--></span>
+    <span style="font-size: 12px; font-weight:lighter;">{{post.likeCnt}}개
+      </span>
 
 <!-- 댓글 버튼 여기는 라우터 추가 -->
     <v-btn icon>
@@ -65,52 +62,85 @@
         mdi-chat-processing-outline
       </v-icon>
     </v-btn>
-    <span style="font-size: 12px; font-weight:lighter;">100개
-      <!-- {{ commentCount }}}개 로 데이터 수정 예정--></span>
+    <span style="font-size: 12px; font-weight:lighter;">{{post.commentCnt}}개
+      </span>
     <br>
 
 
 
     <!-- <template v-for="item in 소분류items" :key="item.id"> 로 하나씩 넣어주기 -->
-        <v-chip style="background-color:#289672; font-size: 9px; text-align: center;" 
+        <v-chip style="background-color:#A9D5C7; font-size: 11px; text-align: center;" 
     class="text-align-center mr-1" small>
-    ㅇㅇㅇ
+    {{post.classBig}}
 
     </v-chip>
     <!-- {{ 소분류.text }} -->
-        <v-chip style="background-color:#289672; font-size: 9px; text-align: center;" 
+        <v-chip style="background-color:#A9D5C7; font-size: 11px; text-align: center;" 
     class="text-align-center mr-1" small>
-    ㅇㅇㅇ
+    {{post.classSmall}}
 
     </v-chip>
-        <v-chip style="background-color:#289672; font-size: 9px; text-align: center;" 
+        <v-chip style="background-color:#A9D5C7; font-size: 11px; text-align: center;" 
     class="text-align-center mr-1" small>
-    ㅇㅇㅇ
-
+    {{post.classWhere}}
     </v-chip>
+
+        <v-chip style="background-color:#A9D5C7; font-size: 11px; text-align: center;" 
+    class="text-align-center mr-1" small>
+    {{post.classWho}}
+    </v-chip>
+
     <!-- {{ article.content }}  -->
-    <v-card-text class="mt-2" style="padding:0%; font-weight:600;">내일 또 와도 괜찮을 듯</v-card-text>
-    <v-btn style="padding:0%; font-weight:lighter; font-size: 10px;" plain small>자세히보기</v-btn>
-    
-  </v-card>
+    <v-card-text class="mt-2" style="padding:0%; ">{{post.content}}</v-card-text>
+    <v-btn style="padding:0%; font-size: 12px;" plain small>자세히보기</v-btn>
+
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MovieCard',
+  name: 'PostCard',
   props: {
-    movie: Object,
+    
+    classBig: String,
+    classSmall: String,
+    classWhere: String,
+    classWho: String,
+    commentCnt: Number,
+    content: String,
+    image: String,
+    likeCnt: Number,
+    nickname: String,
+    postGpsName: String,
+    postId : Number,
+    postLat: Number,
+    postLng: Number,
+    uploadTime: String,
+    userId : Number,
   },
-  computed : {
-    movieImgURL () {
-      return `https://themoviedb.org/t/p/w600_and_h900_bestv2${this.movie.poster_path}`
-    },
+  created() {
+    this.post.classBig = this.classBig;
+    this.post.classSmall = this.classSmall;
+    this.post.classWhere = this.classWhere;
+    this.post.classWho = this.classWho;
+    this.post.commentCnt = this.commentCnt;
+    this.post.content = this.content;
+    this.post.image = this.image;
+    this.post.likeCnt = this.likeCnt;
+    this.post.nickname = this.nickname;
+    this.post.postGpsName = this.postGpsName;
+    this.post.postId = this.postId;
+    this.post.postLat = this.postLat;
+    this.post.postLng = this.postLng;
+    this.post.uploadTime = this.uploadTime;
+    this.post.userId = this.userId;
   },
-  data: () => ({
-      loading: false,
-      selection: 1,
-    }),
+  data() {
+    return {
+      post: {},
+    };
+  },
   methods: {
     reserve() {
       this.loading = true

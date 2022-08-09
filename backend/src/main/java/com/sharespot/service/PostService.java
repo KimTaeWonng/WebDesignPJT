@@ -88,5 +88,9 @@ public class PostService {
 	public List<Post> defaultList(){
 		return postRepository.findAllByOrderByUploadTimeDesc();
 	}
+	
+	public List<Post> followList(int userId){
+		return postRepository.findByUserIdOrderByPostIdDesc(userId);
+	}
 
 }

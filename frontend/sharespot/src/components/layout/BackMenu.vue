@@ -18,12 +18,50 @@
 
           <v-dialog
         v-model="dialog"
-        max-width="200"
+        max-width="80%"
       >
         <v-card>
           <div class="text-center" style="font-weight:bold; font-size:4vw; align-items:center;">
-            <v-col @click.stop="dialog = false()">
-              <span style="color:#FF0000;">그룹 신고</span>
+            <v-col>
+              <span style="color:#FF0000;"  @click.stop="event1()">그룹 신고</span>
+
+              <v-dialog
+        v-model="dialog2"
+        max-width="80%"
+      >
+        <v-card>
+          <div style="font-weight:bold; align-items:center;">
+            <v-col>
+              <p style="font-size:5vw; margin-left:3%;">신고 내용을 기재해주세요.</p>
+              <v-textarea
+                filled
+                placeholder="허위 신고 시 이용이 제한될 수 있습니다."
+                auto-grow
+                outlined
+                rows="6"
+              ></v-textarea>
+          
+              <v-row style="margin-left:3%; margin-right:3%;" class="text-center">
+                <v-col cols="6">
+                  <v-btn color="#289672" dark width="50%" @click.stop="dialog2 = false" style="font-size:3.3vw;"> 
+                    취소 
+                  </v-btn>
+                </v-col>
+
+                <v-col cols="6">
+                  <div>
+                    <v-btn color="#289672" dark width="50%" style="font-size:3.3vw;">
+                      확인
+                    </v-btn>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-col>
+          </div>
+
+
+        </v-card>
+      </v-dialog>
             </v-col>
 
             <v-divider></v-divider>
@@ -82,8 +120,17 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+
+    event1() {
+      this.dialog = !this.dialog,
+      this.dialog2 = !this.dialog2
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  v-textarea {
+        font-size: 3.3vw;
+      }
+</style>

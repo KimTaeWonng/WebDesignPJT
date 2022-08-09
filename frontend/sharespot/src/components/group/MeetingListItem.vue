@@ -5,7 +5,7 @@
         <v-card style="text-align:left; font-size:3vw;" @click.stop="dialog = true">
                 <v-dialog
         v-model="dialog"
-        max-width="290"
+        max-width="80%"
       >
         <v-card>      
           <br>
@@ -67,7 +67,7 @@
                 rounded
                 dense
                 placeholder="지도 URL"
-                style="margin-left:12%;"
+                prepend-icon="mdi-map"
               ></v-text-field>
 
                 <v-text-field

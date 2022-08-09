@@ -3,7 +3,6 @@
     <back-menu title="그룹 생성" class="mb-1"></back-menu>
     <v-row class="text-center">
       <v-col cols="12">
-        그룹생성
 				<group-input></group-input>
       </v-col>
     </v-row>

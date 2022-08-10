@@ -1,14 +1,19 @@
 <template>
   <v-container>
     <!-- 상단 네브바 -->
-    <v-row class="text-center d-flex mb-5" align="center" style="margin-top: 3px">
+    <v-row
+      class="text-center d-flex mb-5"
+      align="center"
+      style="margin-top: 3px"
+    >
       <!-- 닫기 버튼 -->
       <v-col cols="2" @click="changeRouter('')">
         <v-icon>mdi-close</v-icon>
       </v-col>
       <!-- 로고 -->
       <v-col cols="8">
-        <span style="color: #289672; font-weight: 800">Share Spot</span>
+        <span v-if="this.type == 'modify'">게시글 수정</span>
+        <span v-else>게시글 작성</span>
       </v-col>
       <!-- 돋보기/설정 버튼 -->
       <v-col cols="2">
@@ -27,7 +32,9 @@
           <v-col>
             <label for="file">
               <v-avatar color="#289672" size="50">
-                <v-icon v-if="user.img == ''" color="#ffffff"> mdi-plus </v-icon>
+                <v-icon v-if="user.img == ''" color="#ffffff">
+                  mdi-plus
+                </v-icon>
                 <v-img v-if="user.img != ''" :src="user.img"></v-img>
               </v-avatar>
               <v-file-input
@@ -58,9 +65,11 @@
           </v-row>
         </template>
         <v-card>
-          <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
-            >태그 추가 </v-card-title
-          >
+          <v-card-title
+            class="justify-center"
+            style="font-weight: bolder; font-size: 5vw"
+            >태그 추가
+          </v-card-title>
 
           <!-- 분류 제목 + 버튼 -->
           <!-- 대분류 -->
@@ -84,9 +93,13 @@
           <!-- 소분류 -->
           <v-item-group mandatory align="center" v-model="selected_2">
             <v-subheader>소분류</v-subheader>
-            <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
+            <v-item
+              v-for="(item, i) in this.small"
+              :key="i"
+              v-slot="{ active, toggle }"
+            >
               <v-btn
-              width="64px"
+                width="64px"
                 height="64px"
                 elevation="0"
                 style="margin: 5px"
@@ -103,7 +116,11 @@
           <!-- 누구랑 -->
           <v-item-group mandatory align="center" v-model="selected_3">
             <v-subheader>누구랑</v-subheader>
-            <v-item v-for="(who, i) in whos" :key="i" v-slot="{ active, toggle }">
+            <v-item
+              v-for="(who, i) in whos"
+              :key="i"
+              v-slot="{ active, toggle }"
+            >
               <v-btn
                 height="64px"
                 elevation="0"
@@ -121,7 +138,11 @@
           <!-- 어디서 -->
           <v-item-group mandatory align="center" v-model="selected_4">
             <v-subheader>어디서</v-subheader>
-            <v-item v-for="(where, i) in wheres" :key="i" v-slot="{ active, toggle }">
+            <v-item
+              v-for="(where, i) in wheres"
+              :key="i"
+              v-slot="{ active, toggle }"
+            >
               <v-btn
                 width="64px"
                 height="64px"
@@ -139,11 +160,21 @@
 
           <!-- 분류 제목 + 버튼 여기까지  -->
           <v-divider class="mt-4"></v-divider>
-          <v-card-actions class="mt-2 d-flex justify-end" style="background-color: #ffffff">
+          <v-card-actions
+            class="mt-2 d-flex justify-end"
+            style="background-color: #ffffff"
+          >
             <!-- 초기화 버튼 회색 배경 넣어주기  -->
             <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
             <!-- <v-btn style="background-color: #f3f3f3" text @click="test()"> 초기화 </v-btn> -->
-            <v-btn style="background-color: #289672" text dark @click="addTag()"> 확인 </v-btn>
+            <v-btn
+              style="background-color: #289672"
+              text
+              dark
+              @click="addTag()"
+            >
+              확인
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -152,25 +183,45 @@
     <!-- 태그 추가 시 칩 표시되는 공간 -->
     <div class="mt-5 ml-6 mb-5" v-show="isSelected">
       <v-chip
-        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
         class="text-align-center mr-1"
         small
         >{{ tag_big }}</v-chip
       >
       <v-chip
-        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
         class="text-align-center mr-1"
         small
         >{{ tag_small }}</v-chip
       >
       <v-chip
-        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
         class="text-align-center mr-1"
         small
         >{{ tag_who }}</v-chip
       >
       <v-chip
-        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
         class="text-align-center mr-1"
         small
         >{{ tag_where }}</v-chip
@@ -178,14 +229,13 @@
     </div>
 
     <!-- 내용 작성 -->
-    <div class="ml-9 mr-9" >
-      <v-row   align="center">
+    <div class="ml-9 mr-9">
+      <v-row align="center">
         <span class="mb-3">내용 작성</span>
       </v-row>
       <v-row>
-        <v-textarea auto-grow outlined ></v-textarea>
+        <v-textarea auto-grow outlined></v-textarea>
       </v-row>
-      
     </div>
   </v-container>
 </template>
@@ -196,6 +246,9 @@ import tag from "@/assets/json/tag.json";
 export default {
   name: "PostInputItem",
   components: {},
+  props: {
+    type: String,
+  },
   data() {
     return {
       isRight: true,
@@ -280,10 +333,16 @@ export default {
       this.dialog = false;
       this.isSelected = true;
       this.tag_big = this.categorys.tag[this.selected_1].big_name;
-      this.tag_small = this.categorys.tag[this.selected_1].category[this.selected_2].small_name;
+      this.tag_small =
+        this.categorys.tag[this.selected_1].category[
+          this.selected_2
+        ].small_name;
       this.tag_who = this.whos[this.selected_3];
       this.tag_where = this.wheres[this.selected_4];
     },
+  },
+  created() {
+    // this.type == 'modify' 인 경우 루트 경로의 게시글 내용 가져오기 함수 필요
   },
 };
 </script>

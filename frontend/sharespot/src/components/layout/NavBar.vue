@@ -35,7 +35,7 @@
         <v-icon>mdi-account-multiple-outline</v-icon>
       </v-btn>
       <!-- 프로필 이동 버튼 -->
-      <v-btn value="profile" @click="changeRouter('/profile')" id="navBtn">
+      <v-btn value="profile" @click="goProfile()" id="navBtn">
         <v-icon>mdi-account-circle</v-icon>
         <!-- 유저 프로필 이미지 가져오기...! -->
       </v-btn>
@@ -44,8 +44,13 @@
 </template>
 
 <script>
+
 export default {
   name: "NavBar",
+  props: {
+    id: Number
+  },
+
   data() {
     return {
       value: "",
@@ -76,6 +81,15 @@ export default {
     makeMenu() {
       this.isMakeMenuOpen = !this.isMakeMenuOpen;
     },
+    
+    goProfile() {
+
+        this.$router.push({
+          name: "profile",
+          params: {userid: this.id}
+        
+      })
+    }
   },
 };
 </script>

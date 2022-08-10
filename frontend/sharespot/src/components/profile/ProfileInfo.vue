@@ -2,6 +2,7 @@
   <v-container>
     <div class="mr-5 ml-5 mt-3">
     <v-row no-gutters>
+      <!-- 이거 해야됨 -->
       <span class="font-weight-black text-center">{{ userInfo.nickname }}</span>
       <!-- 변경: 소유한 뱃지에 따라 등급 부여해야 됨! -->
       <v-img
@@ -25,12 +26,13 @@
             <div style="font-size: 13px">게시글</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollower()">
-            <div style="font-weight: 800">{{ user.followerCnt }}</div>
+            <div style="font-weight: 800">{{ followerCnt }}</div>
             <div style="font-size: 13px">팔로워</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollowing()">
-            <div style="font-weight: 800">{{ user.followingCnt }}</div>
+            <div style="font-weight: 800">{{ followingCnt }}</div>
             <div style="font-size: 13px">팔로잉</div>
+            
           </v-col>
         </v-row>
         <v-row>
@@ -52,7 +54,7 @@
               class="profile-btn"
               style="height: 25px; font-size: 12px"
               color="#289672"
-              @click="moveProfileModify()"
+              @click="followUnfollow()"
               >팔로우</v-btn
             >
           </v-col>
@@ -77,12 +79,18 @@
 </template>
 
 <script>
+import { http } from "@/js/http.js";
 import { mapState } from "vuex";
 
 const userStore = "userStore";
 
 export default {
   name: "SharespotProfileInfo",
+  props: {
+    followerCnt: Number,
+    followingCnt: Number,
+    follower: Array
+  },
   data() {
     return {
       // 변경: userStore 받아오기!
@@ -120,28 +128,60 @@ export default {
       const profileid = this.$route.params.userid
       console.log(profileid)
       this.$router.push({
-        path: `/profile/taste/${profileid}` 
+        path: `/profile/taste/${profileid}`
       });
       // this.$router.push({ name: "profileTaste" });
     },
     moveFollower() {
-      this.$router.push({ name: "profileFollower" });
+      // this.$router.push({ name: "profileFollower" });
 
-      //   // 변경: 해당 프로필 유저의 팔로워 화면으로 넘어감
-      //   this.$router.push({
-      //     name: "profileFollower",
-      //     params: { userid: this.profile.userid },
-      //   });
+
+      // 변경: 해당 프로필 유저의 팔로워 화면으로 넘어감
+      this.$router.push({
+
+        path: `/profile/follower/${this.$route.params.userid}`
+      });
     },
     moveFollowing() {
-      this.$router.push({ name: "profileFollowing" });
+      // this.$router.push({ name: "profileFollowing" });
 
       //   // 변경: 해당 프로필 유저의 팔로잉 화면으로 넘어감
-      //   this.$router.push({
-      //     name: "profileFollowing",
-      //     params: { userid: this.profile.userid },
-      //   });
-    },
+      this.$router.push({
+        path: `/profile/following/${this.$route.params.userid}`
+      });
+        },
+    async followUnfollow() {
+      const temt = await http.get(`/users/${this.$route.params.userid}/follower`);
+      console.log(temt.data)
+        const followerList = []
+      for (const fid of temt.data) {
+        followerList.push(fid.followerId)
+      }
+
+      // console.log(this.userInfo.user_id)
+      // console.log('위는 나고')
+      // console.log('아래는 페이지 주인')
+      // console.log(this.$route.params.userid)
+
+      const loginid = this.userInfo.user_id
+      const rst = followerList.indexOf(loginid)
+      console.log(rst)
+      if (rst === -1) {
+        // console.log('팔로우 안함')
+        const res = {
+  "followerId": loginid,
+  "userId": this.$route.params.userid
+}
+        http.post(`/users/${this.$route.params.userid}/follow`, res);
+        console.log('팔로우')
+      }
+      else {
+        http.delete(`/users/${this.$route.params.userid}/following`);
+        console.log('팔로우취소')
+      }
+
+
+    }
   },
 };
 </script>

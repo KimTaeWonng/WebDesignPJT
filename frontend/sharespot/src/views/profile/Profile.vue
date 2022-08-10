@@ -1,8 +1,9 @@
 <template>
     <div>
-        <profile-info></profile-info>
+        <profile-info :followerCnt="this.followerList.length" :followingCnt="this.followingList.length" :follower="this.followerList"></profile-info>
         <profile-badge></profile-badge>
         <profile-content></profile-content>
+        
     </div>
 </template>
 
@@ -36,10 +37,14 @@ export default {
 
     },
     async created() {
-        console.log('팔로우리스트', this.following)
         
-        const response = await http.get(`/users/${this.$route.params.userid}/following`);
-        console.log(response.data)
+        const following = await http.get(`/users/${this.$route.params.userid}/following`);
+        const follower = await http.get(`/users/${this.$route.params.userid}/follower`);
+        this.followerList = follower.data
+        this.followingList = following.data
+        console.log('팔로잉리스트', following)
+        console.log('팔로워리스트', follower)
+        
         //         if 
         //             console.log('체크', res.data)
         //             if (response.data === 'ok') {

@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.*;
 
 import com.sharespot.entity.Follow;
 import com.sharespot.entity.Post;
+import com.sharespot.entity.PostLike;
 import com.sharespot.entity.Scrap;
 import com.sharespot.entity.User;
 import com.sharespot.repo.FollowRepository;
+import com.sharespot.repo.PostLikeRepository;
 import com.sharespot.repo.PostRepository;
 import com.sharespot.repo.ScrapRepository;
 import com.sharespot.repo.UserRepository;
+import com.sharespot.service.PostLikeService;
+import com.sharespot.service.ScrapService;
 
 @RestController
 @RequestMapping("/main")
@@ -36,6 +40,13 @@ public class PostController {
 	
 	@Autowired
 	private ScrapRepository scrapRepository;
+	@Autowired
+	private ScrapService scrapService;
+	
+	@Autowired
+	private PostLikeRepository postLikeRepository;	
+	@Autowired
+	private PostLikeService postLikeService;
 	
 	@GetMapping("/posts")
 	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
@@ -184,13 +195,54 @@ public class PostController {
 		
 		int result = 1;
 		try {
-			scrapRepository.save(scrapEntity);
+			scrapService.createScrap(scrapEntity);
 		} catch (Exception e) {
 			result = 0;
 		}
 		
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		
+	}
+	
+	@DeleteMapping("/posts/scrap/{postId}")
+	@ApiOperation(value = "스크랩 삭제", notes = "스크랩한거 삭제")
+	public ResponseEntity<Integer> scrapDelete(@PathVariable int postId, @RequestParam int userId){
+		int result = 0;
+		if(scrapRepository.findByPostIdAndUserId(postId, userId)!=null) {
+			scrapRepository.deleteByPostIdAndUserId(postId, userId);
+			result = 1;
+		}
+		
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/posts/like/{postId}/{userId}")
+	@ApiOperation(value = "게시글 좋아요하기", notes = "유저가 게시글을 좋아요")
+	public ResponseEntity<Integer> postLike(@PathVariable int userId, @PathVariable int postId, @RequestParam String user_nick){
+		
+		PostLike likeEntity = PostLike.builder().postId(postId).userId(userId).userNick(user_nick).build();
+		
+		int result = 1;
+		try {
+			postLikeService.createLike(likeEntity);
+		} catch (Exception e) {
+			result = 0;
+		}
+		
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		
+	}
+	
+	@DeleteMapping("/posts/like/{postId}")
+	@ApiOperation(value = "좋아요 삭제", notes = "좋아요한거 삭제")
+	public ResponseEntity<Integer> postLikeDelete(@PathVariable int postId, @RequestParam int userId){
+		int result = 0;
+		if(postLikeRepository.findByPostIdAndUserId(postId, userId)!=null) {
+			postLikeService.deleteLike(postId, userId);
+			result = 1;
+		}
+		
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 
 }

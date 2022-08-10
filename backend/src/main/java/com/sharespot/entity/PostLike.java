@@ -19,19 +19,17 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="post_scrap")
-public class Scrap {
-	
+@Table(name="post_like")
+public class PostLike {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "INT UNSIGNED")
 	private Integer idx;
 	
+	private Integer postId;
 	
 	private Integer userId;
-	
-	@Column
-	private Integer postId;
+	private String userNick;
 
 }

@@ -44,6 +44,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   name: "NavBar",
@@ -56,6 +59,9 @@ export default {
       value: "",
       isMakeMenuOpen: false,
     };
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
   methods: {
     // 네브바 클릭시 페이지 이동하는 함수
@@ -86,7 +92,7 @@ export default {
 
         this.$router.push({
           name: "profile",
-          params: {userid: this.id}
+          params: {userid: this.userInfo.user_id}
         
       })
     }

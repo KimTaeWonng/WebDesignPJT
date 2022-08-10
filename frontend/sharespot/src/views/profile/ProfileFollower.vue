@@ -3,7 +3,7 @@
     <back-menu title="팔로워" class="mb-1"></back-menu>
     <v-list>
       <v-list-item-group>
-        <v-list-item v-for="(user, i) in followingUsers" :key="i" >
+        <v-list-item v-for="(user, i) in followingUsers" :key="i">
           <v-list-item-avatar @click="moveProfile()">
             <v-img :src="user.profile_image"></v-img>
           </v-list-item-avatar>
@@ -18,10 +18,11 @@
           <!-- 변경: 팔로잉 안한 상태일 때, 버튼 변경 필요 -->
           <!-- 이미 팔로잉되어있는 상태 버튼 -->
           <v-btn
+
             class="following-btn"
             style="height: 25px; font-size: 12px;"
             color="#f3f3f3"
-            
+            @click="cancelFollowing()"
             >팔로잉</v-btn
           >
         </v-list-item>
@@ -31,62 +32,28 @@
 </template>
 
 <script>
+import { http } from "@/js/http.js";
 import BackMenu from "@/components/layout/BackMenu.vue";
 
 export default {
-  components: { BackMenu },
+  components: { BackMenu }, 
   name: "S07P12A505ProfileFollower",
 
   data() {
     return {
-      followingUsers: [
-        {
-          user_id: 1,
-          nickname: "맛집찾아삼만리",
-          introduce:
-            "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 2,
-          nickname: "맛집찾아삼만리2",
-          introduce:
-            "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 3,
-          nickname: "맛집찾아삼만리3",
-          introduce:
-            "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 4,
-          nickname: "맛집찾아삼만리4",
-          introduce:
-            "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 5,
-          nickname: "맛집찾아삼만리5",
-          introduce:
-            "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-          isBadge: null,
-        },
-      ],
-      
+      followingUsers: []
+
     };
+    // 팔로우 리스트 => 팔로우 버튼을 누르면 => data 팔로우 리스트에 id 넣어주고 이거 db에 쏴줘야겠지 => 언팔로우면 delete 팔로우면 post
+      
   },
 
   mounted() {},
-
+  async created() {
+    // const following = await http.get(`/users/${this.$route.params.userid}/following`);
+    const follower = await http.get(`/users/${this.$route.params.userid}/follower`);
+    console.log(follower.data)
+  },
   methods: {
     moveProfile(){
       console.log("해당 유저의 프로필로 이동")

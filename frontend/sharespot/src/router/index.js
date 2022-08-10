@@ -215,19 +215,19 @@ const routes = [
     component: ProfileModify,
   },
   {
-    path: "/profile/following",
+    path: "/profile/following/:userid",
     name: "profileFollowing",
     // beforeEnter: onlyAuthUser,
     component: ProfileFollowing,
   },
   {
-    path: "/profile/follower",
+    path: "/profile/follower/:userid",
     name: "profileFollower",
     // beforeEnter: onlyAuthUser,
     component: ProfileFollower,
   },
   {
-    path: "/profile/taste",
+    path: "/profile/taste/:userid",
     name: "profileTaste",
     // beforeEnter: onlyAuthUser,
     component: ProfileTaste,

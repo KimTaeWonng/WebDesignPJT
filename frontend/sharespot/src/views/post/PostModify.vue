@@ -1,29 +1,21 @@
 <template>
-    <div>
-        게시글 수정
-    </div>
+  <post-input-item type="modify"></post-input-item>
 </template>
 
 <script>
+import PostInputItem from "@/components/post/PostInputItem.vue";
 export default {
-    name: 'S07P12A505PostModify',
+  components: { PostInputItem },
+  name: "PostModify",
 
-    data() {
-        return {
-            
-        };
-    },
+  data() {
+    return {};
+  },
 
-    mounted() {
-        
-    },
+  mounted() {},
 
-    methods: {
-        
-    },
+  methods: {},
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

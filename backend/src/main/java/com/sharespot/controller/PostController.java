@@ -115,6 +115,9 @@ public class PostController {
 			p.setClassSmall(post.getClassSmall());
 			p.setClassWho(post.getClassWho());
 			p.setClassWhere(post.getClassWhere());
+			p.setLikeCnt(post.getLikeCnt());
+			p.setCommentCnt(post.getCommentCnt());
+			p.setNickname(post.getNickname());
 			postRepository.save(p);
 			
 			result = 1;
@@ -235,9 +238,9 @@ public class PostController {
 		
 	}
 	
-	@DeleteMapping("/posts/like/{postId}")
+	@DeleteMapping("/posts/like/{postId}/{userId}")
 	@ApiOperation(value = "좋아요 삭제", notes = "좋아요한거 삭제")
-	public ResponseEntity<Integer> postLikeDelete(@PathVariable int postId, @RequestParam int userId){
+	public ResponseEntity<Integer> postLikeDelete(@PathVariable int postId, @PathVariable int userId){
 		int result = 0;
 		if(postLikeRepository.findByPostIdAndUserId(postId, userId)!=null) {
 			postLikeService.deleteLike(postId, userId);

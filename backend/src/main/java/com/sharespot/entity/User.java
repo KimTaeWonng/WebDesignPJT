@@ -57,7 +57,7 @@ public class User {
 	private String nickname;
 	
 	private String introduce;
-	private String profile_image;
+	private String profileImage;
 	@Column(name = "BD")
 	private Integer BD;
 	@Column(name = "AL")
@@ -68,7 +68,7 @@ public class User {
 	private Integer BR;
 	@Column(name = "PB")
 	private Integer PB;
-	private Integer user_grade;
+	private Integer userGrade;
 	
 	@OneToOne
 	@JoinColumn(name ="user_id")

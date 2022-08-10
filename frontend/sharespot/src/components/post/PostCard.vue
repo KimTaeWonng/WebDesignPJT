@@ -189,7 +189,7 @@ export default {
   computed: {
     ...mapState(userStore, ["userInfo"]),
   },
-  created() {
+  async created() {
     this.post.classBig = this.classBig;
     this.post.classSmall = this.classSmall;
     this.post.classWhere = this.classWhere;
@@ -207,6 +207,15 @@ export default {
     this.post.userId = this.userId;
 
     this.cntLike = this.post.likeCnt;
+
+    const temp = await http.get(`/LikeScrap/listL/${this.userInfo.user_id}`);
+    console.log(temp);
+
+    for (const likeList of temp.data) {
+      if (likeList.postId == this.post.postId) {
+        this.like = true;
+      }
+    }
   },
   data() {
     return {

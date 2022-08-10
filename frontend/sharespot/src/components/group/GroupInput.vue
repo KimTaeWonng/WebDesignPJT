@@ -194,6 +194,17 @@
 
             <div>
               <v-btn
+                v-if="groupType == 'modify'"
+                type="submit"
+                :disabled="invalid"
+                style="background-color: #289672; color: white"
+                width="50%"
+                @click="modifyGroup"
+              >
+                수정하기
+              </v-btn>
+              <v-btn
+                v-else
                 type="submit"
                 :disabled="invalid"
                 style="background-color: #289672; color: white"
@@ -241,6 +252,9 @@ extend("content_required", {
 export default {
   name: "GroupInput",
   components: { ValidationProvider, ValidationObserver },
+  props: {
+    groupType: String,
+  },
   data() {
     return {
       image: "",
@@ -263,6 +277,7 @@ export default {
   async created() {
     this.group.group_manager = this.userInfo.user_id;
     this.group.group_nick = this.userInfo.nickname;
+    // 변경: this.groupType == 'modify' 인 경우 루트에 있는 정보로 axios통신 필요
   },
 
   computed: {

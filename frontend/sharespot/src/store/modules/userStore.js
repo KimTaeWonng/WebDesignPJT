@@ -50,6 +50,7 @@ const userStore = {
                 decode_token.userid,
                 (response) => {
                     if (response.data.message === "success") {
+                        console.log(response.data.userInfo); //로그인한 userInfo 확인
                         commit("SET_USER_INFO", response.data.userInfo);
                     } else {
                         console.log("유저 정보 없음");

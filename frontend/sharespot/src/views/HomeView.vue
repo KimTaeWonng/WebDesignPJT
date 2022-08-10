@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-row class="mb-10">
+    <v-row class="mt-1 mb-4">
       <v-carousel
         :show-arrows="false"
         cycle
-        height="530"
+        height="500"
         hide-delimiter-background
         hide-delimiters
         interval="4000"
@@ -39,7 +39,7 @@
         </v-carousel-item>
       </v-carousel>
     </v-row>
-    <v-row justify="center" class="mb-5">
+    <v-row justify="center" class="mt-5 mb-7">
       <v-btn color="#269872" dark width="40%" @click="goLogin()">
         시작하기
       </v-btn>

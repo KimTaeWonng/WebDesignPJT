@@ -52,7 +52,9 @@ export default {
   async created() {
     // const following = await http.get(`/users/${this.$route.params.userid}/following`);
     const follower = await http.get(`/users/${this.$route.params.userid}/follower`);
+    
     console.log(follower.data)
+    this.followingUsers = follower.data
   },
   methods: {
     moveProfile(){

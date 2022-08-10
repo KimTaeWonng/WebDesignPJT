@@ -41,7 +41,6 @@
             <!-- 변경: 팔로우버튼 누르면 팔로우, 팔로잉버튼 누르면 팔로잉 취소하기 -->
 
             <v-btn
-            
               v-if="this.userInfo.user_id == this.$route.params.userid"
               class="profile-btn"
               style="height: 25px; font-size: 12px"
@@ -152,10 +151,15 @@ export default {
         },
     async followUnfollow() {
       const temt = await http.get(`/users/${this.$route.params.userid}/follower`);
-      console.log(temt.data)
-        const followerList = []
+      // console.log('temt.data')
+      // console.log(temt.data)
+      const followerList = []
+
       for (const fid of temt.data) {
-        followerList.push(fid.followerId)
+        // console.log('fid')
+        // console.log(fid.user_id)
+
+        followerList.push(fid.user_id)
       }
 
       // console.log(this.userInfo.user_id)
@@ -165,8 +169,11 @@ export default {
 
       const loginid = this.userInfo.user_id
       const rst = followerList.indexOf(loginid)
+      console.log(followerList)
+      console.log(loginid)
       console.log(rst)
       if (rst === -1) {
+      
         // console.log('팔로우 안함')
         const res = {
   "followerId": loginid,
@@ -176,7 +183,7 @@ export default {
         console.log('팔로우')
       }
       else {
-        http.delete(`/users/${this.$route.params.userid}/following`);
+        http.delete(`/users/${this.$route.params.userid}/${this.userInfo.user_id}`);
         console.log('팔로우취소')
       }
 

@@ -257,7 +257,7 @@
                 :disabled="invalid"
                 style="background-color: #289672; color: white"
                 width="100%"
-                @click="registUser"
+                @click="registUser()"
               >
                 가입하기
               </v-btn>
@@ -390,8 +390,8 @@ export default {
         nickname: "",
         gender: "",
         birth: "",
-        alarm: 0,
-        user_grade: 0,
+        al: 0,
+        userGrade: 0,
         br: 1, // 생일공개여부
         gd: 1, // 성별공개여부
         bd: 0, // 뱃지보유여부

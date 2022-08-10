@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,14 +33,15 @@ public class CurationController {
 	@Autowired
 	private PostService postService;
 	
-	@PostMapping("/posts/category/{big}/{small}")
+	@GetMapping("/posts/category/{big}/{small}")
 	@ApiOperation(value = "큐레이션 탐색", notes = "대분류와 소분류는 무조건 넣어야함(소분류부터 복수 선택 가능)")
-	public ResponseEntity<List<Post>> curationList(@PathVariable String big, @PathVariable String[] small, @RequestParam(name = "who", required = false, defaultValue = "혼자, 친구, 가족, 연인") String[] who, @RequestParam (name = "where", required = false, defaultValue = "집, 헬스장" )String[] where){
+	public ResponseEntity<List<Post>> curationList(@PathVariable String big, @RequestParam String[] small, @RequestParam(name = "who", required = false, defaultValue = "혼자, 친구, 가족, 연인") String[] who, @RequestParam (name = "where", required = false, defaultValue = "집, 헬스장" )String[] where){
 		
 		List<Post> curationResult = postService.CurationList(big, small, who, where);
 		
 		return new ResponseEntity<List<Post>>(curationResult,HttpStatus.OK);
 	}
+
 	
 	@GetMapping()
 	@ApiOperation(value = "기본조회", notes = "기본은 최신순 정렬이다")

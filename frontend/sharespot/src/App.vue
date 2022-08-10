@@ -2,7 +2,7 @@
   <v-app>
     <router-view />
     <!-- <div v-if="this.show"> -->
-    <nav-bar :id = id></nav-bar>
+    <nav-bar></nav-bar>
     <!-- </div> -->
   </v-app>
 </template>

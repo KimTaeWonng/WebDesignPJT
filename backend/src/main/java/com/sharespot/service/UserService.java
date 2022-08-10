@@ -39,8 +39,8 @@ public class UserService {
 		Optional<User> mUser = userRepository.findByemail(email);
 		if(mUser.isPresent()) {
 			User user = mUser.get();
-			if(StringUtils.isNotBlank(value.getProfile_image())) {
-				user.setProfile_image(value.getProfile_image());
+			if(StringUtils.isNotBlank(value.getProfileImage())) {
+				user.setProfileImage(value.getProfileImage());
 			}
 			if(StringUtils.isNotBlank(value.getNickname())) {
 				user.setNickname(value.getNickname());

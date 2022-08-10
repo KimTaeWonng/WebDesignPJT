@@ -158,8 +158,7 @@ const routes = [
     component: PostRegister,
   },
   {
-    // /:postno 추가해야 함!
-    path: "/post/detail",
+    path: "/post/detail/:postno",
     name: "postDetail",
     // beforeEnter: onlyAuthUser,
     component: PostDetail,

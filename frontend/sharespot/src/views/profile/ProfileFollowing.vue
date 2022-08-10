@@ -4,10 +4,10 @@
     <v-list>
       <v-list-item-group >
         <v-list-item v-for="(user, i) in followingUsers" :key="i">
-          <v-list-item-avatar>
+          <v-list-item-avatar @click="moveProfile(user.user_id)">
             <v-img :src="user.profile_image"></v-img>
           </v-list-item-avatar>
-          <v-list-item-content class="mr-3">
+          <v-list-item-content class="mr-3" @click="moveProfile()">
             <v-list-item-title v-text="user.nickname" style="font-weight: bold;"></v-list-item-title>
             <v-list-item-subtitle v-text="user.introduce" style="font-size: 13px;"></v-list-item-subtitle>
           </v-list-item-content>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { http } from "@/js/http.js";
 import BackMenu from "@/components/layout/BackMenu.vue";
 
 export default {
@@ -35,51 +36,33 @@ export default {
   data() {
     return {
       followingUsers: [
-        {
-          user_id: 1,
-          nickname: "맛집찾아삼만리",
-          introduce: "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 2,
-          nickname: "맛집찾아삼만리2",
-          introduce: "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 3,
-          nickname: "맛집찾아삼만리3",
-          introduce: "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 4,
-          nickname: "맛집찾아삼만리4",
-          introduce: "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-          isBadge: null,
-        },
-        {
-          user_id: 5,
-          nickname: "맛집찾아삼만리5",
-          introduce:
-            "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
-          profile_image: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-          isBadge: null,
-        },
       ],
       
 
     };
   },
 
-  mounted() {},
+  mounted() { },
+  async created() {
+    // const following = await http.get(`/users/${this.$route.params.userid}/following`);
+    const following = await http.get(`/users/${this.$route.params.userid}/following`);
+    console.log('여기')
+    console.log(following.data)
+    this.followingUsers = following.data
+  },
 
-  methods: {},
+  methods: {
+    moveProfile(user_id) {
+        this.$router.push({
+          name: "profile",
+          params: {userid: user_id}
+        
+      })
+    },
+    cancelFollowing(){
+      console.log("팔로우 취소")
+    }
+  },
 };
 </script>
 

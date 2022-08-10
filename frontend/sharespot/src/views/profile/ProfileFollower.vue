@@ -3,8 +3,8 @@
     <back-menu title="팔로워" class="mb-1"></back-menu>
     <v-list>
       <v-list-item-group>
-        <v-list-item v-for="(user, i) in followingUsers" :key="i">
-          <v-list-item-avatar @click="moveProfile()">
+        <v-list-item v-for="(user, i) in followerUsers" :key="i">
+          <v-list-item-avatar @click="moveProfile(user.user_id)">
             <v-img :src="user.profile_image"></v-img>
           </v-list-item-avatar>
           <v-list-item-content class="mr-3" @click="moveProfile()">
@@ -41,7 +41,7 @@ export default {
 
   data() {
     return {
-      followingUsers: []
+      followerUsers: []
 
     };
     // 팔로우 리스트 => 팔로우 버튼을 누르면 => data 팔로우 리스트에 id 넣어주고 이거 db에 쏴줘야겠지 => 언팔로우면 delete 팔로우면 post
@@ -54,11 +54,15 @@ export default {
     const follower = await http.get(`/users/${this.$route.params.userid}/follower`);
     
     console.log(follower.data)
-    this.followingUsers = follower.data
+    this.followerUsers = follower.data
   },
   methods: {
-    moveProfile(){
-      console.log("해당 유저의 프로필로 이동")
+    moveProfile(user_id){
+        this.$router.push({
+          name: "profile",
+          params: {userid: user_id}
+        
+      })
     },
     cancelFollowing(){
       console.log("팔로우 취소")

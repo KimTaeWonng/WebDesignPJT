@@ -204,7 +204,7 @@ const routes = [
   },
   {
     // /:userid 추가해야 함!
-    path: "/profile",
+    path: "/profile/:userid",
     name: "profile",
     // beforeEnter: onlyAuthUser,
     component: Profile,

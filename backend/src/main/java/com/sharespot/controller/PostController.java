@@ -220,9 +220,9 @@ public class PostController {
 	
 	@PostMapping("/posts/like/{postId}/{userId}")
 	@ApiOperation(value = "게시글 좋아요하기", notes = "유저가 게시글을 좋아요")
-	public ResponseEntity<Integer> postLike(@PathVariable int userId, @PathVariable int postId, @RequestParam String user_nick){
+	public ResponseEntity<Integer> postLike(@PathVariable int userId, @PathVariable int postId, @RequestBody String userNick){
 		
-		PostLike likeEntity = PostLike.builder().postId(postId).userId(userId).userNick(user_nick).build();
+		PostLike likeEntity = PostLike.builder().postId(postId).userId(userId).userNick(userNick).build();
 		
 		int result = 1;
 		try {

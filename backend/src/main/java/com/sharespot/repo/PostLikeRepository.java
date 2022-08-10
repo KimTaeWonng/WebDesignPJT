@@ -10,6 +10,8 @@ import com.sharespot.entity.PostLike;
 @Repository
 public interface PostLikeRepository extends JpaRepository<PostLike, Integer>{
 	
+	public List<PostLike> findByUserId(int userId);
+	
 	public List<PostLike> findByPostIdAndUserId(int postId, int userId);
 	
 	public int deleteByPostIdAndUserId(int postId, int userId);

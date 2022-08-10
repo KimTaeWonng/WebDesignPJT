@@ -27,5 +27,8 @@ public class Group {
     private Integer group_gender;
     private Integer group_age_min;
     private Integer group_age_max;
-    private String group_image;
+    private String  group_image;
+    private String  group_nick;
+
+
 }

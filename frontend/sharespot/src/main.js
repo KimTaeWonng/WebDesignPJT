@@ -4,9 +4,14 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import Vuelidate from "vuelidate";
+import vueMoment from 'vue-moment';
+import moment from 'moment';
+
+moment.locale("ko");
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
+Vue.use(vueMoment, { moment });
 
 new Vue({
   router,

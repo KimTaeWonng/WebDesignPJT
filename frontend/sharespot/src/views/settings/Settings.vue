@@ -112,10 +112,13 @@ export default {
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     logout() {
-      console.log(this.userInfo);
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
+
+
+      
       sessionStorage.removeItem("Authorization");
+
       if (this.$route.path != "/") {
         this.$router.push({ name: "login" });
       }

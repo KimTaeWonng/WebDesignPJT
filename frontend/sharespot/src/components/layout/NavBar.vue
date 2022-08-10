@@ -18,11 +18,11 @@
     <!-- 하단 네비바 -->
     <v-bottom-navigation v-model="value" color="#289672" id="navBar">
       <!-- 메인 버튼 -->
-      <v-btn value="main" @click="changeRouter('mainList')" id="navBtn">
+      <v-btn value="main" @click="changeRouter('/main/mainList')" id="navBtn">
         <v-icon>mdi-home-variant-outline</v-icon>
       </v-btn>
       <!-- 큐레이션 버튼 -->
-      <v-btn value="curation" @click="changeRouter('curationList')" id="navBtn">
+      <v-btn value="curation" @click="changeRouter('/curation')" id="navBtn">
         <v-icon>mdi-compass-outline</v-icon>
       </v-btn>
       <v-divider vertical></v-divider>
@@ -31,11 +31,11 @@
         <v-icon>mdi-plus-box-outline</v-icon>
       </v-btn>
       <!-- 그룹 이동 버튼 -->
-      <v-btn value="group" @click="changeRouter('groupList')" id="navBtn">
+      <v-btn value="group" @click="changeRouter('/group/list')" id="navBtn">
         <v-icon>mdi-account-multiple-outline</v-icon>
       </v-btn>
       <!-- 프로필 이동 버튼 -->
-      <v-btn value="profile" @click="changeRouter('profile')" id="navBtn">
+      <v-btn value="profile" @click="goProfile()" id="navBtn">
         <v-icon>mdi-account-circle</v-icon>
         <!-- 유저 프로필 이미지 가져오기...! -->
       </v-btn>
@@ -44,21 +44,32 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   name: "NavBar",
+  props: {
+    id: Number
+  },
+
   data() {
     return {
       value: "",
       isMakeMenuOpen: false,
     };
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
   methods: {
     // 네브바 클릭시 페이지 이동하는 함수
-    changeRouter(pageName) {
-      if (this.$route.path == "/" + pageName) {
+    changeRouter(pageURL) {
+      if (this.$route.path == pageURL) {
         this.isMakeMenuOpen = false;
       } else {
-        this.$router.push({ name: pageName });
+        this.$router.push({ path: pageURL });
         this.isMakeMenuOpen = false;
       }
     },
@@ -76,6 +87,15 @@ export default {
     makeMenu() {
       this.isMakeMenuOpen = !this.isMakeMenuOpen;
     },
+    
+    goProfile() {
+
+        this.$router.push({
+          name: "profile",
+          params: {userid: this.userInfo.user_id}
+        
+      })
+    }
   },
 };
 </script>

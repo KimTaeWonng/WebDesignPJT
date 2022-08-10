@@ -1,40 +1,29 @@
 <template>
-    <v-container>
-        <back-menu
-      title="게시물"
-      class="mb-1"
-    ></back-menu>
-    
+  <v-container>
+    <back-menu title="게시물" class="mb-1"></back-menu>
+    <post-card></post-card>
 
     <post-comment></post-comment>
-    </v-container>
+  </v-container>
 </template>
 
 <script>
 import BackMenu from "@/components/layout/BackMenu.vue";
-// import PostCard from '@/components/post/PostCard.vue';
-import PostComment from '@/components/post/PostComment.vue';
+import PostComment from "@/components/post/PostComment.vue";
+import PostCard from "@/components/post/PostCard.vue";
 
 export default {
-    components: { BackMenu, PostComment },
-    name: 'S07P12A505PostDetail',
+  components: { BackMenu, PostComment, PostCard },
+  name: "S07P12A505PostDetail",
 
-    data() {
-        return {
-            
-        };
-    },
+  data() {
+    return {};
+  },
 
-    mounted() {
-        
-    },
+  mounted() {},
 
-    methods: {
-        
-    },
+  methods: {},
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

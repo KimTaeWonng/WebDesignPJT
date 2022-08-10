@@ -54,13 +54,13 @@ public class UserController {
 
 		User userEntity = User.builder().user_id(user.getUser_id()).email(user.getEmail()).password(user.getPassword())
 				.phone(user.getPhone()).gender(user.getGender()).birth(user.getBirth()).name(user.getName())
-				.nickname(user.getNickname()).introduce(user.getIntroduce()).profile_image(user.getProfile_image())
+				.nickname(user.getNickname()).introduce(user.getIntroduce()).profileImage(user.getProfileImage())
 				.BD(user.getBD()) // isBadge
 				.AL(user.getAL()) // isalarm
 				.GD(user.getGD()) // isgender
 				.BR(user.getBR()) // isBirth
 				.PB(user.getPB()) // isPublic
-				.user_grade(user.getUser_grade()).build();
+				.userGrade(user.getUserGrade()).build();
 
 		try {
 			User savedUser = userService.createUser(userEntity);
@@ -190,13 +190,13 @@ public class UserController {
 
 		User userEntity = User.builder().user_id(user.getUser_id()).email(user.getEmail()).password(user.getPassword())
 				.phone(user.getPhone()).gender(user.getGender()).birth(user.getBirth()).name(user.getName())
-				.nickname(user.getNickname()).introduce(user.getIntroduce()).profile_image(user.getProfile_image())
+				.nickname(user.getNickname()).introduce(user.getIntroduce()).profileImage(user.getProfileImage())
 				.BD(user.getBD()) // isBadge
 				.AL(user.getAL()) // isalarm
 				.GD(user.getGD()) // isgender
 				.BR(user.getBR()) // isBirth
 				.PB(user.getPB()) // isPublic
-				.user_grade(user.getUser_grade()).build();
+				.userGrade(user.getUserGrade()).build();
 
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;

@@ -1,5 +1,6 @@
 package com.sharespot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sharespot.entity.Post;
+import com.sharespot.entity.PostLite;
+import com.sharespot.entity.User;
 import com.sharespot.repo.PostRepository;
+import com.sharespot.repo.UserRepository;
 import com.sharespot.service.JwtServiceImpl;
 import com.sharespot.service.PostService;
 import com.sharespot.service.UserService;
@@ -32,6 +36,13 @@ public class CurationController {
 	
 	@Autowired
 	private PostService postService;
+	@Autowired
+	private PostRepository postRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/posts/category/{big}/{small}")
 	@ApiOperation(value = "큐레이션 탐색", notes = "대분류와 소분류는 무조건 넣어야함(소분류부터 복수 선택 가능)")
@@ -49,5 +60,39 @@ public class CurationController {
 		List<Post> curationResult = postService.defaultList();
 		
 		return new ResponseEntity<List<Post>>(curationResult,HttpStatus.OK);
+	}
+	
+	@GetMapping("/posts/hotspot")
+	@ApiOperation(value = "핫스팟", notes = "이달의 핫스팟 설정")
+	public ResponseEntity<List<PostLite>> hotSpot(){
+		
+		List<Post> post = postRepository.findAllByOrderByLikeCntDesc();
+		
+		List<User> user = userRepository.findByUserGradeGreaterThanEqual(3);
+		
+		List<PostLite> hotPost = new ArrayList<PostLite>();
+		
+		for(Post p : post) {
+			
+			for(User u : user)
+			if(u.getUser_id()==p.getUserId()) {
+				
+				PostLite temp = PostLite.builder()
+								.postId(p.getPostId())
+								.userId(p.getUserId())
+								.nickname(p.getNickname())
+								.content(p.getContent())
+								.image(p.getImage()).build();
+				
+				hotPost.add(temp);
+				break;
+			}
+			if(hotPost.size()>=5) {
+				break;
+			}
+		}
+		
+		return new ResponseEntity<List<PostLite>>(hotPost,HttpStatus.OK);
+		
 	}
 }

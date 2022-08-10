@@ -189,7 +189,7 @@ public class PostController {
 		
 	}
 	
-	@GetMapping("/posts/scrap/{postId}/{userId}")
+	@PostMapping("/posts/scrap/{postId}/{userId}")
 	@ApiOperation(value = "게시글 스크랩하기", notes = "유저가 스크랩 게시글을 추가")
 	public ResponseEntity<Integer> scrapPush(@PathVariable int userId, @PathVariable int postId){
 		
@@ -218,7 +218,7 @@ public class PostController {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	
-	@GetMapping("/posts/like/{postId}/{userId}")
+	@PostMapping("/posts/like/{postId}/{userId}")
 	@ApiOperation(value = "게시글 좋아요하기", notes = "유저가 게시글을 좋아요")
 	public ResponseEntity<Integer> postLike(@PathVariable int userId, @PathVariable int postId, @RequestParam String user_nick){
 		

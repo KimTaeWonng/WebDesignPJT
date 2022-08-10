@@ -3,12 +3,11 @@
     <back-menu title="회원가입" class="mb-1"></back-menu>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit" class="mr-6 ml-6">
-
         <!-- 아이디(이메일) 입력 -->
-        <validation-provider 
-        v-slot="{ errors }" 
-        name="아이디"
-        rules="required|email|idCheck"
+        <validation-provider
+          v-slot="{ errors }"
+          name="아이디"
+          rules="required|email|idCheck"
         >
           <v-text-field
             class="mt-3"
@@ -110,7 +109,7 @@
           }"
         >
           <v-text-field
-            class="mt-3"
+            class="mt-3 mb-3"
             v-model="user.phone"
             :error-messages="errors"
             label="전화번호(ex.01012345678)"
@@ -118,69 +117,26 @@
             color="#289672"
           ></v-text-field>
         </validation-provider>
-
-        <!-- 생년월일 입력 -->
-        <div id="formContent" style="line-height: 0">
-          <v-dialog
-            ref="dialog"
-            v-model="modal"
-            :return-value.sync="user.birth"
-            persistent
-            width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <validation-provider 
-        v-slot="{ errors }" 
-        name="생년월일"
-        rules="required"
-        >
-              <v-text-field
-                class="mt-3"
-                label="생년월일"
-                id="userBirth"
-                v-model="user.birth"
-                prepend-icon="mdi-calendar-blank-outline"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-                color="#289672"
-                :error-messages="errors"
-                required
-              ></v-text-field>
-              </validation-provider>
-            </template>
-
-            <v-date-picker v-model="user.birth" scrollable color="#289672">
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
-              <v-btn text color="primary" @click="$refs.dialog.save(user.birth)"> OK </v-btn>
-            </v-date-picker>
-          </v-dialog>
-        </div>
-
         <div>
           <v-row no-gutters justify="space-between">
-            <p style="text-align: left; color: rgba(0, 0, 0, 0.87);">생년월일
-              <v-tooltip
-          v-model="showBRTooltip"
-          top
-          color="#99C5B9"
-        >
-          <template v-slot:activator="{ attrs }">
-            <v-btn
-              icon
-              v-bind="attrs"
-              @click = "showBRTooltip = !showBRTooltip"
-            >
-              <v-icon>
-                info
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>생년월일을 비공개로 설정하면,
-            <br>
-            모든 모임을 볼 수 없어요!</span>
-        </v-tooltip>
+            <p style="text-align: left; color: rgba(0, 0, 0, 0.87)">
+              생년월일
+              <v-tooltip v-model="showBRTooltip" top color="#99C5B9">
+                <template v-slot:activator="{ attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    @click="showBRTooltip = !showBRTooltip"
+                  >
+                    <v-icon> info </v-icon>
+                  </v-btn>
+                </template>
+                <span
+                  >생년월일을 비공개로 설정하면,
+                  <br />
+                  모든 모임을 볼 수 없어요!</span
+                >
+              </v-tooltip>
             </p>
             <!-- 생년월일 공개/비공개 토글 -->
             <!-- 토글이 꺼져있는 경우, false/공개/0 / 토클이 켜져있는 경우, true/비공개/1 -->
@@ -194,46 +150,73 @@
             ></v-switch>
           </v-row>
         </div>
-
-        <!-- 성별 입력 -->
-        <div style="line-height: 0">
-          <validation-provider 
-        v-slot="{ errors }" 
-        name="성별"
-        rules="required"
-        >
-          <v-radio-group v-model="user.gender" row
-          :error-messages="errors"
-          required
+        <!-- 생년월일 입력 -->
+        <div id="formContent" style="line-height: 0">
+          <v-dialog
+            ref="dialog"
+            v-model="modal"
+            :return-value.sync="user.birth"
+            persistent
+            width="290px"
           >
-            <v-radio label="남" value="0" color="#289672"></v-radio>
-            <v-radio label="여" value="1" color="#289672"></v-radio>
-          </v-radio-group>
-          </validation-provider>
+            <template v-slot:activator="{ on, attrs }">
+              <validation-provider
+                v-slot="{ errors }"
+                name="생년월일"
+                rules="required"
+              >
+                <v-text-field
+                  class="mb-5"
+                  label="생년월일"
+                  id="userBirth"
+                  v-model="user.birth"
+                  prepend-icon="mdi-calendar-blank-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                  color="#289672"
+                  :error-messages="errors"
+                  required
+                ></v-text-field>
+              </validation-provider>
+            </template>
+
+            <v-date-picker v-model="user.birth" scrollable color="#289672">
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="modal = false">
+                Cancel
+              </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.dialog.save(user.birth)"
+              >
+                OK
+              </v-btn>
+            </v-date-picker>
+          </v-dialog>
         </div>
+
         <div>
           <v-row no-gutters justify="space-between">
-            <p style="text-align: left">성별
-              <v-tooltip
-          v-model="showGDTooltip"
-          top
-          color="#99C5B9"
-        >
-          <template v-slot:activator="{ attrs }">
-            <v-btn
-              icon
-              v-bind="attrs"
-              @click = "showGDTooltip = !showGDTooltip"
-            >
-              <v-icon>
-                info
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>성별을 비공개로 설정하면,
-            <br>
-            모든 모임을 볼 수 없어요!</span>
-        </v-tooltip>
+            <p style="text-align: left">
+              성별
+              <v-tooltip v-model="showGDTooltip" top color="#99C5B9">
+                <template v-slot:activator="{ attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    @click="showGDTooltip = !showGDTooltip"
+                  >
+                    <v-icon> info </v-icon>
+                  </v-btn>
+                </template>
+                <span
+                  >성별을 비공개로 설정하면,
+                  <br />
+                  모든 모임을 볼 수 없어요!</span
+                >
+              </v-tooltip>
             </p>
             <!-- 성별 공개/비공개 토글 -->
             <v-switch
@@ -246,10 +229,26 @@
             ></v-switch>
           </v-row>
         </div>
+        <!-- 성별 입력 -->
+        <div style="line-height: 0">
+          <validation-provider v-slot="{ errors }" name="성별" rules="required">
+            <v-radio-group
+              v-model="user.gender"
+              row
+              :error-messages="errors"
+              required
+            >
+              <v-radio label="남" value="0" color="#289672"></v-radio>
+              <v-radio label="여" value="1" color="#289672"></v-radio>
+            </v-radio-group>
+          </validation-provider>
+        </div>
 
         <v-row class="mt-2">
           <v-col cols="6">
-            <v-btn color="#99C5B9" dark width="100%" @click="clear"> 초기화 </v-btn>
+            <v-btn color="#99C5B9" dark width="100%" @click="clear">
+              초기화
+            </v-btn>
           </v-col>
           <v-col cols="6">
             <div>
@@ -262,48 +261,42 @@
               >
                 가입하기
               </v-btn>
-              
-                  <v-dialog
-        v-model="dialog"
-        max-width="290"
-      >
-        <v-card>
-          <div>
-            <br>
-            <br>
-          </div>
 
-          <div class="text-center" style="color:rgb(40,150,114);">
-            <span class="material-icons" style="font-size:80px;">
-              task_alt
-            </span>
-          </div>
-        
+              <v-dialog v-model="dialog" max-width="290">
+                <v-card>
+                  <div>
+                    <br />
+                    <br />
+                  </div>
 
-          <div class="text-center">
-            <div style="font-weight:bold;">
-              관리자 <span>님의</span>
-            </div>
-            가입이 완료되었습니다! 
-          </div>
+                  <div class="text-center" style="color: rgb(40, 150, 114)">
+                    <span class="material-icons" style="font-size: 80px">
+                      task_alt
+                    </span>
+                  </div>
 
-          <div class="text-center" style="margin-top:10%;">
-            <router-link to="/users/login" style="color:white; text-decoration: none">
-              <v-btn color="rgb(40,150,114)" dark>
-                확인
-              </v-btn>
-            </router-link>
-          </div>
+                  <div class="text-center">
+                    <div style="font-weight: bold">
+                      관리자 <span>님의</span>
+                    </div>
+                    가입이 완료되었습니다!
+                  </div>
 
-          <div>
-            <br>
-            <br>
-          </div>
+                  <div class="text-center" style="margin-top: 10%">
+                    <router-link
+                      to="/users/login"
+                      style="color: white; text-decoration: none"
+                    >
+                      <v-btn color="rgb(40,150,114)" dark> 확인 </v-btn>
+                    </router-link>
+                  </div>
 
-        </v-card>
-      </v-dialog>
-              
-
+                  <div>
+                    <br />
+                    <br />
+                  </div>
+                </v-card>
+              </v-dialog>
             </div>
           </v-col>
         </v-row>
@@ -314,8 +307,19 @@
 
 <script>
 import { http } from "@/js/http.js";
-import { required, email, max, regex, confirmed } from "vee-validate/dist/rules";
-import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from "vee-validate";
+import {
+  required,
+  email,
+  max,
+  regex,
+  confirmed,
+} from "vee-validate/dist/rules";
+import {
+  extend,
+  ValidationObserver,
+  ValidationProvider,
+  setInteractionMode,
+} from "vee-validate";
 
 import BackMenu from "@/components/layout/BackMenu.vue";
 
@@ -340,13 +344,13 @@ extend("minmax", {
 });
 
 extend("idCheck", {
-  async validate(value){
+  async validate(value) {
     const response = await http.get(`/users/idcheck/${value}`);
     // console.log("res:" + response.data);
     // console.log("val:" + value);
     return !response.data;
   },
-  message: "중복된 아이디가 있습니다."
+  message: "중복된 아이디가 있습니다.",
 });
 
 extend("max", {
@@ -376,7 +380,7 @@ export default {
       showGDTooltip: false,
       brState: true,
       gdState: true,
-      
+
       // 유저 정보
       user: {
         email: "",
@@ -388,43 +392,41 @@ export default {
         birth: "",
         alarm: 0,
         user_grade: 0,
-        br: 1, // 생일공개여부 
+        br: 1, // 생일공개여부
         gd: 1, // 성별공개여부
         bd: 0, // 뱃지보유여부
         pb: 0, // 비공개계정
       },
       confirmPwd: "",
-
     };
   },
 
   methods: {
-    submit(){
-      this.$refs.observer.validate()
+    submit() {
+      this.$refs.observer.validate();
     },
-    clear(){
-      this.user.email = '';
-      this.user.password = '';
-      this.confirmPwd = '';
-      this.user.name = '';
-      this.user.phone = '';
-      this.user.nickname = '';
-      this.user.gender = '';
-      this.user.birth = '';
-      this.$refs.observer.reset()
+    clear() {
+      this.user.email = "";
+      this.user.password = "";
+      this.confirmPwd = "";
+      this.user.name = "";
+      this.user.phone = "";
+      this.user.nickname = "";
+      this.user.gender = "";
+      this.user.birth = "";
+      this.$refs.observer.reset();
     },
     async registUser() {
-      
       //생년월일 state가 true일 때 생년월일을 1로, false일 때 0으로 전송
-      if(this.brState){
+      if (this.brState) {
         this.user.br = 1;
-      }else{
+      } else {
         this.user.br = 0;
       }
       //성별 state가 true일 때 성별을 1로, false일 때 0으로 전송
-      if(this.gdState){
+      if (this.gdState) {
         this.user.gd = 1;
-      }else{
+      } else {
         this.user.gd = 0;
       }
 
@@ -437,8 +439,6 @@ export default {
       } else {
         alert("ShareSpot 가입에 실패했습니다.");
       }
-
-      
     },
   },
 };

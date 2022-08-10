@@ -43,14 +43,15 @@
                 그룹 대표 이미지 선택
                 <label for="chooseFile"><span class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;">add_circle_outline</span></label>
                 <div>
-                  <form method="post" enctype="multipart/form-data">
+                  <form method="post" enctype="multipart/form-data"> 
                     <input style="display:none;" ref="image" @change="uploadImg()" type="file" id="chooseFile" name="chooseFile" accept="image/*">
                   </form>
+                  <!-- <v-file-input v-model="group.image" accept="image/*"></v-file-input> -->
                 </div>
               </div>
 
               <div style="margin-left: 5%; margin-right: 5%;">
-                <v-img v-model="group.image" v-if="image != ''" :src="image" style="width:100%; height:30%;"></v-img>
+                <v-img v-if="image != ''" :src="image" style="width:100%; height:30%;"></v-img>
               </div>
 
               <br>
@@ -62,6 +63,7 @@
                   <v-col cols="3">
                     
                       <validation-provider
+                      
                         v-slot="{ errors }"
                         name="연령대1"
                         :rules="{
@@ -165,7 +167,7 @@
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required, regex } from "vee-validate/dist/rules";
 import { http } from "@/js/http.js";
-
+// import axios from "axios";
 
 extend("age_required", {
   ...required,
@@ -205,6 +207,8 @@ export default {
           age_min: '',
           age_max: '',
           image: '',
+          manager: '',
+          nick: '',
         },
       }
     },
@@ -220,20 +224,45 @@ export default {
       },
 
       async registGroup() {
-      
-      const response = await http.post("/group", this.group);
-      console.log(response.data);
-      console.log(this.group);
+        console.log(this.group);
+        const response = await http.post("/group", this.group);
+        console.log(response.data);
+        console.log(this.group);
 
-      if (response.data.message == "success") {
-        console.log("success")
-        this.$router.push({ name: "groupList" });
-      } else {
-        console.log("fail")
-      }
+        if (response.data.message == "success") {
+          console.log("success")
+          this.$router.push({ name: "groupList" });
+        } else {
+          console.log("fail")
+        }
       },
+      // async registGroup() {
+      //   console.log(this.group);
+
+      //   let form = new FormData()
+      //   form.append('age_max', this.group.age_max)
+      //   form.append('age_min', this.group.age_min)
+      //   form.append('content', this.group.content)
+      //   form.append('gender', this.group.gender)
+      //   form.append('image', this.group.image)
+      //   form.append('limit', this.group.limit)
+      //   form.append('manager', this.group.manager)
+      //   form.append('name', this.group.name)
+      //   form.append('nick', this.group.nick)
+
+      //   axios.post('https://localhost:9999/group', { form })
+      //   .then((res) => {
+      //     console.log(res)
+      //     console.log('success')
+      //     this.$router.push({ name: "groupList" })
+      //   })
+      //   .catch(err => {
+      //     console.log(err)
+      //   })
+      // },
     },
   }
+
 </script>
 
 <style scoped>

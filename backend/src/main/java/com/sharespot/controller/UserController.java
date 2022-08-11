@@ -193,7 +193,7 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
 
-	@GetMapping("/info/{userId}/otherUser")
+	@GetMapping("/info/otherUser/{userId}")
 	@ApiOperation(value = "다른 유저의 마이페이지 조회", notes = "다른 유저의 마이페이지 값을 반환한다")
 	public ResponseEntity<Object[]> getOtherUserInfo(@PathVariable ("userId") int userId){
 		Object[] users = userRepository.findByUserId(userId);

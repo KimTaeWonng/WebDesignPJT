@@ -9,7 +9,7 @@
         <!-- :alt="`${chat.title} avatar`"  이거 ${user.username} 이런식으로 불러오기-->
         <v-col style="padding: 12px 0px 0px 0px" cols="2" align="center">
           <v-list-item-avatar>
-            <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+            <v-img :src="this.post.userImage"></v-img>
           </v-list-item-avatar>
         </v-col>
         <v-col style="padding: 12px 0px 0px 0px" cols="8">
@@ -138,15 +138,6 @@
 
       <!-- {{ article.content }}  -->
       <v-card-text class="mt-2" style="padding: 0%">{{ post.content }}</v-card-text>
-      <router-link
-        class="link"
-        :to="{
-          name: 'postDetail',
-          params: { postno: this.post.postId },
-        }"
-      >
-        <v-btn style="padding: 0%; font-size: 12px" plain small>자세히보기</v-btn>
-      </router-link>
     </div>
     <post-comment></post-comment>
   </v-container>
@@ -202,7 +193,7 @@ export default {
       }
     }
   },
-  
+
   mounted() {},
 
   methods: {

@@ -27,8 +27,10 @@ export default {
   async created() {
     // 내가 팔로잉한 유저들의 게시글 조회
     try {
-      const response = await http.get(`/main/posts/follow/${this.userInfo.user_id}`);
-      console.log(response.data);
+      const response = await http.get(
+        `/main/posts/follow/${this.userInfo.user_id}`
+      );
+      //console.log(response.data);
       this.posts = response.data;
     } catch (error) {
       alert("MainPost 게시물들 조회 실패");

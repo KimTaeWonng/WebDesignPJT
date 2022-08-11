@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    public static final String FIND_USER_POST = "SELECT post_id, image FROM post_table WHERE user_id = :userId";
+    public static final String FIND_USER_POST = "SELECT post_id, class_big, post_lat, post_lng, image FROM post_table WHERE user_id = :userId";
 
     @Query(value = FIND_USER_POST, nativeQuery = true)
     public List<Object[]> findByUserId(@Param("userId") int userId);

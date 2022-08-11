@@ -29,6 +29,7 @@ import com.sharespot.service.JwtService;
 import com.sharespot.service.JwtServiceImpl;
 import com.sharespot.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 
@@ -255,6 +256,18 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@GetMapping("info/user/{userId}")
+	@ApiOperation(value = "유저 닉네임 불러오기", notes = "유저 아디 주면 닉넴 불러옴")
+	public ResponseEntity<String> takeNick(@PathVariable int userId){
+		
+		User user = userService.getUser(userId).get();
+		
+		String result = user.getNickname();
+		
+		return new ResponseEntity<String>(result,HttpStatus.OK);
+		
 	}
 
 }

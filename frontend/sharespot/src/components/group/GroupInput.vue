@@ -297,6 +297,7 @@ export default {
     },
     // 그룹 생성 함수
     async registGroup() {
+      console.log(this.group)
       const response = await http.post("/group", this.group);
       // console.log(response.data);
       if (response.data == 1) {

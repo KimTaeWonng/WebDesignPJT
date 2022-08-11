@@ -170,46 +170,21 @@ const userStore = "userStore";
 export default {
   name: "PostCard",
   props: {
-    classBig: String,
-    classSmall: String,
-    classWhere: String,
-    classWho: String,
-    commentCnt: Number,
-    content: String,
-    image: String,
-    likeCnt: Number,
-    nickname: String,
-    postGpsName: String,
-    postId: Number,
-    postLat: Number,
-    postLng: Number,
-    uploadTime: String,
-    userId: Number,
+    detailPost: Object,
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
   },
   async created() {
-    this.post.classBig = this.classBig;
-    this.post.classSmall = this.classSmall;
-    this.post.classWhere = this.classWhere;
-    this.post.classWho = this.classWho;
-    this.post.commentCnt = this.commentCnt;
-    this.post.content = this.content;
-    this.post.image = this.image;
-    this.post.likeCnt = this.likeCnt;
-    this.post.nickname = this.nickname;
-    this.post.postGpsName = this.postGpsName;
-    this.post.postId = this.postId;
-    this.post.postLat = this.postLat;
-    this.post.postLng = this.postLng;
-    this.post.uploadTime = this.uploadTime;
-    this.post.userId = this.userId;
+    this.post = this.detailPost;
+    console.log("포스트카드");
+    console.log(this.post);
 
     this.cntLike = this.post.likeCnt;
 
+    // 좋아요를 이미 한 게시글에 좋아요 유지
     const temp = await http.get(`/LikeScrap/listL/${this.userInfo.user_id}`);
-    console.log(temp);
+    // console.log(temp);
 
     for (const likeList of temp.data) {
       if (likeList.postId == this.post.postId) {
@@ -253,23 +228,7 @@ export default {
         this.post.likeCnt += 1;
         this.cntLike = this.post.likeCnt;
 
-        const response2 = await http.put(`/main/posts/${this.postId}`, {
-          classBig: this.post.classBig,
-          classSmall: this.post.classSmall,
-          classWhere: this.post.classWhere,
-          classWho: this.post.classWho,
-          commentCnt: this.post.commentCnt,
-          content: this.post.content,
-          image: this.post.image,
-          likeCnt: this.post.likeCnt,
-          nickname: this.post.nickname,
-          postGpsName: this.post.postGpsName,
-          postId: this.post.postId,
-          postLat: this.post.postLat,
-          postLng: this.post.postLng,
-          uploadTime: this.post.uploadTime,
-          userId: this.post.userId,
-        });
+        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
         if (response2.data == 1) {
           console.log("조아요 증가 성공");
         } else {
@@ -297,23 +256,7 @@ export default {
         this.post.likeCnt -= 1;
         this.cntLike = this.post.likeCnt;
 
-        const response2 = await http.put(`/main/posts/${this.postId}`, {
-          classBig: this.post.classBig,
-          classSmall: this.post.classSmall,
-          classWhere: this.post.classWhere,
-          classWho: this.post.classWho,
-          commentCnt: this.post.commentCnt,
-          content: this.post.content,
-          image: this.post.image,
-          likeCnt: this.post.likeCnt,
-          nickname: this.post.nickname,
-          postGpsName: this.post.postGpsName,
-          postId: this.post.postId,
-          postLat: this.post.postLat,
-          postLng: this.post.postLng,
-          uploadTime: this.post.uploadTime,
-          userId: this.post.userId,
-        });
+        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
         if (response2.data == 1) {
           console.log("조아요 감소 성공");
         } else {
@@ -327,9 +270,6 @@ export default {
 </script>
 
 <style scoped>
-#v-chip {
-  color: #289672;
-}
 .link {
   text-decoration: none;
 }

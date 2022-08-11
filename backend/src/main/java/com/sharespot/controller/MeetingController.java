@@ -67,6 +67,7 @@ public class MeetingController {
         		.meetingPeople(meeting.getMeetingPeople())
         		.meetingTitle(meeting.getMeetingTitle())
         		.meetingUrl(meeting.getMeetingUrl())
+                .placeName(meeting.getPlaceName())
         		.build();
         
         meetingService.createMeeting(meetingEntity);
@@ -86,6 +87,7 @@ public class MeetingController {
         		.meetingPeople(meeting.getMeetingPeople())
         		.meetingTitle(meeting.getMeetingTitle())
         		.meetingUrl(meeting.getMeetingUrl())
+                .placeName(meeting.getPlaceName())
         		.build();
 
         int result = meetingService.updateMeeting(meeting.getMeetingId(), meetingEntity);

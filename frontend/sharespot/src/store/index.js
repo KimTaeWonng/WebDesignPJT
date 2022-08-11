@@ -5,9 +5,10 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
 import userStore from "@/store/modules/userStore.js";
+import userLogStore from "@/store/modules/userLogStore.js";
 
 const store = new Vuex.Store({
-  modules: { userStore },
+  modules: { userStore, userLogStore },
   state: {},
   getters: {},
   mutations: {},

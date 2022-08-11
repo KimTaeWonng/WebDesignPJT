@@ -63,7 +63,9 @@ export default {
   },
    async created() {
     // console.log(this.$route.params.postno)
-    const comment = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
+     const comment = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
+     console.log('여기')
+    console.log(comment)
     this.comments = comment.data
     console.log(comment.data)
   },

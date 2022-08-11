@@ -144,7 +144,7 @@ const userLogStore = {
         async setFollowingUserList(store, userid) { 
             try { 
                 console.log(userid);
-                const response = await http.get('/api/users/' + userid + '/following');
+                const response = await http.get('/users/' + userid + '/following');
                 console.log(response.data);
                 store.commit("SET_FOLLOWING_USERLIST", response.data);
             } catch (error) {

@@ -63,9 +63,9 @@ export default {
   },
    async created() {
     // console.log(this.$route.params.postno)
-     const comment = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
-     console.log('여기')
-    console.log(comment)
+    const comment = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
+    console.log('하는중')
+     console.log(comment)
     this.comments = comment.data
     console.log(comment.data)
   },
@@ -81,9 +81,13 @@ computed: {
       console.log('ㅎㅇ')
       console.log(this.$route.params.postno)
       const res = {
+    "uploadTime": "2022-08-11T06:02:10.994Z",
+    "userImage": "string",
+    "userNick": "string",
     "comment": this.commentContent,
     "postId": Number(this.$route.params.postno),
     "userId": this.userInfo.user_id,
+    
       }
       console.log(res)
 

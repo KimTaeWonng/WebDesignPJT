@@ -35,4 +35,8 @@ public class Comment {
 	
 	@NotBlank(message = "댓글 내용을 입력해주세요")
 	private String comment;
+	
+	private String userImage;
+	private String userNick;
+	private Date uploadTime;
 }

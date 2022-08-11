@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.sharespot.entity.Comment;
+import com.sharespot.entity.User;
 import com.sharespot.repo.CommentRepository;
+import com.sharespot.repo.UserRepository;
+import com.sharespot.service.UserService;
 
 @RestController
 @RequestMapping("/main/posts")
@@ -19,6 +22,11 @@ public class CommentController {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/main/posts/{postNo}")
 	@ApiOperation(value = "게시글 상세조회", notes = "해당 게시물의 <b>댓글목록</b>을 반환한다.")
@@ -30,10 +38,17 @@ public class CommentController {
 	@PostMapping("/{postNo}/comments")
 	@ApiOperation(value = "댓글작성", notes = "해당 postNo의 게시물에 <b>댓글</b>을 작성한다.")
 	public ResponseEntity<Integer> createComment(@RequestBody Comment comment, @PathVariable int postNo){
+		
+		User user = userService.getUser(comment.getUserId()).get();
+		
+		
 		Comment commentEntity = Comment.builder()
 				.postId(comment.getPostId())
 				.userId(comment.getUserId())
 				.comment(comment.getComment())
+				.userImage(user.getProfileImage())
+				.userNick(user.getNickname())
+				.uploadTime(comment.getUploadTime())
 				.build();
 		
 		int result = 1;

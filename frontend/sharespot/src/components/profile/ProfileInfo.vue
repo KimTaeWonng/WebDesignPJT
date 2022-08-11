@@ -16,7 +16,9 @@
     <v-row align="center">
       <v-col cols="4" align="center">
         <v-avatar size="80px">
-          <v-img :src="user.image"></v-img>
+          <v-img v-if="user.image == null">
+          <v-icon>mdi-account</v-icon></v-img>
+          <v-img v-else :src="user.image"></v-img>
         </v-avatar>
       </v-col>
       <v-col cols="8">
@@ -97,7 +99,7 @@ export default {
         id: "",
         email: "",
         nickname: "",
-        image: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+        image: "",
         postCnt: "",
         followerCnt: "",
         followingCnt: "",
@@ -109,6 +111,8 @@ export default {
   async created() {
     this.user.email = this.userInfo.email;
     this.user.id = this.userInfo.user_id;
+    this.user.image = this.userInfo.profileImage;
+
   },
 
   mounted() {},

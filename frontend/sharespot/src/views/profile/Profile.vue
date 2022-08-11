@@ -2,7 +2,7 @@
     <div>
         <profile-info :followerCnt="this.followerList.length" :followingCnt="this.followingList.length" :follower="this.followerList"></profile-info>
         <profile-badge></profile-badge>
-        <profile-content></profile-content>
+        <profile-content :postList="this.postList"></profile-content>
         
     </div>
 </template>
@@ -26,6 +26,7 @@ export default {
             follow: false,
             followerList: [], // 팔로잉 하면 팔로워가 늘어남.
             followingList: [],
+            postList: [],
             userId: '',
             nickname: '',
         };
@@ -44,6 +45,10 @@ export default {
         this.followingList = following.data
         console.log('팔로잉리스트', following)
         console.log('팔로워리스트', follower)
+        const post = await http.get(`/main/posts/user/${this.$route.params.userid}`);
+        console.log('포스트리스트')
+        console.log(post.data)
+        this.postList = post.data
         
         //         if 
         //             console.log('체크', res.data)

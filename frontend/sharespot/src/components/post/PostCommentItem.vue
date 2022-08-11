@@ -1,6 +1,7 @@
 <template>
     <!-- 개인프로필 표시 -->
     <v-list-item style="padding:0%;">
+    {{comment}}
         <!-- :alt="`${chat.title} avatar`"  이거 ${user.username} 이런식으로 불러오기-->
       <v-col cols="2" allign="center">
       <v-list-item-avatar>
@@ -41,13 +42,21 @@
 </template>
 
 <script>
+
+
 export default {
+  data() {
+    return {
+      commentItem: []
+    }
+  },
   name: 'PostCommentItem',
   props: {
-
+    comment: Array
   },
-  methods: {
 
+  methods: {
+    
   },
 
 }

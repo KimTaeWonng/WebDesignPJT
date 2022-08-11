@@ -105,7 +105,7 @@
       </v-col>
       <v-col cols="4" align="right">
         <!-- 스크랩 버튼 -->
-        <v-btn icon @click="bookmark = !bookmark">
+        <v-btn icon @click="(bookmark = !bookmark), clickBookmark()">
           <v-icon> {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }} </v-icon>
         </v-btn>
         <!-- 지도 버튼 -->
@@ -177,9 +177,9 @@ export default {
   },
   async created() {
     this.post = this.detailPost;
-    console.log("포스트카드");
-    console.log(this.detailPost);
-    console.log(this.post);
+    // console.log("포스트카드");
+    // console.log(this.detailPost);
+    // console.log(this.post);
 
     this.cntLike = this.post.likeCnt;
 
@@ -190,6 +190,16 @@ export default {
     for (const likeList of temp.data) {
       if (likeList.postId == this.post.postId) {
         this.like = true;
+      }
+    }
+
+    // 스크랩을 이미 한 게시글에 스크랩 유지
+    const temp2 = await http.get(`/LikeScrap/listS/${this.userInfo.user_id}`);
+    // console.log(temp);
+
+    for (const ScrapList of temp2.data) {
+      if (ScrapList.postId == this.post.postId) {
+        this.bookmark = true;
       }
     }
   },
@@ -209,9 +219,9 @@ export default {
       // 좋아요가 안눌러진 상태에서 좋아요를 누를 때
       if (this.like) {
         // 유저가 해당 게시글 좋아요 하기 (post)
-        console.log(this.post.postId);
-        console.log(this.userInfo);
-        console.log(this.userInfo.nickname);
+        // console.log(this.post.postId);
+        // console.log(this.userInfo);
+        // console.log(this.userInfo.nickname);
 
         const response = await http.post(
           `/main/posts/like/${this.post.postId}/${this.userInfo.user_id}`,
@@ -228,9 +238,9 @@ export default {
         // 해당 게시글의 좋아요 개수 1 증가시킨 걸로 수정 (put)
         this.post.likeCnt += 1;
         this.cntLike = this.post.likeCnt;
-        console.log(this.post.likeCnt);
-        console.log(this.cntLike);
-        console.log(this.post);
+        // console.log(this.post.likeCnt);
+        // console.log(this.cntLike);
+        // console.log(this.post);
 
         const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
         if (response2.data == 1) {
@@ -243,9 +253,9 @@ export default {
       // 좋아요가 눌러진 상태에서 좋아요를 취소할 때
       else {
         // 유저가 해당 게시글 좋아요 취소하기 (delete)
-        console.log(this.post.postId);
-        console.log(this.userInfo);
-        console.log(this.userInfo.nickname);
+        // console.log(this.post.postId);
+        // console.log(this.userInfo);
+        // console.log(this.userInfo.nickname);
 
         const response = await http.delete(
           `/main/posts/like/${this.post.postId}/${this.userInfo.user_id}`
@@ -267,6 +277,32 @@ export default {
           console.log("조아요 감소 실패");
         }
         console.log("현재 조아요 갯수: " + this.post.likeCnt);
+      }
+    },
+    async clickBookmark() {
+      // 스크랩이 안눌러진 상태에서 스크랩을 누를 때
+      if (this.bookmark) {
+        // 유저가 해당 게시글 스크랩하기 (post)
+        const response = await http.post(
+          `/main/posts/scrap/${this.post.postId}/${this.userInfo.user_id}`
+        );
+        if (response.data == 1) {
+          console.log("스크랩 성공");
+        } else {
+          console.log("스크랩 실패");
+        }
+      }
+      // 스크랩이 눌러진 상태에서 스크랩을 취소할 때
+      else {
+        // 유저가 해당 게시글 스크랩 취소하기 (delete)
+        const response = await http.delete(
+          `/main/posts/scrap/${this.post.postId}/${this.userInfo.user_id}`
+        );
+        if (response.data == 1) {
+          console.log("스크랩 취소 성공");
+        } else {
+          console.log("스크랩 취소 실패");
+        }
       }
     },
   },

@@ -94,7 +94,7 @@
         </v-col>
         <v-col cols="4" align="right">
           <!-- 스크랩 버튼 -->
-          <v-btn icon @click="bookmark = !bookmark">
+          <v-btn icon @click="(bookmark = !bookmark), clickBookmark()">
             <v-icon> {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }} </v-icon>
           </v-btn>
           <!-- 지도 버튼 -->
@@ -192,6 +192,16 @@ export default {
         this.like = true;
       }
     }
+
+    // 스크랩을 이미 한 게시글에 스크랩 유지
+    const temp2 = await http.get(`/LikeScrap/listS/${this.userInfo.user_id}`);
+    // console.log(temp);
+
+    for (const ScrapList of temp2.data) {
+      if (ScrapList.postId == this.post.postId) {
+        this.bookmark = true;
+      }
+    }
   },
 
   mounted() {},
@@ -256,6 +266,32 @@ export default {
           console.log("조아요 감소 실패");
         }
         console.log("현재 조아요 갯수: " + this.post.likeCnt);
+      }
+    },
+    async clickBookmark() {
+      // 스크랩이 안눌러진 상태에서 스크랩을 누를 때
+      if (this.bookmark) {
+        // 유저가 해당 게시글 스크랩하기 (post)
+        const response = await http.post(
+          `/main/posts/scrap/${this.post.postId}/${this.userInfo.user_id}`
+        );
+        if (response.data == 1) {
+          console.log("스크랩 성공");
+        } else {
+          console.log("스크랩 실패");
+        }
+      }
+      // 스크랩이 눌러진 상태에서 스크랩을 취소할 때
+      else {
+        // 유저가 해당 게시글 스크랩 취소하기 (delete)
+        const response = await http.delete(
+          `/main/posts/scrap/${this.post.postId}/${this.userInfo.user_id}`
+        );
+        if (response.data == 1) {
+          console.log("스크랩 취소 성공");
+        } else {
+          console.log("스크랩 취소 실패");
+        }
       }
     },
   },

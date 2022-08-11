@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-list>
+      <post-card
+        class="post-card"
+        v-for="(post, i) in posts"
+        :key="i"
+        v-bind="post"
+        :detailPost="post"
+      ></post-card>
+    </v-list>
+    <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+
     <!-- 상세 태그 검색 플로팅 버튼 -->
     <v-btn
       style="margin-bottom: 16%"
@@ -109,13 +120,25 @@
 </template>
 
 <script>
+import { http } from "@/js/http.js";
+import { mapState } from "vuex";
+import InfiniteLoading from "vue-infinite-loading";
+
 import tag from "@/assets/json/tag.json";
 
+import PostCard from "../post/PostCard.vue";
+
+const userStore = "userStore";
+
 export default {
+  components: { PostCard, InfiniteLoading },
   name: "S07P12A505CurationPostList",
 
   data() {
     return {
+      posts: [],
+      loadNum: 0,
+
       dialog: false,
 
       categorys: tag, // 대분류,소분류 태그 json
@@ -155,23 +178,70 @@ export default {
       // selected_4: [],
     };
   },
-
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
   mounted() {},
-
+  async created() {},
   methods: {
+    async infiniteHandler($state) {
+      // 최신피드 (무한스크롤) 조회
+      await http
+        .get(`/main/search/posts/new`, {
+          params: {
+            page: this.loadNum,
+            size: 5,
+          },
+        })
+        .then((res) => {
+          if (res.data.totalPages == this.loadNum) {
+            $state.complete();
+          } else {
+            setTimeout(() => {
+              this.loadNum++;
+
+              const items = res.data.content;
+              for (const i of items) {
+                const data = {
+                  postId: i.postId,
+                  userId: this.userInfo.user_id,
+                  userImage: i.userImage,
+                  postLat: i.postLat,
+                  postLng: i.postLng,
+                  nickname: i.nickname,
+                  uploadTime: i.uploadTime,
+                  postGpsName: i.postGpsName,
+                  image: i.image,
+                  likeCnt: i.likeCnt,
+                  commentCnt: i.commentCnt,
+                  classBig: i.classBig,
+                  classSmall: i.classSmall,
+                  classWhere: i.classWhere,
+                  classWho: i.classWho,
+                  content: i.content,
+                };
+                this.posts.push(data);
+              }
+
+              $state.loaded();
+            }, 1000);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     detailSearch() {
       this.dialog = true;
     },
     selectBig(n) {
-      // this.componentKey = new Date();
-      // this.componentKey = n;
-
-      // this.smalls = this.categorys.tag[n - 1];
-
       console.log(n);
       this.small = this.categorys.tag[n - 1].category;
     },
-    clear() {},
+    clear() {
+      // 초기화 버튼
+    },
     addTag() {
       this.dialog = false;
 

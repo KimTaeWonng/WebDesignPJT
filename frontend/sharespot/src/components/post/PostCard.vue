@@ -178,6 +178,7 @@ export default {
   async created() {
     this.post = this.detailPost;
     console.log("포스트카드");
+    console.log(this.detailPost);
     console.log(this.post);
 
     this.cntLike = this.post.likeCnt;
@@ -227,6 +228,9 @@ export default {
         // 해당 게시글의 좋아요 개수 1 증가시킨 걸로 수정 (put)
         this.post.likeCnt += 1;
         this.cntLike = this.post.likeCnt;
+        console.log(this.post.likeCnt);
+        console.log(this.cntLike);
+        console.log(this.post);
 
         const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
         if (response2.data == 1) {

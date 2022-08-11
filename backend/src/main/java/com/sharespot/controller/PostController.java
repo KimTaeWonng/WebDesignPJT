@@ -218,9 +218,9 @@ public class PostController {
 		
 	}
 	
-	@DeleteMapping("/posts/scrap/{postId}")
+	@DeleteMapping("/posts/scrap/{postId}/{userId}")
 	@ApiOperation(value = "스크랩 삭제", notes = "스크랩한거 삭제")
-	public ResponseEntity<Integer> scrapDelete(@PathVariable int postId, @RequestParam int userId){
+	public ResponseEntity<Integer> scrapDelete(@PathVariable int postId, @PathVariable int userId){
 		int result = 0;
 		if(scrapRepository.findByPostIdAndUserId(postId, userId)!=null) {
 			scrapRepository.deleteByPostIdAndUserId(postId, userId);

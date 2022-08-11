@@ -1,29 +1,278 @@
 <template>
   <v-container>
     <back-menu title="게시물" class="mb-1"></back-menu>
-    <post-card></post-card>
+    <!-- <post-card :detailPost="post"></post-card> -->
 
+    <div>
+      <!-- 개인프로필 표시 -->
+      <v-list-item style="padding: 0%">
+        <!-- :alt="`${chat.title} avatar`"  이거 ${user.username} 이런식으로 불러오기-->
+        <v-col style="padding: 12px 0px 0px 0px" cols="2" align="center">
+          <v-list-item-avatar>
+            <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+          </v-list-item-avatar>
+        </v-col>
+        <v-col style="padding: 12px 0px 0px 0px" cols="8">
+          <div>
+            <v-list-item-content href="">
+              <v-row no-gutters>
+                <span style="font-weight: 600" class="mb-0.4">
+                  {{ post.nickname }}
+                </span>
+                <span class="ml-2 my-1" style="font-size: 10px">
+                  {{ post.uploadTime | moment("from", "now") }}
+                </span>
+              </v-row>
+
+              <!--  이거 ${user.username} 이런식으로 불러오기 + 아래는 위치정보 -->
+              <v-list-item-subtitle style="font-size: 12px"
+                >{{ post.postGpsName }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </div>
+        </v-col>
+
+        <!-- 메뉴옵션 버튼 -->
+        <v-col style="padding: 0px 0px 0px 0px" align="right">
+          <v-btn @click.stop="dialog = true" id="dotBtn" icon>
+            <v-icon style="padding: 0%" align="right">mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </v-col>
+      </v-list-item>
+      <!-- <router-link :to="{ name: 'postDetail', params: { postPk: post.id }}"></router-link> -->
+
+      <!-- 메뉴옵션 모달 -->
+      <v-dialog v-model="dialog" max-width="200">
+        <v-card>
+          <div class="text-center" style="font-size: 4vw; align-items: center">
+            <v-col @click.stop="dialog = false()">
+              <span style="color: #ff0000">신고</span>
+            </v-col>
+
+            <v-divider></v-divider>
+            <v-col>
+              <span>링크 복사</span>
+            </v-col>
+
+            <v-divider></v-divider>
+
+            <v-col>
+              <span>공유하기</span>
+            </v-col>
+          </div>
+        </v-card>
+      </v-dialog>
+
+      <template slot="progress">
+        <v-progress-linear color="deep-purple" height="10" indeterminate></v-progress-linear>
+      </template>
+
+      <!-- 사진 -->
+      <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img>
+
+      <v-row no-gutters>
+        <v-col cols="8">
+          <!-- 좋아요 버튼 -->
+          <v-btn icon @click="(like = !like), clickLike()">
+            <v-icon color="red"> {{ like ? "mdi-heart" : "mdi-heart-outline" }} </v-icon>
+          </v-btn>
+          <span style="font-size: 12px; font-weight: lighter">{{ cntLike }}개 </span>
+
+          <!-- 댓글 버튼 -->
+          <router-link
+            class="link"
+            :to="{
+              name: 'postDetail',
+              params: { postno: this.post.postId },
+            }"
+          >
+            <v-btn icon>
+              <v-icon> mdi-comment-processing-outline </v-icon>
+            </v-btn>
+          </router-link>
+          <span style="font-size: 12px; font-weight: lighter">{{ post.commentCnt }}개 </span>
+        </v-col>
+        <v-col cols="4" align="right">
+          <!-- 스크랩 버튼 -->
+          <v-btn icon @click="bookmark = !bookmark">
+            <v-icon> {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }} </v-icon>
+          </v-btn>
+          <!-- 지도 버튼 -->
+          <v-btn icon>
+            <v-icon> mdi-map-outline </v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <!-- <template v-for="item in 소분류items" :key="item.id"> 로 하나씩 넣어주기 -->
+      <v-chip
+        style="background-color: #a9d5c7; font-size: 11px; text-align: center"
+        class="text-align-center mr-1"
+        small
+      >
+        {{ post.classBig }}
+      </v-chip>
+      <!-- {{ 소분류.text }} -->
+      <v-chip
+        style="background-color: #a9d5c7; font-size: 11px; text-align: center"
+        class="text-align-center mr-1"
+        small
+      >
+        {{ post.classSmall }}
+      </v-chip>
+      <v-chip
+        style="background-color: #a9d5c7; font-size: 11px; text-align: center"
+        class="text-align-center mr-1"
+        small
+      >
+        {{ post.classWhere }}
+      </v-chip>
+
+      <v-chip
+        style="background-color: #a9d5c7; font-size: 11px; text-align: center"
+        class="text-align-center mr-1"
+        small
+      >
+        {{ post.classWho }}
+      </v-chip>
+
+      <!-- {{ article.content }}  -->
+      <v-card-text class="mt-2" style="padding: 0%">{{ post.content }}</v-card-text>
+      <router-link
+        class="link"
+        :to="{
+          name: 'postDetail',
+          params: { postno: this.post.postId },
+        }"
+      >
+        <v-btn style="padding: 0%; font-size: 12px" plain small>자세히보기</v-btn>
+      </router-link>
+    </div>
     <post-comment></post-comment>
   </v-container>
 </template>
 
 <script>
+import { http } from "@/js/http.js";
+import { mapState } from "vuex";
+
+const userStore = "userStore";
+
 import BackMenu from "@/components/layout/BackMenu.vue";
 import PostComment from "@/components/post/PostComment.vue";
-import PostCard from "@/components/post/PostCard.vue";
 
 export default {
-  components: { BackMenu, PostComment, PostCard },
+  components: { BackMenu, PostComment },
   name: "S07P12A505PostDetail",
-
+  props: {},
   data() {
-    return {};
+    return {
+      dialog: false,
+      like: false,
+      bookmark: false,
+
+      cntLike: null,
+
+      post: {},
+    };
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
+  async created() {
+    console.log(this.$route.params.postno);
+
+    try {
+      const response = await http.get(`/main/posts/${this.$route.params.postno}`);
+      console.log(response.data);
+      this.post = response.data;
+    } catch (error) {
+      alert("게시글 상세조회 실패");
+    }
+
+    this.cntLike = this.post.likeCnt;
+
+    // 좋아요를 이미 한 게시글에 좋아요 유지
+    const temp = await http.get(`/LikeScrap/listL/${this.userInfo.user_id}`);
+    // console.log(temp);
+
+    for (const likeList of temp.data) {
+      if (likeList.postId == this.post.postId) {
+        this.like = true;
+      }
+    }
   },
   
   mounted() {},
 
-  methods: {},
+  methods: {
+    async clickLike() {
+      // 좋아요가 안눌러진 상태에서 좋아요를 누를 때
+      if (this.like) {
+        // 유저가 해당 게시글 좋아요 하기 (post)
+        console.log(this.post.postId);
+        console.log(this.userInfo);
+        console.log(this.userInfo.nickname);
+
+        const response = await http.post(
+          `/main/posts/like/${this.post.postId}/${this.userInfo.user_id}`,
+          {
+            userNick: this.userInfo.nickname,
+          }
+        );
+        if (response.data == 1) {
+          console.log("좋아요 성공");
+        } else {
+          console.log("좋아요 실패");
+        }
+
+        // 해당 게시글의 좋아요 개수 1 증가시킨 걸로 수정 (put)
+        this.post.likeCnt += 1;
+        this.cntLike = this.post.likeCnt;
+
+        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
+        if (response2.data == 1) {
+          console.log("조아요 증가 성공");
+        } else {
+          console.log("조아요 증가 실패");
+        }
+        console.log("현재 조아요 갯수: " + this.post.likeCnt);
+      }
+      // 좋아요가 눌러진 상태에서 좋아요를 취소할 때
+      else {
+        // 유저가 해당 게시글 좋아요 취소하기 (delete)
+        console.log(this.post.postId);
+        console.log(this.userInfo);
+        console.log(this.userInfo.nickname);
+
+        const response = await http.delete(
+          `/main/posts/like/${this.post.postId}/${this.userInfo.user_id}`
+        );
+        if (response.data == 1) {
+          console.log("좋아요 취소 성공");
+        } else {
+          console.log("좋아요 취소 실패");
+        }
+
+        // 해당 게시글의 좋아요 개수 1 감소시킨 걸로 수정 (put)
+        this.post.likeCnt -= 1;
+        this.cntLike = this.post.likeCnt;
+
+        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
+        if (response2.data == 1) {
+          console.log("조아요 감소 성공");
+        } else {
+          console.log("조아요 감소 실패");
+        }
+        console.log("현재 조아요 갯수: " + this.post.likeCnt);
+      }
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.link {
+  text-decoration: none;
+}
+</style>

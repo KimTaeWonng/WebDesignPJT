@@ -5,7 +5,7 @@
       <v-list-item-group >
         <v-list-item v-for="(user, i) in followingUsers" :key="i">
           <v-list-item-avatar @click="moveProfile(user.user_id)">
-            <v-img :src="user.profile_image"></v-img>
+            <v-img :src="user.profileImage"></v-img>
           </v-list-item-avatar>
           <v-list-item-content class="mr-3" @click="moveProfile()">
             <v-list-item-title v-text="user.nickname" style="font-weight: bold;"></v-list-item-title>

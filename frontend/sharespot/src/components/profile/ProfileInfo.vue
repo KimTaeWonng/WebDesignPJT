@@ -16,7 +16,9 @@
     <v-row align="center">
       <v-col cols="4" align="center">
         <v-avatar size="80px">
-          <v-img :src="user.image"></v-img>
+          <v-img v-if="user.image == null">
+          <v-icon>mdi-account</v-icon></v-img>
+          <v-img v-else :src="user.image"></v-img>
         </v-avatar>
       </v-col>
       <v-col cols="8">
@@ -41,7 +43,6 @@
             <!-- 변경: 팔로우버튼 누르면 팔로우, 팔로잉버튼 누르면 팔로잉 취소하기 -->
 
             <v-btn
-            
               v-if="this.userInfo.user_id == this.$route.params.userid"
               class="profile-btn"
               style="height: 25px; font-size: 12px"
@@ -98,7 +99,7 @@ export default {
         id: "",
         email: "",
         nickname: "",
-        image: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+        image: "",
         postCnt: "",
         followerCnt: "",
         followingCnt: "",
@@ -110,6 +111,8 @@ export default {
   async created() {
     this.user.email = this.userInfo.email;
     this.user.id = this.userInfo.user_id;
+    this.user.image = this.userInfo.profileImage;
+
   },
 
   mounted() {},
@@ -152,10 +155,15 @@ export default {
         },
     async followUnfollow() {
       const temt = await http.get(`/users/${this.$route.params.userid}/follower`);
-      console.log(temt.data)
-        const followerList = []
+      // console.log('temt.data')
+      // console.log(temt.data)
+      const followerList = []
+
       for (const fid of temt.data) {
-        followerList.push(fid.followerId)
+        // console.log('fid')
+        // console.log(fid.user_id)
+
+        followerList.push(fid.user_id)
       }
 
       // console.log(this.userInfo.user_id)
@@ -165,8 +173,11 @@ export default {
 
       const loginid = this.userInfo.user_id
       const rst = followerList.indexOf(loginid)
+      console.log(followerList)
+      console.log(loginid)
       console.log(rst)
       if (rst === -1) {
+      
         // console.log('팔로우 안함')
         const res = {
   "followerId": loginid,
@@ -176,7 +187,7 @@ export default {
         console.log('팔로우')
       }
       else {
-        http.delete(`/users/${this.$route.params.userid}/following`);
+        http.delete(`/users/${this.$route.params.userid}/${this.userInfo.user_id}`);
         console.log('팔로우취소')
       }
 

@@ -72,9 +72,14 @@ public class PostController {
 	@PostMapping("/posts")
 	@ApiOperation(value = "게시글 작성", notes = "<b>게시글을 작성</b>한다.")
 	public ResponseEntity<Integer> createPost(@RequestBody Post post){
+		
+		User user = userRepository.findById(post.getUserId()).get();
+		
+		
 		Post postEntity = Post.builder()
 			.userId(post.getUserId())
-				.nickname(post.getNickname())
+				.nickname(user.getNickname())
+				.userImage(user.getProfileImage())
 			.content(post.getContent())
 			.postLat(post.getPostLat())
 			.postLng(post.getPostLng())
@@ -105,6 +110,8 @@ public class PostController {
 		if(option.isPresent()) { 
 			
 			Post p = option.get();
+			
+			User user = userRepository.findById(post.getUserId()).get();
 
 			p.setContent(post.getContent());
 			p.setPostLat(post.getPostLat());
@@ -117,7 +124,8 @@ public class PostController {
 			p.setClassWhere(post.getClassWhere());
 			p.setLikeCnt(post.getLikeCnt());
 			p.setCommentCnt(post.getCommentCnt());
-			p.setNickname(post.getNickname());
+			p.setNickname(user.getNickname());
+			p.setUserImage(user.getProfileImage());
 			postRepository.save(p);
 			
 			result = 1;

@@ -2,6 +2,7 @@ package com.sharespot.controller;
 
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -47,8 +48,10 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	private final UserRepository userRepository;
 
 	@PostMapping("/signup")   //회원 등록
+	@ApiOperation(value = "회원 등록")
 	public ResponseEntity<Map<String, Object>> signUp(@RequestBody User user) throws ParseException {
 
 		Map<String, Object> result = new HashMap<>();
@@ -75,7 +78,8 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 	}
 
-	@GetMapping("/idcheck/{email}")   //아이디(이메일) 중복 체크
+	@GetMapping("/idcheck/{email}")
+	@ApiOperation(value = "아이디(이메일) 중복 체크")
 	public ResponseEntity<Boolean> checkid(@PathVariable String email) {
 
 		boolean check = userService.idCheck(email);
@@ -84,7 +88,8 @@ public class UserController {
 
 	}
 
-	@DeleteMapping("{id}")   // 회원 삭제
+	@DeleteMapping("{id}")
+	@ApiOperation(value = "회원 탈퇴")
 	public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable int id , HttpServletRequest request) {
 		
 		Map<String, Object> result = new HashMap<>();
@@ -119,7 +124,8 @@ public class UserController {
 
 	}
 
-	@GetMapping("/logout")  //회원 로그아웃
+	@GetMapping("/logout")
+	@ApiOperation(value = "회원 로그아웃")
 	public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) throws Exception {
 
 		logger.debug("logout - 호출");
@@ -136,7 +142,8 @@ public class UserController {
 
 	}
 	
-	@GetMapping("/valid") //토큰 유효성 검사
+	@GetMapping("/valid")
+	@ApiOperation(value = "토큰 유효성 검사")
 	public ResponseEntity<Map<String,Object>> tokenValidation(HttpServletRequest request) {
 		logger.info("tokenValidation");
 		Map<String, Object> result = new HashMap<>();
@@ -151,13 +158,14 @@ public class UserController {
 
 	
 	
-	@GetMapping("/info/{userid}")  //로그인한 유저의 정보를 불러온다
+	@GetMapping("/info/{userid}")
+	@ApiOperation(value = "유저 본인의 정보를 불러온다", notes = "보려는 정보가 본인의 것이면 정보를 반환한다")
 	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable ("userid") int userid ,@ApiParam(value = "인증할 회원의 아이디.", required = true) 
 			HttpServletRequest request) {
 		//logger.debug("userid : {} ", userid);
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		System.out.println(userid);
+//		System.out.println(userid);
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
 			if(jwtService.getUserId() == userid) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
@@ -185,8 +193,15 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
 
+	@GetMapping("/info/{userId}/otherUser")
+	@ApiOperation(value = "다른 유저의 마이페이지 조회", notes = "다른 유저의 마이페이지 값을 반환한다")
+	public ResponseEntity<Object[]> getOtherUserInfo(@PathVariable ("userId") int userId){
+		Object[] users = userRepository.findByUserId(userId);
+		return new ResponseEntity<>(users, HttpStatus.OK);
+	}
 
-	@PutMapping("{userid}")  //회원 수정 (입력한 정보를 바탕으로 회원정보를 수정한다)
+	@PutMapping("{userid}")
+	@ApiOperation(value = "회원 수정", notes = "입력한 정보를 바탕으로 회원정보를 수정한다")
 	public ResponseEntity<Map<String, Object>> modifyUser(@RequestBody User user, HttpServletRequest request)  throws Exception {
 
 		User userEntity = User.builder().user_id(user.getUser_id()).email(user.getEmail()).password(user.getPassword())
@@ -229,7 +244,8 @@ public class UserController {
 
 	}
 
-	@PostMapping("/login") //회원 로그인
+	@PostMapping("/login")
+	@ApiOperation(value = "회원 로그인", notes = "입력한 정보를 바탕으로 로그인")
 	public ResponseEntity<Map<String, Object>> login (
 			@RequestBody @ApiParam(value = "로그인은 이메일과 비밀번호를 이용.", required = true) User user)  throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();

@@ -42,10 +42,19 @@ public class FollowController {
         return new ResponseEntity<>(followerInfo, HttpStatus.OK);
     }
     @GetMapping("/following")
-    @ApiOperation(value = "팔로잉 목록조회", notes = "해당 userId가 팔로우하는 <b>팔로잉목록</b>을 반환한다.")
-    public ResponseEntity<List<Follow>> getFollowing(@PathVariable int userId) {
+    @ApiOperation(value = "팔로잉 목록조회", notes = "해당 userId를 팔로우하는 <b>팔로잉목록</b>을 반환한다.")
+    public ResponseEntity<List<UserLite>> getFollowing(@PathVariable int userId) {
         List<Follow> following = followRepository.findByFollowerId(userId);
-        return new ResponseEntity<>(following, HttpStatus.OK);
+        
+        List<UserLite> followingInfo = new ArrayList<>();
+        
+        for(Follow f : following) {
+        	
+        	UserLite temp = userLiteRepository.findById(f.getUserId()).get();
+        	
+        	followingInfo.add(temp);
+        }
+        return new ResponseEntity<>(followingInfo, HttpStatus.OK);
     }
 
     @PostMapping("/follow")

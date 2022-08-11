@@ -1,4 +1,4 @@
-import http from "@/js/http.js";
+import { http } from "@/js/http.js";
 
 const userLogStore = {
     namespaced: true,
@@ -29,7 +29,6 @@ const userLogStore = {
         },
 
     },
-
     // mutations: state를 변경할 때 사용하는 유일한 방법. commit으로 변경.(동기 methods)
     mutations: {
         // 유저 정보 검색기록
@@ -85,8 +84,8 @@ const userLogStore = {
 
         // 나를 팔로우하는 팔로워 유저 리스트
         SET_FOLLOWING_USERLIST(state, users) { 
-            state.followUserList = users;
-            console.log("userLogStore: " + state.followUserList);
+            state.followingUserList = users;
+            //console.log(state.followingUserList);
         },
     },
     
@@ -143,9 +142,8 @@ const userLogStore = {
         // 팔로잉 유저 리스트
         async setFollowingUserList(store, userid) { 
             try { 
-                console.log(userid);
-                const response = await http.get('/users/' + userid + '/following');
-                console.log(response.data);
+                const response = await http.get(`/users/${userid}/following`);
+                //console.log(response.data);
                 store.commit("SET_FOLLOWING_USERLIST", response.data);
             } catch (error) {
                 alert("팔로잉 유저리스트 조회를 실패하였습니다.");

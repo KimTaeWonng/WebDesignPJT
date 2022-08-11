@@ -26,7 +26,7 @@
       </v-col>
     </v-row>
     <!-- 프로필 사진 변경 start 카드 크기 반응형으로 -->
-    <v-row justify="space-around" style="margin: 0%">
+    <!-- <v-row justify="space-around" style="margin: 0%">
       <v-card height="290px" width="290px">
         <v-row class="text-center" style="margin-top: 35%" align="center">
           <v-col>
@@ -49,8 +49,75 @@
           </v-col>
         </v-row>
       </v-card>
-    </v-row>
+    </v-row> -->
 
+  
+        <!-- :style="{backgroundImage:`url('${image}')`}" -->
+        <div class="ml-9" style="margin: 5%">
+          <v-row align="center"
+            >이미지 추가
+            <v-btn color="primary" dark  icon>
+              <label for="file">
+                <v-avatar color="#289672" size="20">
+                  <label for="chooseFile">
+                    <v-icon color="#ffffff" small> mdi-plus </v-icon>
+                  </label>
+
+                  <div>
+                  <form method="post" enctype="multipart/form-data">
+                    <input
+                      multiple
+                      style="display: none"
+                      ref="image"
+                      @change="uploadImg()"
+                      type="file"
+                      id="chooseFile"
+                      name="chooseFile"
+                      accept="image/*"
+                    />
+                  </form>
+                </div>
+                </v-avatar>
+              </label>
+            </v-btn>
+          </v-row>
+        </div>
+    
+          <!-- <v-row class="text-center" style="margin-bottom:12%; margin-right:12%;" align="center">
+            <v-col>
+              <label for="file">
+                <v-avatar  color="#289672" size="50" style="position:fixed;">
+                  <label for="chooseFile">
+                    <v-icon  color="#ffffff">
+                      mdi-plus
+                    </v-icon>
+                  </label>
+                  
+                <div>
+                  <form method="post" enctype="multipart/form-data">
+                    <input
+                      multiple
+                      style="display: none"
+                      ref="image"
+                      @change="uploadImg()"
+                      type="file"
+                      id="chooseFile"
+                      name="chooseFile"
+                      accept="image/*"
+                    />
+                  </form>
+                </div>
+                </v-avatar>
+              </label>
+            </v-col>
+          </v-row> -->
+        
+        <v-carousel height="290px" width="290px" hide-delimiter-background v-if="user.img.length">
+          <v-carousel-item v-for="(img, i) in user.img" :key="i" :src="img">
+          </v-carousel-item>
+        </v-carousel>
+        <!-- </v-parallax> -->
+  
     <!-- 태그추가 + 버튼 -->
     <div class="ml-9" style="margin: 5%">
       <v-dialog v-model="dialog" max-width="600px">
@@ -243,6 +310,7 @@
 <script>
 import tag from "@/assets/json/tag.json";
 
+
 export default {
   name: "PostInputItem",
   components: {},
@@ -252,12 +320,13 @@ export default {
   data() {
     return {
       isRight: true,
+      image: '',
       user: {
         nickName: "",
         introduce: "",
         PB: "",
         BR: "",
-        img: "",
+        img: [],
       },
       modal: false,
       dialogm1: "",
@@ -312,6 +381,14 @@ export default {
   },
   computed: {},
   methods: {
+    uploadImg() {
+      var image = this.$refs["image"].files[0];
+      const url = URL.createObjectURL(image);
+      this.image = url;
+      this.user.img.push(this.image);
+      console.log(this.user.img)
+    },
+
     test() {
       // console.log(this.user);
       const data = this.categorys;

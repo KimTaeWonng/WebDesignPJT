@@ -31,7 +31,9 @@ public class CommentController {
 	@GetMapping("/main/posts/{postNo}")
 	@ApiOperation(value = "게시글 상세조회", notes = "해당 게시물의 <b>댓글목록</b>을 반환한다.")
 	public ResponseEntity<List<Comment>> getComments(@PathVariable int postNo){
+		
 		List<Comment> comments = commentRepository.findByPostId(postNo);
+		
 		return new ResponseEntity<>(comments, HttpStatus.OK);
 	}
 	

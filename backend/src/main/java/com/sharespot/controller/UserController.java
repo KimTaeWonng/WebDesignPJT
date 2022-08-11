@@ -193,7 +193,7 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
 
-	@GetMapping("/info/otherUser/{userId}")
+	@GetMapping("info/user/{userId}")
 	@ApiOperation(value = "다른 유저의 마이페이지 조회", notes = "다른 유저의 마이페이지 값을 반환한다")
 	public ResponseEntity<Object[]> getOtherUserInfo(@PathVariable ("userId") int userId){
 		Object[] users = userRepository.findByUserId(userId);
@@ -273,17 +273,6 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-	@GetMapping("info/user/{userId}")
-	@ApiOperation(value = "유저 닉네임 불러오기", notes = "유저 아디 주면 닉넴 불러옴")
-	public ResponseEntity<String> takeNick(@PathVariable int userId){
-		
-		User user = userService.getUser(userId).get();
-		
-		String result = user.getNickname();
-		
-		return new ResponseEntity<String>(result,HttpStatus.OK);
-		
-	}
+
 
 }

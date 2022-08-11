@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -155,9 +156,9 @@ public class PostController {
 
 	@GetMapping("/search/posts/new")
 	@ApiOperation(value = "게시글 페이지네이션 조회", notes = "<b>게시글</b>page와 size로 조회 한다.")
-	public Page<Post> getAllPosts(@RequestParam("page") Integer page, @RequestParam("size") Integer size){
-		PageRequest pageRequest = PageRequest.of(page, size);
-		return postRepository.findAll(pageRequest);
+	public ResponseEntity<Page<Post>> getAllPosts(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("postId").descending());
+		return new ResponseEntity<>(postRepository.findAll(pageRequest), HttpStatus.OK);
 	}
 	
 	@GetMapping("/posts/follow/{userId}")

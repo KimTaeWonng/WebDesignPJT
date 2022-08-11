@@ -25,7 +25,7 @@ public class PostService {
 
 	public List<Post> CurationList(String big, String[] small, String[] who, String[] where) {
 
-		List<Post> all = postRepository.findAll();
+		List<Post> all = postRepository.findAll(Sort.by("postId").descending());
 		List<Post> curatioN1 = new ArrayList<>();
 		List<Post> curatioN2 = new ArrayList<>();
 		List<Post> curatioN3 = new ArrayList<>();

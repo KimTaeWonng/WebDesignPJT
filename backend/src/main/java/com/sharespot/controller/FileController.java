@@ -67,7 +67,7 @@ public class FileController {
                         .build();
 
                 list.add(dto);
-                result.add(UPLOAD_PATH + dto.getUuid() + "_" + dto.getFileName());
+                result.add(UPLOAD_PATH + "/" + dto.getUuid() + "_" + dto.getFileName());
 
                 File newFileName = new File(UPLOAD_PATH, dto.getUuid() + "_" + dto.getFileName());
 

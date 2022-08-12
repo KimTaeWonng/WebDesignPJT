@@ -71,8 +71,10 @@ public class OauthService {
 		return access_Token;
 	}
 	
-	public void createKakaoUser(String token) throws IOException {
-
+	public HashMap<String, String> createKakaoUser(String token) throws IOException {
+		
+		HashMap<String, String> hs = new HashMap<String, String>();
+		
 		String reqURL = "https://kapi.kakao.com/v2/user/me";
 
 	    //access_token을 이용하여 사용자 정보 조회
@@ -117,12 +119,18 @@ public class OauthService {
 	       System.out.println("email : " + email);
 	       System.out.println("gender : "+ gender);
 	       System.out.println("birthday : "+ birthday);
+	       
+	       hs.put("email", email);
+	       hs.put("gender", gender);
+	       hs.put("birthday", birthday);
 
 	       br.close();
 
 	       } catch (IOException e) {
 	            e.printStackTrace();
 	       }
+	    
+	    return hs;
 	 }
 
 }

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,8 +38,13 @@ public class OauthController {
     }
 	
 	@RequestMapping(value = "/login")
-	public void login(@RequestParam("token") String token) throws IOException {
-	   oauthService.createKakaoUser(token);
+	public ResponseEntity<HashMap<String, String>> login(@RequestParam("token") String token) throws IOException {
+		
+		HashMap<String, String> result = new HashMap<String, String>();
+	   result = oauthService.createKakaoUser(token);
+	   System.out.println(result);
+	   
+	   return new ResponseEntity<HashMap<String, String>>(result,HttpStatus.OK);
 	}
 
 	

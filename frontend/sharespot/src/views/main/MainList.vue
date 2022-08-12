@@ -34,7 +34,11 @@ export default {
     console.log("created");
     await this.setFollowingUserList(this.userInfo.user_id);
     console.log("===actions작동=====");
+    const followingUserList = this.followingUserList;
     console.log(this.followingUserList);
+    console.log(this.followingUserList[0].user_id);
+
+    console.log(followingUserList.length);
   },
   mounted() {},
 

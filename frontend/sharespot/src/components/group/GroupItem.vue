@@ -13,26 +13,23 @@
               "
             >
               <!-- 그룹명, 유저아이디로 대체 -->
-              { group_name } <br />
-              운영진 | { group_manger }
+              {{ group.group_name }} <br />
+              운영진 | {{ group.group_nick }}
             </p>
 
             <!-- 그룹 대표 이미지로 대체 -->
             <p align="right">
-              <v-img
-                :src="require('/src/assets/logo.png')"
-                contain
-                width="25%"
-                height="25%"
-              />
+              <img v-if="this.group.group_image.length" :src='`${ this.group.group_image }`' style='width:30%; height:30%;' />
             </p>
+          </div>
+
+          <br><br><br>
 
             <!-- 그룹 설명으로 대체 -->
-            <div style="margin-left: 3%">
-              {보드게임 소모임입니다. <br />
-              주요 활동지 : 강남, 역삼}
+            <div style="margin-left: 3%; text-align: left;">
+              {{ group.group_content }}
             </div>
-          </div>
+          
 
           <br />
 
@@ -45,7 +42,7 @@
                 font-size: 3vw;
                 height: 5vw;
               "
-              >{ group_age_min }년생부터 { group_age_max }년생까지</v-chip
+              >{{ group.group_age_max }}년생부터 {{ group.group_age_min }}년생까지</v-chip
             >
             <v-chip
               style="
@@ -54,7 +51,7 @@
                 font-size: 3vw;
                 height: 5vw;
               "
-              >{ group_gender }</v-chip
+              >{{ group.group_gender }}</v-chip
             >
           </div>
 
@@ -63,19 +60,34 @@
             style="margin-left: 5%; margin-top: 3%"
             class="d-flex justify-content-between"
           >
-            <p style="color: #8cc7b3; font-size: 5vw">3/{ group_limit }명</p>
+            <p style="color: #8cc7b3; font-size: 5vw">{{ this.currentMember }}/{{ group.group_limit }}명</p>
             <router-link to="/group/detail" style="text-decoration: none">
-              <v-chip
-                color="#8CC7B3"
-                style="
-                  margin-left: 5%;
-                  font-weight: bold;
-                  color: white;
-                  font-size: 3vw;
-                  height: 5vw;
-                "
-                >참여가능</v-chip
-              >
+
+              <div style="margin-left:5%;">
+                <v-chip
+                  v-if="this.currentMember < group.group_limit"
+                  color="#CCE9E1"
+                  style="
+                    
+                    font-weight: bold;
+                    font-size: 3vw;
+                    height: 5vw;
+                  "
+                  >참여가능</v-chip
+                >
+
+                <v-chip
+                  v-else
+                  color="#C4C4C4"
+                  style="
+                    
+                    font-weight: bold;
+                    font-size: 3vw;
+                    height: 5vw;
+                  "
+                  >참여불가</v-chip
+                >
+              </div>
             </router-link>
           </div>
         </v-card>
@@ -85,31 +97,47 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { http } from "@/js/http.js";
 
 export default {
   name: "GroupItem",
   data() {
     return {
-      group: [],
+      group: {},
+      currentMember: 0,
     };
   },
 
-  mounted() {},
-
-  created() {
-    var vm = this;
-    axios.get(http.post("/group"))
-    .then(function(response){
-      console.log(response);
-      vm.groups = response.data
-    })
-    .catch(function(err){
-      console.log(err)
-    })
+  mounted() {
+  
   },
 
-  methods: {},
+  methods: {
+
+  },
+
+  async created() {
+    this.group = this.detailGroup
+    // console.log (this.group.group_image)
+
+    if (this.group.group_gender == '0') {
+      this.group.group_gender = '모두'
+    }
+    else if (this.group.group_gender == '1') {
+      this.group.group_gender = '남자만'
+    }
+    else {
+      this.group.group_gender = '여자만'
+    }
+
+    const member = await http.get(`/group/members/${this.group.group_id}`)
+    this.currentMember = 1+member.data.length
+    
+  },
+
+  props: {
+    detailGroup: Object,
+  }
 };
 </script>
+

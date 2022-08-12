@@ -298,6 +298,8 @@ export default {
     // 그룹 생성 함수
     async registGroup() {
       console.log(this.group)
+      console.log(this.groupType)
+      
       const response = await http.post("/group", this.group);
       // console.log(response.data);
       if (response.data == 1) {
@@ -307,6 +309,30 @@ export default {
         alert("그룹 생성에 실패하였습니다.");
       }
     },
+    // async registGroup() {
+    //   console.log(this.group)
+    //   console.log(this.groupType)
+    
+    //   if (this.groupType == "register") {
+    //     const response = await http.post("/group", this.group);
+    //     // console.log(response.data);
+    //     if (response.data == 1) {
+    //       alert("그룹 생성이 완료되었습니다.");
+    //       this.$router.push({ name: "groupList" });
+    //     } else {
+    //       alert("그룹 생성에 실패하였습니다.");
+    //     }
+    //   } else {
+    //       const response = await http.put("/group/{gid}", this.group);
+    //       // console.log(response.data);
+    //       if (response.data == 1) {
+    //         alert("그룹 수정이 완료되었습니다.");
+    //         this.$router.push({ name: "groupList" });
+    //       } else {
+    //         alert("그룹 수정에 실패하였습니다.");
+    //       }
+    //   }
+    // },
   },
 };
 </script>

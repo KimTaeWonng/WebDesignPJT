@@ -9,7 +9,11 @@
         :detailPost="post"
       ></post-card>
     </v-list>
-    <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+    <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
+      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
+        게시글을 다 봤어요 :)
+      </div>
+    </infinite-loading>
 
     <!-- 상세 태그 검색 플로팅 버튼 -->
     <v-btn

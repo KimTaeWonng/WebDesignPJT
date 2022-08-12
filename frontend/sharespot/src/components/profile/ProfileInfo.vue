@@ -3,7 +3,7 @@
     <div class="mr-5 ml-5 mt-3">
     <v-row no-gutters>
       <!-- 이거 해야됨 -->
-      <span class="font-weight-black text-center">{{ userInfo.nickname }}</span>
+      <span class="font-weight-black text-center">{{ user.nickname }}</span>
       <!-- 변경: 소유한 뱃지에 따라 등급 부여해야 됨! -->
       <v-img
         class="ml-1"
@@ -24,7 +24,8 @@
       <v-col cols="8">
         <v-row>
           <v-col cols="4" align="center">
-            <div style="font-weight: 800">{{ user.postCnt }}</div>
+            <!-- {{ user.postCnt }} -->
+            <div style="font-weight: 800">3</div>
             <div style="font-size: 13px">게시글</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollower()">
@@ -32,7 +33,7 @@
             <div style="font-size: 13px">팔로워</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollowing()">
-            <div style="font-weight: 800">{{ followingCnt }}</div>
+            <div style="font-weight: 800"> {{ followingCnt }} </div>
             <div style="font-size: 13px">팔로잉</div>
             
           </v-col>
@@ -51,12 +52,20 @@
               >프로필 편집</v-btn
             >
             <v-btn
+              v-else-if="this.isfollow == false"
+              class="profile-btn"
+              style="height: 25px; font-size: 12px"
+              color="#289672"
+              @click="clickFollow()"
+              >팔로우</v-btn
+            >
+            <v-btn
               v-else
               class="profile-btn"
               style="height: 25px; font-size: 12px"
               color="#289672"
-              @click="followUnfollow()"
-              >팔로우</v-btn
+              @click="clickUnFollow()"
+              >언팔로우</v-btn
             >
           </v-col>
           <v-col cols="6">
@@ -81,17 +90,19 @@
 
 <script>
 import { http } from "@/js/http.js";
-import { mapState } from "vuex";
+
+import { mapState, mapActions } from "vuex";
 
 const userStore = "userStore";
+const userLogStore = "userLogStore";
 
 export default {
   name: "SharespotProfileInfo",
-  props: {
-    followerCnt: Number,
-    followingCnt: Number,
-    follower: Array
-  },
+  // props: {
+  //   followerCnt: Number,
+  //   followingCnt: Number,
+  //   follower: Array
+  // },
   data() {
     return {
       // 변경: userStore 받아오기!
@@ -106,13 +117,39 @@ export default {
         introduce:
           "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
       },
+      isfollow: false
     };
   },
   async created() {
-    this.user.email = this.userInfo.email;
-    this.user.id = this.userInfo.user_id;
-    this.user.image = this.userInfo.profileImage;
 
+    // 방문중이었던 유저의 id를 내 로그에 저장하기
+
+
+    const profileUser = await http.get(`users/info/user/${this.$route.params.userid}`);
+    const followerList = await http.get(`users/${this.$route.params.userid}/follower`);
+    const followingList = await http.get(`users/${this.$route.params.userid}/following`);
+
+    this.user.nickname = profileUser.data[0][1]
+    this.user.introduce = profileUser.data[0][2]
+    this.user.image = profileUser.data[0][3]
+
+ 
+    
+    this.followingCnt = followingList.data.length
+    this.followerCnt = followerList.data.length
+
+
+    console.log('여기', this.userInfo.user_id)
+
+    
+    for (var i = 0; i <= followerList.data.length; i++) {
+      if (followerList.data[i].user_id == this.userInfo.user_id) {
+        
+        this.isfollow = true
+        break
+      }
+
+    };
   },
 
   mounted() {},
@@ -120,10 +157,16 @@ export default {
   computed: {
     
     ...mapState(userStore, ["userInfo"]),
+    ...mapState(userLogStore, ["followingUserList"])
 
 },
   
   methods: {
+
+    ...mapActions(userLogStore, ["setFollowingUserList", "follow", "unfollow"]),
+
+
+
     moveProfileModify() {
       this.$router.push({ name: "profileModify" });
     },
@@ -152,47 +195,90 @@ export default {
       this.$router.push({
         path: `/profile/following/${this.$route.params.userid}`
       });
-        },
-    async followUnfollow() {
-      const temt = await http.get(`/users/${this.$route.params.userid}/follower`);
-      // console.log('temt.data')
-      // console.log(temt.data)
-      const followerList = []
+    },
 
-      for (const fid of temt.data) {
-        // console.log('fid')
-        // console.log(fid.user_id)
-
-        followerList.push(fid.user_id)
+    async clickFollow() {
+      const res = {
+        "followerId": this.userInfo.user_id,
+        "userId": this.$route.params.userid
+      }
+      const user = {  // 팔로우할 유저
+        userid: this.$route.params.userid,
+        nickname: this.user.nickname,
+        img: this.user.image,
+        introduce: this.user.introduce
       }
 
-      // console.log(this.userInfo.user_id)
-      // console.log('위는 나고')
-      // console.log('아래는 페이지 주인')
-      // console.log(this.$route.params.userid)
-
-      const loginid = this.userInfo.user_id
-      const rst = followerList.indexOf(loginid)
-      console.log(followerList)
-      console.log(loginid)
-      console.log(rst)
-      if (rst === -1) {
-      
-        // console.log('팔로우 안함')
-        const res = {
-  "followerId": loginid,
-  "userId": this.$route.params.userid
-}
-        http.post(`/users/${this.$route.params.userid}/follow`, res);
-        console.log('팔로우')
-      }
-      else {
-        http.delete(`/users/${this.$route.params.userid}/${this.userInfo.user_id}`);
-        console.log('팔로우취소')
+      const followInfo = {
+        user,
+        res
       }
 
 
+      this.follow(followInfo);
+      this.isfollow=true
+      this.followerCnt ++
+      // const temp = await http.get(`users/info/otherUser/${this.$route.params.userid}`);
+      // console.log(temp)
+      // console.log('팔로잉유저리스트', this.followingUserList[0])
+      // console.log(this.followingUserList)
+    },
+
+  async clickUnFollow() {
+    const followInfo = {
+      "followerId": this.userInfo.user_id,
+      "userId": this.$route.params.userid
     }
+    console.log('팔로팔로')
+    console.log(followInfo)
+    this.unfollow(followInfo);
+
+    console.log('팔로잉유저리스트', this.followingUserList[0])
+    this.isfollow = false
+    this.followerCnt --
+    },
+
+
+//     async followUnfollow() {
+//       const temt = await http.get(`/users/${this.$route.params.userid}/follower`);
+//       // console.log('temt.data')
+//       // console.log(temt.data)
+//       const followerList = []
+
+//       for (const fid of temt.data) {
+//         // console.log('fid')
+//         // console.log(fid.user_id)
+
+//         followerList.push(fid.user_id)
+//       }
+
+//       // console.log(this.userInfo.user_id)
+//       // console.log('위는 나고')
+//       // console.log('아래는 페이지 주인')
+//       // console.log(this.$route.params.userid)
+
+//       const loginid = this.userInfo.user_id
+//       const rst = followerList.indexOf(loginid)
+//       console.log(followerList)
+//       console.log(loginid)
+//       console.log(rst)
+//       if (rst === -1) {
+      
+//         // console.log('팔로우 안함')
+//         const res = {
+//   "followerId": loginid,
+//   "userId": this.$route.params.userid
+// }
+//         http.post(`/users/${this.$route.params.userid}/follow`, res);
+//         console.log('팔로우')
+//       }
+//       else {
+//         http.delete(`/users/${this.$route.params.userid}/${this.userInfo.user_id}`);
+//         console.log('팔로우취소')
+//       }
+
+
+//     }
   },
 };
 </script>

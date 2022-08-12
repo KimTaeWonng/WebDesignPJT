@@ -31,10 +31,7 @@
       ></v-text-field>
     </v-row>
     <v-row justify="end" class="mr-5 mb-5">
-      <router-link
-        to="/users/findpass"
-        style="color: #289672; text-decoration: none"
-      >
+      <router-link to="/users/findpass" style="color: #289672; text-decoration: none">
         비밀번호를 잊으셨나요?
       </router-link>
     </v-row>
@@ -45,16 +42,13 @@
     <v-row justify="center" class="mb-5">
       <p style="font-size: 4vw; font-weight: bold">
         계정이 없으신가요?
-        <router-link
-          to="/users/signup"
-          style="color: #289672; text-decoration: none"
-        >
+        <router-link to="/users/signup" style="color: #289672; text-decoration: none">
           회원가입</router-link
         >
       </p>
     </v-row>
     <v-row justify="center" class="mb-5">
-      <v-btn color="#99C5B9" dark width="80%">
+      <v-btn color="#99C5B9" dark width="80%" @click="kakaoLogin">
         <v-col cols="1"> <v-icon small>mdi-login</v-icon></v-col>
         <v-col cols="11">카카오 계정으로 로그인</v-col>
       </v-btn>
@@ -63,6 +57,7 @@
 </template>
 
 <script>
+import { http } from "@/js/http.js";
 import { mapState, mapActions } from "vuex";
 
 const userStore = "userStore";
@@ -79,10 +74,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(userStore, ["isLogin", "isLoginError"]),
+    ...mapState(userStore, ["isLogin", "isLoginError", "kakaoUserInfo"]),
   },
   methods: {
-    ...mapActions(userStore, ["userConfirm", "getUserInfo"]),
+    ...mapActions(userStore, ["userConfirm", "getUserInfo", "setKakaoUserInfo"]),
     async confirm() {
       // 토큰 서버에서 생성 후 저장
       await this.userConfirm(this.user);
@@ -93,6 +88,23 @@ export default {
         await this.getUserInfo(token);
         // 메인 화면으로 이동
         this.$router.push({ name: "mainList" });
+      }
+    },
+    async kakaoLogin() {
+      const token = `${process.env.VUE_APP_KAKAO_ACCESS_TOKEN}`;
+
+      const response = await http.post(`/oauth/login`, null, {
+        params: {
+          token: token,
+        },
+      });
+      if (response.status == 200) {
+        // console.log(response.data);
+        this.setKakaoUserInfo(response.data);
+        // console.log(this.kakaoUserInfo);
+        this.$router.push({ name: "signUp" });
+      } else {
+        console.log("사용자 정보 조회 실패");
       }
     },
   },

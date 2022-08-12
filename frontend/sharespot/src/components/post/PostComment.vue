@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="mt-3">댓글 목록</div>
     <post-comment-item
       v-for="(comment, i) in this.comments"
       :key="i"
@@ -22,8 +23,7 @@
           ></v-text-field> -->
           <v-text-field
             v-model="commentContent"
-            label="Filled"
-            placeholder="댓글달기..."
+            label="댓글 작성"
             outlined
             rounded
             dense
@@ -35,7 +35,7 @@
         <!-- MY 버튼-->
         <v-col cols="2" allign="center" @click="submitComment()" style="padding: 0%">
           <v-btn icon>
-            <span style="color: #289672; font-weight: 700">확인</span>
+            <span style="color: #289672; font-weight: 700">등록</span>
           </v-btn>
         </v-col>
       </v-row>
@@ -89,6 +89,8 @@ export default {
       console.log(res);
 
       await http.post(`/main/posts/${this.$route.params.postno}/comments`, res);
+
+      this.$router.go();
     },
   },
 };

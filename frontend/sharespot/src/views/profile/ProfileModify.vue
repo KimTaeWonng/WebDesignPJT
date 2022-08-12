@@ -19,7 +19,7 @@
     <v-row class="text-center" align="center">
       <v-col cols="1" style="margin: 0"></v-col>
       <v-col cols="10" style="margin: 0">
-        <label for="file">
+        <!-- <label for="file">
           <div style="text-align: center; color: #289672; font-weight: bold">
             프로필 사진 변경
           </div>
@@ -33,7 +33,28 @@
           prepend-icon=""
           ref="userImg"
           id="file"
-        ></v-file-input>
+        ></v-file-input> -->
+        <div>
+          <label for="chooseFile">
+            <div style="text-align: center; color: #289672; font-weight: bold">
+              프로필 사진 변경
+            </div>
+          </label>
+          <div>
+            <form method="post" enctype="multipart/form-data">
+              <input
+                style="display: none"
+                @change="uploadImg()"
+                accept="image/*"
+                color="#289672"
+                type="file"
+                ref="image"
+                id="chooseFile"
+                name="chooseFile"
+              >
+            </form>
+          </div>
+        </div>
       </v-col>
       <v-col cols="1"></v-col>
     </v-row>
@@ -166,6 +187,9 @@
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script>
 import BackMenu from "@/components/layout/BackMenu.vue";
+import { mapState } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   components: { BackMenu },
@@ -174,6 +198,7 @@ export default {
   data() {
     return {
       isRight: true,
+      image: '',
       user: {
         nickName: "",
         introduce: "",
@@ -190,27 +215,42 @@ export default {
     };
   },
 
+  async created() {
+    this.user.img = this.userInfo.profileImage;
+  },
+
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
+
   methods: {
     test() {
       console.log(this.user.img);
     },
 
-    previewImg(img) {
-      // fileData: reader.result로 나온 토큰 값을 this.user.img에 넣어준다.
-      const fileData = (data) => {
-        this.user.img = data;
-      };
-
-      const reader = new FileReader();
-      reader.readAsDataURL(img); // Web API의 함수
-      reader.addEventListener(
-        "load",
-        function () {
-          fileData(reader.result); // 파일의 내용을 반환
-        },
-        false
-      );
+    uploadImg() {
+      var image = this.$refs["image"].files[0];
+      const url = URL.createObjectURL(image);
+      this.image = url;
+      this.user.img = this.image;
     },
+
+    // previewImg(img) {
+    //   // fileData: reader.result로 나온 토큰 값을 this.user.img에 넣어준다.
+    //   const fileData = (data) => {
+    //     this.user.img = data;
+    //   };
+
+    //   const reader = new FileReader();
+    //   reader.readAsDataURL(img); // Web API의 함수
+    //   reader.addEventListener(
+    //     "load",
+    //     function () {
+    //       fileData(reader.result); // 파일의 내용을 반환
+    //     },
+    //     false
+    //   );
+    // },
   },
 };
 </script>

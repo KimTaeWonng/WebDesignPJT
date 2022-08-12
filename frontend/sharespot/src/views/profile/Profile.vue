@@ -1,14 +1,16 @@
 <template>
     <div>
-        <profile-info :followerCnt="this.followerList.length" :followingCnt="this.followingList.length" :follower="this.followerList"></profile-info>
+        <!-- :followerCnt="this.followerList.length" :followingCnt="this.followingList.length" :follower="this.followerList" -->
+        <profile-info ></profile-info>
         <profile-badge></profile-badge>
-        <profile-content :postList="this.postList"></profile-content>
+        <!-- :postList="this.postList" -->
+        <profile-content ></profile-content>
         
     </div>
 </template>
 
 <script>
-import { http } from "@/js/http.js";
+// import { http } from "@/js/http.js";
 import ProfileInfo from '@/components/profile/ProfileInfo.vue';
 import ProfileContent from '@/components/profile/ProfileContent.vue';
 import ProfileBadge from '@/components/profile/ProfileBadge.vue';
@@ -39,16 +41,17 @@ export default {
     },
     async created() {
         
-        const following = await http.get(`/users/${this.$route.params.userid}/following`);
-        const follower = await http.get(`/users/${this.$route.params.userid}/follower`);
-        this.followerList = follower.data
-        this.followingList = following.data
-        console.log('팔로잉리스트', following)
-        console.log('팔로워리스트', follower)
-        const post = await http.get(`/main/posts/user/${this.$route.params.userid}`);
-        console.log('포스트리스트')
-        console.log(post.data)
-        this.postList = post.data
+        // const following = await http.get(`/users/${this.$route.params.userid}/following`);
+        // const follower = await http.get(`/users/${this.$route.params.userid}/follower`);
+        // this.followerList = follower.data
+        // this.followingList = following.data
+        // const post = await http.get(`/main/posts/user/${this.$route.params.userid}`);
+        // this.postList = post.data
+
+        // console.log('팔로잉리스트', following)
+        // console.log('팔로워리스트', follower)
+        // console.log('포스트리스트')
+        // console.log(post.data)
         
         //         if 
         //             console.log('체크', res.data)

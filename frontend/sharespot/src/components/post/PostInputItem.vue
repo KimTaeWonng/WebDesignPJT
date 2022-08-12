@@ -54,30 +54,34 @@
   
         <!-- :style="{backgroundImage:`url('${image}')`}" -->
         <div class="ml-9" style="margin: 5%">
-          <v-row align="center"
-            >이미지 추가
-            <v-btn color="primary" dark  icon>
+          <v-row align="center">
+            이미지 추가
+            <v-btn color="primary" dark icon>
               <label for="file">
+
                 <v-avatar color="#289672" size="20">
+                  
                   <label for="chooseFile">
                     <v-icon color="#ffffff" small> mdi-plus </v-icon>
                   </label>
 
                   <div>
-                  <form method="post" enctype="multipart/form-data">
-                    <input
-                      multiple
-                      style="display: none"
-                      ref="image"
-                      @change="uploadImg()"
-                      type="file"
-                      id="chooseFile"
-                      name="chooseFile"
-                      accept="image/*"
-                    />
-                  </form>
-                </div>
+                    <form method="post" enctype="multipart/form-data">
+                      <input
+                        multiple
+                        style="display: none"
+                        ref="image"
+                        @change="uploadImg()"
+                        type="file"
+                        id="chooseFile"
+                        name="chooseFile"
+                        accept="image/*"
+                      />
+                    </form>
+                  </div>
+
                 </v-avatar>
+
               </label>
             </v-btn>
           </v-row>

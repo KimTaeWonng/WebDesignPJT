@@ -7,9 +7,7 @@
       </v-col>
       <!-- 로고 -->
       <v-col cols="6">
-        <span style="color: #289672; font-weight: bold; font-size: 5vw"
-          >Share Spot</span
-        >
+        <span style="color: #289672; font-weight: bold; font-size: 5vw">Share Spot</span>
       </v-col>
       <!-- 돋보기/설정 버튼 -->
       <v-col cols="3">
@@ -25,21 +23,12 @@
     </v-row>
     <!-- 돋보기 클릭시 나오는 풀스크린 모달(유저 검색)-->
     <v-row justify="center">
-      <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-      >
+      <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
         <!-- 모달 content start -->
         <v-card>
           <!-- searchBar -->
           <div>
-            <v-row
-              class="text-center d-flex"
-              align="center"
-              style="margin: 3px"
-            >
+            <v-row class="text-center d-flex" align="center" style="margin: 3px">
               <!-- < 버튼 -->
               <v-col cols="2" @click="dialog = false">
                 <v-icon>mdi-chevron-left</v-icon>
@@ -55,12 +44,7 @@
                 ></v-text-field>
               </v-col>
               <!-- 돋보기 버튼 -->
-              <v-col
-                cols="1"
-                class="ml-4"
-                style="padding: 0"
-                @click="search(searchContent)"
-              >
+              <v-col cols="1" class="ml-4" style="padding: 0" @click="search(searchContent)">
                 <v-icon>mdi-magnify</v-icon>
               </v-col>
             </v-row>

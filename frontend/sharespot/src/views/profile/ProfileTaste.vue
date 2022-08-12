@@ -4,6 +4,7 @@
     <div class="text-center">
       <strong>{{ currentUser.nickname }}</strong> 님의
       <span style="color: #289672; font-weight: bold">지도</span>
+      <div>지도</div>
     </div>
     <div>
       <div class="text-center">
@@ -15,58 +16,83 @@
       </div>
       <div class="text-center mt-8">
         <div v-if="this.postType.eatCnt - 1 == 0">
-          <span>맛집</span> 게시글이 아직 없어요.🥲
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
+            >맛집</span
+          >
+          게시글이 아직 없어요.🥲
         </div>
         <div v-else>
           <span style="color: #289672; font-size: 20px; font-weight: bold"
             >맛집</span
           >
-          게시글은 총 <span>{{ this.postType.eatCnt - 1 }}</span> 개 입니다.
+          게시글은 총
+          <span style="font-size: 20px; font-weight: bold">{{
+            this.postType.eatCnt - 1
+          }}</span>
+          개 입니다.
         </div>
         <div v-if="this.postType.cafeCnt - 1 == 0">
-          <span>카페</span> 게시글이 아직 없어요.🥲
-        </div>
-        <div v-else>
-          <span span style="color: #289672; font-size: 20px; font-weight: bold"
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
             >카페</span
           >
-          게시글은 총 <span>{{ this.postType.cafeCnt - 1 }}</span> 개 입니다.
-        </div>
-        <div v-if="this.postType.lifeCnt - 1 == 0">
-          <span span style="color: #289672; font-size: 20px; font-weight: bold"
-            >생활</span
-          >
           게시글이 아직 없어요.🥲
         </div>
         <div v-else>
-          <strong>생활</strong> 게시글은 총
-          <strong>{{ this.postType.lifeCnt - 1 }}</strong> 개 입니다.
-        </div>
-        <div v-if="this.postType.cultureCnt - 1 == 0">
-          <strong
-            span
-            style="color: #289672; font-size: 20px; font-weight: bold"
-            >문화</strong
-          >
-          게시글이 아직 없어요.🥲
-        </div>
-        <div v-else>
-          <strong>문화</strong> 게시글은 총
-          <strong>{{ this.postType.cultureCnt - 1 }}</strong> 개 입니다.
-        </div>
-        <div v-if="this.postType.tripCnt - 1 == 0">
-          <strong>여행</strong> 게시글이 아직 없어요.🥲
-        </div>
-        <div v-else>
-          <strong
-            span
-            style="color: #289672; font-size: 20px; font-weight: bold"
-            >여행</strong
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
+            >카페</span
           >
           게시글은 총
-          <strong style="font-size: 20px">{{
+          <span style="font-size: 20px; font-weight: bold">{{
+            this.postType.cafeCnt - 1
+          }}</span>
+          개 입니다.
+        </div>
+        <div v-if="this.postType.lifeCnt - 1 == 0">
+          <strong style="color: #289672; font-size: 20px; font-weight: bold"
+            >생활</strong
+          >
+          게시글이 아직 없어요.🥲
+        </div>
+        <div v-else>
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
+            >생활</span
+          >
+          게시글은 총
+          <span style="font-size: 20px; font-weight: bold">{{
+            this.postType.lifeCnt - 1
+          }}</span>
+          개 입니다.
+        </div>
+        <div v-if="this.postType.cultureCnt - 1 == 0">
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
+            >문화</span
+          >
+          게시글이 아직 없어요.🥲
+        </div>
+        <div v-else>
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
+            >문화</span
+          >
+          게시글은 총
+          <span style="font-size: 20px; font-weight: bold">{{
+            this.postType.cultureCnt - 1
+          }}</span>
+          개 입니다.
+        </div>
+        <div v-if="this.postType.tripCnt - 1 == 0">
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
+            >여행</span
+          >
+          게시글이 아직 없어요.🥲
+        </div>
+        <div v-else>
+          <span style="color: #289672; font-size: 20px; font-weight: bold"
+            >여행</span
+          >
+          게시글은 총
+          <span style="font-size: 20px; font-weight: bold">{{
             this.postType.tripCnt - 1
-          }}</strong>
+          }}</span>
           개 입니다.
         </div>
       </div>
@@ -237,7 +263,11 @@ export default {
 <style scoped>
 #big {
   color: " #289672";
-  font-size: " 20px";
+  font-size: "20px";
+  font-weight: "bold";
+}
+
+#small {
   font-weight: "bold";
 }
 </style>

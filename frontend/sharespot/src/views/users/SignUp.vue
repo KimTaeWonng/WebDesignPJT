@@ -352,12 +352,18 @@ export default {
         pb: 0, // 비공개계정
       },
       confirmPwd: "",
+
+      codes: "", // 카카오로그인 코드
     };
   },
   computed: {
     ...mapState(userStore, ["kakaoUserInfo"]),
   },
   created() {
+    console.log(this.$route.query.code);
+    this.codes = this.$route.query.code;
+    this.getToken();
+
     // 카카오 로그인 정보 불러오기
     // 이메일
     this.user.email = this.kakaoUserInfo[0].email;
@@ -369,6 +375,16 @@ export default {
     }
   },
   methods: {
+    // 카카오로그인 access-token 받아오기
+    async getToken() {
+      const response = await http.get(`/oauth/kakao`, {
+        params: {
+          code: this.codes,
+        },
+      });
+      console.log(response);
+    },
+
     submit() {
       this.$refs.observer.validate();
     },

@@ -44,11 +44,12 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam MultipartFile[] files) throws IllegalStateException, IOException {
+    public ArrayList<String> uploadFile(@RequestParam MultipartFile[] files) throws IllegalStateException, IOException {
         String UPLOAD_PATH = "/home/ubuntu/src/image/" + LocalDate.now(); // 업로드 할 위치 // 현재 날짜 값 폴더
 //        String UPLOAD_PATH = "C:\\Users\\Administrator\\Desktop\\downtest\\" + LocalDate.now(); // 업로드 할 위치 // 현재 날짜 값 폴더
 
         log.debug("파일 업로드 위치: {}", UPLOAD_PATH);
+        ArrayList<String> result = new ArrayList<>();
 
         File destdir = new File(UPLOAD_PATH);
 
@@ -66,6 +67,7 @@ public class FileController {
                         .build();
 
                 list.add(dto);
+                result.add(UPLOAD_PATH + dto.getUuid() + "_" + dto.getFileName());
 
                 File newFileName = new File(UPLOAD_PATH, dto.getUuid() + "_" + dto.getFileName());
 
@@ -76,7 +78,7 @@ public class FileController {
             }
         }
 
-        return UPLOAD_PATH;
+        return result;
     }
 
 }

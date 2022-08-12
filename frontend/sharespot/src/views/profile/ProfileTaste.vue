@@ -1,11 +1,24 @@
 <template>
   <v-container>
     <back-menu title="취향분석" class="mb-1"></back-menu>
-    <div class="text-center">
+    <v-row>
+      <v-btn>
+        <v-icon>mdi-map</v-icon>
+      </v-btn>
+      <v-btn>
+        <v-icon>mdi-dots-horizontal</v-icon>
+      </v-btn>
+    </v-row>
+    <div class="text-center" style="margin: 0">
       <strong>{{ currentUser.nickname }}</strong> 님의
       <span style="color: #289672; font-weight: bold">지도</span>
-      <div>지도</div>
     </div>
+    <div
+      class="root_daum_roughmap root_daum_roughmap_landing"
+      align="center"
+      style="margin: 0"
+      id="map"
+    ></div>
     <div>
       <div class="text-center">
         <strong>{{ currentUser.nickname }}</strong> 님의
@@ -107,12 +120,16 @@ import { http } from "@/js/http.js";
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
+// 지도 키
+const MAP_API_KEY = process.env.VUE_APP_MAP_API_KEY;
+
 export default {
   components: { BackMenu },
   name: "ProfileTaste",
 
   data() {
     return {
+      showMap: true,
       tasteChart: null,
       currentUser: {
         userid: "",
@@ -126,22 +143,26 @@ export default {
         eatCnt: 1, // 맛집 게시글 수
         maxCnt: 0, // 최대 게시글 수
       },
+      posts: [],
     };
   },
 
   async created() {
     this.currentUser.userid = this.$route.params.userid;
     // 현재 유저의 닉네임을 가져온다.
-    const response = await http.get(
+    const response1 = await http.get(
       `/users/info/user/${this.currentUser.userid}`
     );
-    this.currentUser.nickname = response.data[0][1];
+    this.currentUser.nickname = response1.data[0][1];
 
     // 현재 유저의 게시글을 가져온다.
-    const posts = await http.get(`/main/posts/user/${this.currentUser.userid}`);
-
-    for (var i = 0; i < posts.data.length; i++) {
-      let type = posts.data[i][1];
+    const response2 = await http.get(
+      `/main/posts/user/${this.currentUser.userid}`
+    );
+    this.posts = response2.data;
+    console.log(response2.data);
+    for (var i = 0; i < response2.data.length; i++) {
+      let type = response2.data[i][1];
 
       if (type == "여행") {
         this.postType.tripCnt++;
@@ -152,7 +173,7 @@ export default {
       } else if (type == "카페") {
         this.postType.cafeCnt++;
       } else if (type == "문화") {
-        this.postType.cultureCnt++;
+        this.postType.c++;
       }
     }
 
@@ -167,22 +188,36 @@ export default {
 
     // 얻어온 데이터를 기준으로 차트 생성
     this.createChart();
-    console.log(
-      this.postType.eatCnt +
-        " " +
-        this.postType.cafeCnt +
-        " " +
-        this.postType.cultureCnt +
-        " " +
-        this.postType.tripCnt +
-        " " +
-        this.postType.lifeCnt
-    );
   },
 
   computed: {},
 
+  mounted() {
+    window.kakao && window.kakao.maps ? this.initMap() : this.addMapScript();
+  },
+
   methods: {
+    addMapScript() {
+      const script = document.createElement("script");
+      script.src =
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
+        MAP_API_KEY;
+      // +"&libraries=clusterer,services";
+      /* global kakao */
+      script.addEventListener("load", () => {
+        kakao.maps.load(this.initMap);
+      });
+      document.head.appendChild(script);
+    },
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(37.5665734, 126.978179), // 변경: 접속한 유저의 위도경도로 바꿔보자
+        level: 3,
+        maxLevel: 13, // 지도 레벨
+      };
+      this.map = new kakao.maps.Map(container, options); //지도 생성
+    },
     createChart() {
       const ctx = document.getElementById("tasteChart");
       this.tasteChart = new Chart(ctx, {
@@ -261,13 +296,11 @@ export default {
 </script>
 
 <style scoped>
-#big {
-  color: " #289672";
-  font-size: "20px";
-  font-weight: "bold";
+#map {
+  width: 300px;
+  height: 500px;
 }
-
-#small {
-  font-weight: "bold";
+.root_daum_roughmap {
+  margin: auto !important;
 }
 </style>

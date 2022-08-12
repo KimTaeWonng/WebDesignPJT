@@ -5,21 +5,14 @@ const userLogStore = {
     // state: data. 수정은 store에서만 하는게 좋다.
     state: {
         searchWordList: [], //최근 검색 단어
-        scrapPostList: [], //스크랩한 게시글 아이디
-        likePostList: [], //좋아요한 게시글 아이디
         followingUserList: [], // 내가 팔로우하는 유저 정보들
         followUserList: [], //나를 팔로우하는 유저 정보들
+        postTypeCnt: [0, 0, 0, 0, 0], // 0: 맛집, 1: 카페, 2: 여행, 3: 생활, 4: 문화
     },
     // getters: vue의 computed와 같은 역할. State를 기반으로 계산
     getters: {
         getSearchWordList(state) { 
             return state.searchWordList;
-        },
-        getscrapPostList(state) { 
-            return state.scrapPostList;
-        },
-        getlikePostLis(state) { 
-            return state.likePostList;
         },
         getfollowingUserList(state) { 
             return state.followingUserList;
@@ -43,19 +36,6 @@ const userLogStore = {
             console.log("userLogStore: " + state.searchWordList);
         }
         ,
-        // 게시글 스크랩
-        SCRAP_POST_LIST(state, postId) { 
-            state.scrapPostList.push(postId);
-            console.log("userLogStore: " +state.scrapPostList);
-        },
-
-        // 게시글 스크랩 취소
-        UNSCRAP_POST_LIST(state, postId) { 
-            const i = state.scrapPostList.indexOf(postId);
-            state.scrapPostList.splice(i, 1);
-            console.log("userLogStore: " + state.scrapPostList);
-        },
-
         // 게시글 좋아요
         LIKE_POST_LIST(state, postId) {
             state.likePostList.push(postId);
@@ -103,35 +83,10 @@ const userLogStore = {
             commit('RESET_SEARCH_WORD_LIST');
             console.log("userLogStore: action: resetsearchwordlist");
         }
-        ,
-        // 게시글 스크랩
-        scrapPostList({commit}, postId) { 
-            commit('SCRAP_POST_LIST', postId);
-            console.log("userLogStore: action" +postId);
-        },
-
-        // 게시글 스크랩 취소
-        unscrapPostList({commit}, postId) { 
-            commit('UNSCRAP_POST_LIST', postId);
-            console.log("userLogStore: action" + postId);
-        },
-
-        // 게시글 좋아요
-        likePostList({ commit}, postId) {
-            commit('LIKE_POST_LIST', postId);
-            console.log("userLogStore: action" +postId);
-        },
-
-        // 게시글 좋아요취소
-        unlikePostList({ commit}, postId) { 
-            commit('UNLIKE_POST_LIST', postId);
-            console.log("userLogStore: action" + postId);
-        },
-        
+        ,    
         // 팔로우 버튼을 눌렀을 때
         async follow(store, followInfo){
             try { 
-
                 const response = await http.post(`/users/${followInfo.res.followerId}/follow`, followInfo.res);
                 console.log(response.data);
                 console.log('여기')
@@ -141,8 +96,7 @@ const userLogStore = {
             } catch (error) {
                 alert("팔로우에 실패했습니다.");
             }
-            // commit('FOLLOW', user);
-
+            commit('FOLLOW', user);
             console.log("userLogStore: action" );
         },
 

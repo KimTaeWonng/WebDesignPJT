@@ -59,15 +59,15 @@
         <v-container fluid>
           <v-row>
             <v-col
-              v-for="(p, i) in scrapList"
+              v-for="(s, i) in scrapList"
               :key="i"
               class="d-flex child-flex"
               style="padding: 4px"
               cols="4"
             >
               <v-img
-                :src="p"
-                :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+                :src="s.postImage"
+                :lazy-src="s.postImage"
                 aspect-ratio="1"
                 class="grey lighten-2"
               >
@@ -102,18 +102,17 @@ export default {
     // 유저의 게시글 불러오기
     const getPost = await http.get(`/main/posts/user/${this.$route.params.userid}`);
     this.postList = getPost.data;
+    console.log("포스트리스트");
     // console.log(this.postList);
 
     // 유저의 뱃지 컬렉션 불러오기
 
     // 유저의 스크랩게시글 불러오기
     const getScrapPost = await http.get(`/LikeScrap/listS/${this.$route.params.userid}`);
-    if (getScrapPost.data == 1) {
-      this.scrapList = getScrapPost.data;
-    }
+    this.scrapList = getScrapPost.data;
+
     console.log("스크랩게시글");
-    console.log(getScrapPost.data);
-    console.log(this.scrapList);
+    // console.log(this.scrapList);
   },
 
   mounted() {},

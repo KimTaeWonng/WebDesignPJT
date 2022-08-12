@@ -145,16 +145,26 @@
 </template>
 
 <script>
+// import { http } from "@/js/http.js";
+
 export default {
     name: "MeetingListItem",
     data() {
         return {
           dialog: false,
+          group: {},
+          meeting: {},
         };
     },
     mounted() {
     },
-    methods: {},
+
+    methods: {
+    
+    },
+
+
+
 };
 </script>
 

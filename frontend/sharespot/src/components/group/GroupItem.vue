@@ -85,8 +85,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { http } from "@/js/http.js";
 
 export default {
   name: "GroupItem",
@@ -97,18 +95,6 @@ export default {
   },
 
   mounted() {},
-
-  created() {
-    var vm = this;
-    axios.get(http.post("/group"))
-    .then(function(response){
-      console.log(response);
-      vm.groups = response.data
-    })
-    .catch(function(err){
-      console.log(err)
-    })
-  },
 
   methods: {},
 };

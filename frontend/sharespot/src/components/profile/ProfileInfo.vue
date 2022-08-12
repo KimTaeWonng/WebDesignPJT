@@ -112,7 +112,6 @@ export default {
     this.user.email = this.userInfo.email;
     this.user.id = this.userInfo.user_id;
     this.user.image = this.userInfo.profileImage;
-
   },
 
   mounted() {},

@@ -3,7 +3,7 @@
     <group-search-bar></group-search-bar>
     <v-row class="text-center">
       <v-col cols="12">
-        <group-item></group-item>
+        <group-item v-for="(group,i) in groups" :key="i" :detailGroup="group"></group-item>
       </v-col>
     </v-row>
   </v-container>
@@ -12,6 +12,7 @@
 <script>
 import GroupItem from '@/components/group/GroupItem.vue';
 import GroupSearchBar from '@/components/layout/GroupSearchBar.vue';
+import { http } from "@/js/http.js";
 
 
 export default {
@@ -19,11 +20,23 @@ export default {
     name: "GroupList",
 
     data() {
-        return {};
+        return {
+          groups: [],
+        };
     },
     mounted() {
     },
-    methods: {},
+
+    methods: {
+      async getGroup() {
+        const response = await http.get("/group");
+        this.groups = response.data
+      },
+    },
+
+    created() {
+    this.getGroup()
+  },
 
 };
 </script>

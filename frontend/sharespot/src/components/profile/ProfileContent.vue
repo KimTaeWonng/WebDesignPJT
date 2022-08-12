@@ -87,12 +87,10 @@
 
 <script>
 
-
+import { http } from "@/js/http.js";
 export default {
   name: "SharespotProfileContent",
-  props: {
-    postList: Array
-  },
+
 
   data() {
     return {
@@ -100,8 +98,16 @@ export default {
       userPosts: [],
       userBadges: [],
       userScraps: [],
+      postList: [],
     };
+
   },
+  async created() {
+    const getPost = await http.get(`/main/posts/user/${this.$route.params.userid}`);
+    this.postList = getPost.data
+    console.log(this.postList)
+  },
+
 
   mounted() {},
 

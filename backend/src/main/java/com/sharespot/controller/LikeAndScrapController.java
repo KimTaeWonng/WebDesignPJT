@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sharespot.entity.PostLike;
 import com.sharespot.entity.Scrap;
 import com.sharespot.repo.PostLikeRepository;
+import com.sharespot.repo.PostRepository;
 import com.sharespot.repo.ScrapRepository;
 import com.sharespot.service.PostLikeService;
 import com.sharespot.service.PostService;
@@ -36,6 +37,11 @@ public class LikeAndScrapController {
 	@Autowired
 	private ScrapRepository scrapRepository;
 	
+	@Autowired
+	private PostService postService;
+	@Autowired
+	private PostRepository postRepository;
+	
 	
 	@GetMapping("/listL/{userId}")
 	@ApiOperation(value = "좋아요 리스트", notes = "유저의 모든 좋아요 리스트")
@@ -51,6 +57,12 @@ public class LikeAndScrapController {
 	public ResponseEntity<List<Scrap>> getScrapAll(@PathVariable int userId){
 		
 		List<Scrap> scrapAll = scrapRepository.findByUserId(userId);
+		
+		for(Scrap s : scrapAll) {
+			if(s.getPostImage()==null) {
+				s.setPostImage(postRepository.findById(s.getPostId()).get().getImage());
+			}
+		}
 		
 		return new ResponseEntity<List<Scrap>>(scrapAll,HttpStatus.OK);
 	}

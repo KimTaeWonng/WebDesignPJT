@@ -186,15 +186,14 @@ public class PostController {
 	public ResponseEntity<List<Post>> scrapList(@PathVariable int userId){
 		
 		List<Scrap> scrap_list = scrapRepository.findByUserId(userId);
-		
+		System.out.println(scrap_list);
 		List<Post> savedPost = new ArrayList<Post>();
 		
 		for(Scrap s : scrap_list) {
-			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(s.getPostId());
+			Post post = postRepository.findById(s.getPostId()).get();
+						
+			savedPost.add(post);
 			
-			for(Post p :post) {
-				savedPost.add(p);
-			}
 		}
 		
 		return new ResponseEntity<List<Post>>(savedPost,HttpStatus.OK);
@@ -205,7 +204,7 @@ public class PostController {
 	@ApiOperation(value = "게시글 스크랩하기", notes = "유저가 스크랩 게시글을 추가")
 	public ResponseEntity<Integer> scrapPush(@PathVariable int userId, @PathVariable int postId){
 		
-		Scrap scrapEntity = Scrap.builder().userId(userId).postId(postId).build();
+		Scrap scrapEntity = Scrap.builder().userId(userId).postId(postId).postImage(postRepository.findById(postId).get().getImage()).build();
 		
 		int result = 1;
 		try {

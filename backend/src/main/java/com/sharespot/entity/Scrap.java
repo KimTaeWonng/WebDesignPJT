@@ -33,5 +33,6 @@ public class Scrap {
 	
 	@Column
 	private Integer postId;
+	private String postImage;
 
 }

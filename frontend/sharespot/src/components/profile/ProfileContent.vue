@@ -15,7 +15,7 @@
             <v-row>
               <v-col v-for="(p, i) in postList" :key="i" class="d-flex child-flex" style="padding: 4px;" cols="4">
                 <v-img
-                  :src="p[1]"
+                  :src="p[4]"
                   :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
                   aspect-ratio="1"
                   class="grey lighten-2"

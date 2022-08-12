@@ -13,12 +13,13 @@
         <v-tab-item>
           <v-container fluid>
             <v-row>
-              <v-col v-for="n in 12" :key="n" class="d-flex child-flex" style="padding: 4px;" cols="4">
+              <v-col v-for="(p, i) in postList" :key="i" class="d-flex child-flex" style="padding: 4px;" cols="4">
                 <v-img
-                  :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+                  :src="p[1]"
                   :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
                   aspect-ratio="1"
                   class="grey lighten-2"
+                  @click="movePost(p[0])"
                 >
                   <template v-slot:placeholder>
                     <v-row class="fill-height ma-0" align="center" justify="center">
@@ -58,12 +59,13 @@
         <v-tab-item>
           <v-container fluid>
             <v-row>
-              <v-col v-for="n in 12" :key="n" class="d-flex child-flex" style="padding: 4px;" cols="4">
+              <v-col v-for="(p, i) in post" :key="i" class="d-flex child-flex" style="padding: 4px;" cols="4">
                 <v-img
-                  :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+                  :src="p"
                   :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
                   aspect-ratio="1"
                   class="grey lighten-2"
+
                 >
                   <template v-slot:placeholder>
                     <v-row class="fill-height ma-0" align="center" justify="center">
@@ -84,8 +86,13 @@
 </template>
 
 <script>
+
+
 export default {
   name: "SharespotProfileContent",
+  props: {
+    postList: Array
+  },
 
   data() {
     return {
@@ -98,7 +105,16 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    movePost(postid) {
+      // this.$router.push({ name: "profileFollowing" });
+
+      //   // 변경: 해당 프로필 유저의 팔로잉 화면으로 넘어감
+      this.$router.push({
+        path: `/post/detail/${postid}`
+      });
+    },
+  },
 };
 </script>
 

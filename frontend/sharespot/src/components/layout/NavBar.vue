@@ -51,7 +51,7 @@ const userStore = "userStore";
 export default {
   name: "NavBar",
   props: {
-    id: Number
+    id: Number,
   },
 
   data() {
@@ -87,15 +87,16 @@ export default {
     makeMenu() {
       this.isMakeMenuOpen = !this.isMakeMenuOpen;
     },
-    
-    goProfile() {
 
+    goProfile() {
+      this.isMakeMenuOpen = false;
+      if (this.$route.params.userid != this.userInfo.user_id) {
         this.$router.push({
           name: "profile",
-          params: {userid: this.userInfo.user_id}
-        
-      })
-    }
+          params: { userid: this.userInfo.user_id },
+        });
+      }
+    },
   },
 };
 </script>

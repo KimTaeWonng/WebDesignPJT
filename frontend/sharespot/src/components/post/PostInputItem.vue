@@ -1,228 +1,431 @@
 <template>
-<!-- 상단 네브바 -->
-<div>
-  <v-row class="text-center d-flex" align="center" style="margin-top: 3px; margin-bottom: 3px;">
-    <!-- 닫기 버튼 -->
+  <v-container>
+    <!-- 상단 네브바 -->
+    <v-row
+      class="text-center d-flex mb-5"
+      align="center"
+      style="margin-top: 3px"
+    >
+      <!-- 닫기 버튼 -->
       <v-col cols="2" @click="changeRouter('')">
         <v-icon>mdi-close</v-icon>
       </v-col>
       <!-- 로고 -->
       <v-col cols="8">
-        <span style="color: #289672; font-weight: 800;">Share Spot</span>
+        <span v-if="this.type == 'modify'">게시글 수정</span>
+        <span v-else>게시글 작성</span>
       </v-col>
       <!-- 돋보기/설정 버튼 -->
       <v-col cols="2">
         <v-row>
           <!-- 여기에 제출 넣으면 될듯 -->
           <v-col align="center" @click="changeRouter('')">
-        <v-icon>mdi-check</v-icon>
-      </v-col>
+            <v-icon>mdi-check</v-icon>
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
     <!-- 프로필 사진 변경 start 카드 크기 반응형으로 -->
-  <v-row justify="space-around" style="margin:0%;">
-  <v-card  height="290px" width="290px" >
-    <v-row class="text-center" style="margin-top:35%"  align="center">
-      <v-col>
-        <label for="file">
-        <v-avatar color="#289672" size="50">
-          <v-icon v-if="user.img == ''" color="#ffffff"> mdi-plus </v-icon>
-          <v-img v-if="user.img != ''" :src="user.img"></v-img>
-        </v-avatar>
-        <v-file-input
-          dense
-          hide-input
-          v-model="user.img"
-          color="#289672"
-          prepend-icon=""
-          id="file"
-        ></v-file-input>
-      </label>
-      </v-col>
-    </v-row>
-  </v-card>
-  </v-row>
-
-<!-- 태그추가 + 버튼 -->
-<v-col>
-<v-cols cols="3" style="margin-left:5%; margin-bottom:10%; margin-top:5%;" align="center">
-  태그 추가
-</v-cols>
-<v-cols cols="2">
-    <v-dialog
-      v-model="dialog"
-      scrollable
-      max-width="600px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-          icon
-          
-        >
-          <v-avatar color="#289672" size="20">
-          <v-icon color="#ffffff" small> mdi-plus </v-icon>
-        </v-avatar>
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-text style="margin-top:15%; font-weight:bolder;">태그 추가 (항목 당 1개씩 골라주세요)</v-card-text>   
-        <!-- 분류 제목 + 버튼 -->
-      <v-list>
-      <template v-for="(item, index) in tagitems">
-        <v-subheader 
-          v-if="item.header"
-          :key="item.header"
-          v-text="item.header"
-          class="font-weight-bold"
-        ></v-subheader>
-
-        <v-divider
-          v-else-if="item.divider"
-          :key="index"
-        ></v-divider>
-
-        <v-list-item
-          v-else
-          :key="item.title"
-          class="my-1"
-        > 
-          <v-list-item-avatar :color="item.bgc">
-                <v-icon :color="item.color">
-                    {{ item.icon }}
+    <!-- <v-row justify="space-around" style="margin: 0%">
+      <v-card height="290px" width="290px">
+        <v-row class="text-center" style="margin-top: 35%" align="center">
+          <v-col>
+            <label for="file">
+              <v-avatar color="#289672" size="50">
+                <v-icon v-if="user.img == ''" color="#ffffff">
+                  mdi-plus
                 </v-icon>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-            <v-list-item-subtitle  v-text="item.subtitle"></v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-list>
-
-
-        <!-- 분류 제목 + 버튼 여기까지  -->
-        <v-divider></v-divider>
-        <v-card-actions class="d-flex justify-end">
-          <!-- 초기화 버튼 회색 배경 넣어주기  -->
-          <v-btn
-            style="color:#999999; font-weight: bolder;"
-            text
-            @click="dialog = false"
-          >
-            초기화
-          </v-btn>
-          <v-btn
-            style="background-color:#289672;"
-            text
-            dark  
-            @click.stop="dialog=false"
-          >
-            확인
-          </v-btn>
-        </v-card-actions>
+                <v-img v-if="user.img != ''" :src="user.img"></v-img>
+              </v-avatar>
+              <v-file-input
+                dense
+                hide-input
+                v-model="user.img"
+                color="#289672"
+                prepend-icon=""
+                id="file"
+              ></v-file-input>
+            </label>
+          </v-col>
+        </v-row>
       </v-card>
-    </v-dialog>
-  </v-cols>
-</v-col>
+    </v-row> -->
 
-<!-- 이거 모달 다 다시 짜야됨 -->
+  
+        <!-- :style="{backgroundImage:`url('${image}')`}" -->
+        <div class="ml-9" style="margin: 5%">
+          <v-row align="center"
+            >이미지 추가
+            <v-btn color="primary" dark  icon>
+              <label for="file">
+                <v-avatar color="#289672" size="20">
+                  <label for="chooseFile">
+                    <v-icon color="#ffffff" small> mdi-plus </v-icon>
+                  </label>
 
+                  <div>
+                  <form method="post" enctype="multipart/form-data">
+                    <input
+                      multiple
+                      style="display: none"
+                      ref="image"
+                      @change="uploadImg()"
+                      type="file"
+                      id="chooseFile"
+                      name="chooseFile"
+                      accept="image/*"
+                    />
+                  </form>
+                </div>
+                </v-avatar>
+              </label>
+            </v-btn>
+          </v-row>
+        </div>
+    
+          <!-- <v-row class="text-center" style="margin-bottom:12%; margin-right:12%;" align="center">
+            <v-col>
+              <label for="file">
+                <v-avatar  color="#289672" size="50" style="position:fixed;">
+                  <label for="chooseFile">
+                    <v-icon  color="#ffffff">
+                      mdi-plus
+                    </v-icon>
+                  </label>
+                  
+                <div>
+                  <form method="post" enctype="multipart/form-data">
+                    <input
+                      multiple
+                      style="display: none"
+                      ref="image"
+                      @change="uploadImg()"
+                      type="file"
+                      id="chooseFile"
+                      name="chooseFile"
+                      accept="image/*"
+                    />
+                  </form>
+                </div>
+                </v-avatar>
+              </label>
+            </v-col>
+          </v-row> -->
+        
+        <v-carousel height="290px" width="290px" hide-delimiter-background v-if="user.img.length">
+          <v-carousel-item v-for="(img, i) in user.img" :key="i" :src="img">
+          </v-carousel-item>
+        </v-carousel>
+        <!-- </v-parallax> -->
+  
+    <!-- 태그추가 + 버튼 -->
+    <div class="ml-9" style="margin: 5%">
+      <v-dialog v-model="dialog" max-width="600px">
+        <template v-slot:activator="{ on, attrs }">
+          <v-row align="center"
+            >태그 추가
+            <v-btn color="primary" dark v-bind="attrs" v-on="on" icon>
+              <v-avatar color="#289672" size="20">
+                <v-icon color="#ffffff" small> mdi-plus </v-icon>
+              </v-avatar>
+            </v-btn>
+          </v-row>
+        </template>
+        <v-card>
+          <v-card-title
+            class="justify-center"
+            style="font-weight: bolder; font-size: 5vw"
+            >태그 추가
+          </v-card-title>
 
-<!-- 내용 작성 -->
-<v-col>
-<v-cols cols="3" style="margin-left:5%; margin-bottom:15%; margin-top:10%;" align="center">
-  내용 작성
-</v-cols>
-  <v-textarea 
-  auto-grow 
-  outlined 
-  style="margin-left:5%; margin-right: 5%;"
-  ></v-textarea>
+          <!-- 분류 제목 + 버튼 -->
+          <!-- 대분류 -->
+          <v-item-group mandatory align="center" v-model="selected_1">
+            <v-subheader>대분류</v-subheader>
+            <v-item v-for="n in 5" :key="n" v-slot="{ active, toggle }">
+              <v-btn
+                height="64px"
+                elevation="0"
+                style="margin: 5px"
+                :color="active ? '#289672' : ''"
+                active-class="white--text"
+                :input-value="active"
+                @click="toggle(), selectBig(n)"
+              >
+                {{ categorys.tag[n - 1].big_name }}
+              </v-btn>
+            </v-item>
+          </v-item-group>
 
-</v-col>
+          <!-- 소분류 -->
+          <v-item-group mandatory align="center" v-model="selected_2">
+            <v-subheader>소분류</v-subheader>
+            <v-item
+              v-for="(item, i) in this.small"
+              :key="i"
+              v-slot="{ active, toggle }"
+            >
+              <v-btn
+                width="64px"
+                height="64px"
+                elevation="0"
+                style="margin: 5px"
+                :color="active ? '#289672' : ''"
+                active-class="white--text"
+                :input-value="active"
+                @click="toggle"
+              >
+                {{ item.small_name }}
+              </v-btn>
+            </v-item>
+          </v-item-group>
 
+          <!-- 누구랑 -->
+          <v-item-group mandatory align="center" v-model="selected_3">
+            <v-subheader>누구랑</v-subheader>
+            <v-item
+              v-for="(who, i) in whos"
+              :key="i"
+              v-slot="{ active, toggle }"
+            >
+              <v-btn
+                height="64px"
+                elevation="0"
+                style="margin: 5px"
+                :color="active ? '#289672' : ''"
+                active-class="white--text"
+                :input-value="active"
+                @click="toggle"
+              >
+                {{ who }}
+              </v-btn>
+            </v-item>
+          </v-item-group>
 
-</div>
+          <!-- 어디서 -->
+          <v-item-group mandatory align="center" v-model="selected_4">
+            <v-subheader>어디서</v-subheader>
+            <v-item
+              v-for="(where, i) in wheres"
+              :key="i"
+              v-slot="{ active, toggle }"
+            >
+              <v-btn
+                width="64px"
+                height="64px"
+                elevation="0"
+                style="margin: 5px"
+                :color="active ? '#289672' : ''"
+                active-class="white--text"
+                :input-value="active"
+                @click="toggle"
+              >
+                {{ where }}
+              </v-btn>
+            </v-item>
+          </v-item-group>
+
+          <!-- 분류 제목 + 버튼 여기까지  -->
+          <v-divider class="mt-4"></v-divider>
+          <v-card-actions
+            class="mt-2 d-flex justify-end"
+            style="background-color: #ffffff"
+          >
+            <!-- 초기화 버튼 회색 배경 넣어주기  -->
+            <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
+            <!-- <v-btn style="background-color: #f3f3f3" text @click="test()"> 초기화 </v-btn> -->
+            <v-btn
+              style="background-color: #289672"
+              text
+              dark
+              @click="addTag()"
+            >
+              확인
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+
+    <!-- 태그 추가 시 칩 표시되는 공간 -->
+    <div class="mt-5 ml-6 mb-5" v-show="isSelected">
+      <v-chip
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
+        class="text-align-center mr-1"
+        small
+        >{{ tag_big }}</v-chip
+      >
+      <v-chip
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
+        class="text-align-center mr-1"
+        small
+        >{{ tag_small }}</v-chip
+      >
+      <v-chip
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
+        class="text-align-center mr-1"
+        small
+        >{{ tag_who }}</v-chip
+      >
+      <v-chip
+        style="
+          background-color: #289672;
+          font-size: 13px;
+          color: white;
+          text-align: center;
+        "
+        class="text-align-center mr-1"
+        small
+        >{{ tag_where }}</v-chip
+      >
+    </div>
+
+    <!-- 내용 작성 -->
+    <div class="ml-9 mr-9">
+      <v-row align="center">
+        <span class="mb-3">내용 작성</span>
+      </v-row>
+      <v-row>
+        <v-textarea auto-grow outlined></v-textarea>
+      </v-row>
+    </div>
+  </v-container>
 </template>
 
-
 <script>
+import tag from "@/assets/json/tag.json";
 
 
 export default {
-  name: 'PostInputItem',
+  name: "PostInputItem",
   components: {},
+  props: {
+    type: String,
+  },
   data() {
     return {
       isRight: true,
+      image: '',
       user: {
         nickName: "",
         introduce: "",
         PB: "",
         BR: "",
-        img: "",
-
+        img: [],
       },
       modal: false,
-      dialogm1: '',
+      dialogm1: "",
       dialog: false,
-      tagitems: [
-        { header: 'Account Settings' },
-               {
-          bgc: "blue lighten-3",
-          icon: "mdi-account-outline",
-          color: "white",
-          title: '프로필 변경',
-          subtitle: '개인 정보 변경',
-        },
-        { divider: true},
-        {
-          bgc: "green lighten-2",
-          icon: "mdi-lock-outline",
-          color: "white",
-          title: '비밀번호 재설정',
-          subtitle: '비밀번호 변경',
-        },
-        { divider: true},
-          { header: 'Account Settings22' },
-               {
-          bgc: "blue lighten-3",
-          icon: "mdi-account-outline",
-          color: "white",
-          title: '프로필 변경',
-          subtitle: '개인 정보 변경',
-        },
-        { divider: true},
-        {
-          bgc: "green lighten-2",
-          icon: "mdi-lock-outline",
-          color: "white",
-          title: '비밀번호 재설정',
-          subtitle: '비밀번호 변경',
-        },
-        { divider: true},
 
+      // componentKey: 0, // 소분류 key changing 이용하기 위한 key
+
+      categorys: tag, // 대분류,소분류 태그 json
+      small: [
+        { small_name: "한식" },
+        { small_name: "중식" },
+        { small_name: "일식" },
+        { small_name: "양식" },
+        { small_name: "분식" },
+        { small_name: "아시안" },
+        { small_name: "기타" },
       ],
+      whos: ["가족", "친구", "연인", "혼자"],
+      wheres: [
+        "서울",
+        "경기",
+        "인천",
+        "강원",
+        "제주",
+        "대전",
+        "충북",
+        "충남/세종",
+        "부산",
+        "울산",
+        "경남",
+        "대구",
+        "경북",
+        "광주",
+        "전남",
+        "전주/전북",
+      ],
+
+      // 선택한 태그 값들 (1, 2, ...)
+      selected_1: "",
+      selected_2: "",
+      selected_3: "",
+      selected_4: "",
+
+      isSelected: false,
+
+      // 선택한 태그 항목들 (맛집, 가족 ...)
+      tag_big: "",
+      tag_small: "",
+      tag_who: "",
+      tag_where: "",
     };
   },
-
+  computed: {},
   methods: {
-        test() {
-      console.log(this.user);
+    uploadImg() {
+      var image = this.$refs["image"].files[0];
+      const url = URL.createObjectURL(image);
+      this.image = url;
+      this.user.img.push(this.image);
+      console.log(this.user.img)
+    },
+
+    test() {
+      // console.log(this.user);
+      const data = this.categorys;
+      console.log(data);
+      console.log(data.tag);
+      console.log(data.tag[0]);
+      console.log(data.tag[0].big_id);
+    },
+    selectBig(n) {
+      // this.componentKey = new Date();
+      // this.componentKey = n;
+
+      // this.smalls = this.categorys.tag[n - 1];
+
+      console.log(n);
+      this.small = this.categorys.tag[n - 1].category;
+    },
+    addTag() {
+      this.dialog = false;
+      this.isSelected = true;
+      this.tag_big = this.categorys.tag[this.selected_1].big_name;
+      this.tag_small =
+        this.categorys.tag[this.selected_1].category[
+          this.selected_2
+        ].small_name;
+      this.tag_who = this.whos[this.selected_3];
+      this.tag_where = this.wheres[this.selected_4];
     },
   },
-
-}
+  created() {
+    // this.type == 'modify' 인 경우 루트 경로의 게시글 내용 가져오기 함수 필요
+  },
+};
 </script>
 
 <style scoped>
-  #v-chip {
-    color: #289672;
-  }
+#v-chip {
+  color: #289672;
+}
 </style>

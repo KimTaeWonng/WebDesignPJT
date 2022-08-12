@@ -1,29 +1,22 @@
 <template>
-    <div>
-        게시글등록
-    </div>
+  <div>
+    <post-input-item type="register"></post-input-item>
+  </div>
 </template>
 
 <script>
+import PostInputItem from "@/components/post/PostInputItem.vue";
 export default {
-    name: 'S07P12A505PostRegister',
+  name: "PostRegister",
+  components: { PostInputItem },
+  data() {
+    return {};
+  },
 
-    data() {
-        return {
-            
-        };
-    },
+  mounted() {},
 
-    mounted() {
-        
-    },
-
-    methods: {
-        
-    },
+  methods: {},
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

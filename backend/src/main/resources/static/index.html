@@ -5,6 +5,37 @@
     <title>Title</title>
 </head>
 <body>
-<a href="https://localhost:9999/swagger-ui/index.html">Swagger</a>
+
+<form onSubmit={handleClick}>
+    <input type="file" multiple onChange={(e) -> { setTempFile(e.target.files); }} />
+    <button type="submit">submit</button>
+</form>
+
+<h1>file upload</h1>
+<form method="post" action="/api/upload/file" enctype="multipart/form-data">
+    <input type="file" name="files" multiple="multiple">
+    <input type="submit">
+</form>
+
 </body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const [tempFile, setTempFile] = useState();
+    const handleClick = (e) => {
+        var data = new FormData();
+        for (let i = 0; i < tempFile.length; i++) {
+            data.append("files", tempFile[i]);
+        }
+
+        Axios.post("/api/upload/file", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        }).then((res) => {
+            console.log(res);
+        });
+
+    }
+</script>
+
 </html>

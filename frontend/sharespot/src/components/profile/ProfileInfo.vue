@@ -98,7 +98,7 @@ export default {
         id: "",
         email: "",
         nickname: "",
-        image: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+        image: "",
         postCnt: "",
         followerCnt: "",
         followingCnt: "",
@@ -110,6 +110,7 @@ export default {
   async created() {
     this.user.email = this.userInfo.email;
     this.user.id = this.userInfo.user_id;
+    this.user.image = this.userInfo.profileImage;
   },
 
   mounted() {},

@@ -71,6 +71,7 @@ const userLogStore = {
         
         // 팔로우 버튼을 눌렀을 때
         FOLLOW(state, user) { 
+        
             state.followingUserList.push(user);
             console.log("userLogStore: " + state.followingUserList);
         },
@@ -92,7 +93,7 @@ const userLogStore = {
     // actions: 상태를 변이시키는 대신 액션으로 변이에 대한 커밋 처리(비동기 methods)
     actions: {
         // 유저 정보 검색기록
-        setSearchWordList({ commit}, searchWord) { 
+        setSearchWordList({ commit }, searchWord) { 
             commit('SET_SEARCH_WORD_LIST', searchWord)
             console.log("userLogStore: action" +searchWord);
         },
@@ -128,16 +129,43 @@ const userLogStore = {
         },
         
         // 팔로우 버튼을 눌렀을 때
-        follow({commit}, user) { 
-            commit('FOLLOW', user);
-            console.log("userLogStore: action" + user);
+        async follow(store, followInfo){
+            try { 
+
+                const response = await http.post(`/users/${followInfo.res.followerId}/follow`, followInfo.res);
+                console.log(response.data);
+                console.log('여기')
+                console.log(followInfo.user)
+                store.commit("FOLLOW", followInfo.user);
+                console.log(userLogStore)
+            } catch (error) {
+                alert("팔로우에 실패했습니다.");
+            }
+            // commit('FOLLOW', user);
+
+            console.log("userLogStore: action" );
         },
 
         // 언팔로우 버튼을 눌렀을 때
-        unfollow({ commit}, user) {
-            commit('UNFOLLOW', user);
-            console.log("userLogStore: action" + user);
+        async unfollow(store, followInfo){
+            try { 
+                console.log(followInfo.userId)
+                const response = await http.delete(`/users/${followInfo.userId}/${followInfo.followerId}/`);
+                console.log(response.data);
+                console.log('언팔')
+                store.commit("UNFOLLOW", followInfo.user);
+                console.log(userLogStore)
+            } catch (error) {
+                alert("언팔로우에 실패했습니다.");
+            }
+            // commit('FOLLOW', user);
+            //         http.delete(`/users/${this.$route.params.userid}/${this.userInfo.user_id}`);
+            //         console.log('팔로우취소')
+            //       }
+
+            console.log("userLogStore: action" );
         },
+
 
         // 팔로잉 유저 리스트
         async setFollowingUserList(store, userid) { 

@@ -90,7 +90,7 @@
               <v-icon> mdi-comment-processing-outline </v-icon>
             </v-btn>
           </router-link>
-          <span style="font-size: 12px; font-weight: lighter">{{ post.commentCnt }}개 </span>
+          <span style="font-size: 12px; font-weight: lighter">{{ cntComment }}개 </span>
         </v-col>
         <v-col cols="4" align="right">
           <!-- 스크랩 버튼 -->
@@ -125,7 +125,7 @@
         class="text-align-center mr-1"
         small
       >
-        {{ post.classWhere }}
+        {{ post.classWho }}
       </v-chip>
 
       <v-chip
@@ -133,7 +133,7 @@
         class="text-align-center mr-1"
         small
       >
-        {{ post.classWho }}
+        {{ post.classWhere }}
       </v-chip>
 
       <!-- {{ article.content }}  -->
@@ -163,6 +163,7 @@ export default {
       bookmark: false,
 
       cntLike: null,
+      cntComment: null,
 
       post: {},
     };
@@ -202,6 +203,11 @@ export default {
         this.bookmark = true;
       }
     }
+
+    // 댓글 갯수 받아오기
+    const commentTemp = await http.get(`/main/posts/main/posts/${this.post.postId}`);
+    // console.log(commentTemp.data.length);
+    this.cntComment = commentTemp.data.length;
   },
 
   mounted() {},

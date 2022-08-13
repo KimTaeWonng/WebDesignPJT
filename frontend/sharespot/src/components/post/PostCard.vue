@@ -4,9 +4,17 @@
     <v-list-item style="padding: 0%">
       <!-- :alt="`${chat.title} avatar`"  이거 ${user.username} 이런식으로 불러오기-->
       <v-col style="padding: 12px 0px 0px 0px" cols="2" align="center">
-        <v-list-item-avatar>
-          <v-img :src="this.post.userImage"></v-img>
-        </v-list-item-avatar>
+        <router-link
+          class="link"
+          :to="{
+            name: 'profile',
+            params: { userid: this.post.userId },
+          }"
+        >
+          <v-list-item-avatar>
+            <v-img :src="this.post.userImage"></v-img>
+          </v-list-item-avatar>
+        </router-link>
       </v-col>
       <v-col style="padding: 12px 0px 0px 0px" cols="8">
         <div>
@@ -101,7 +109,7 @@
             <v-icon> mdi-comment-processing-outline </v-icon>
           </v-btn>
         </router-link>
-        <span style="font-size: 12px; font-weight: lighter">{{ post.commentCnt }}개 </span>
+        <span style="font-size: 12px; font-weight: lighter">{{ cntComment }}개 </span>
       </v-col>
       <v-col cols="4" align="right">
         <!-- 스크랩 버튼 -->
@@ -136,7 +144,7 @@
       class="text-align-center mr-1"
       small
     >
-      {{ post.classWhere }}
+      {{ post.classWho }}
     </v-chip>
 
     <v-chip
@@ -144,7 +152,7 @@
       class="text-align-center mr-1"
       small
     >
-      {{ post.classWho }}
+      {{ post.classWhere }}
     </v-chip>
 
     <!-- {{ article.content }}  -->
@@ -184,24 +192,29 @@ export default {
     this.cntLike = this.post.likeCnt;
 
     // 좋아요를 이미 한 게시글에 좋아요 유지
-    const temp = await http.get(`/LikeScrap/listL/${this.userInfo.user_id}`);
-    // console.log(temp);
+    const likeTemp = await http.get(`/LikeScrap/listL/${this.userInfo.user_id}`);
+    // console.log(likeTemp);
 
-    for (const likeList of temp.data) {
+    for (const likeList of likeTemp.data) {
       if (likeList.postId == this.post.postId) {
         this.like = true;
       }
     }
 
     // 스크랩을 이미 한 게시글에 스크랩 유지
-    const temp2 = await http.get(`/LikeScrap/listS/${this.userInfo.user_id}`);
-    // console.log(temp);
+    const scrapTemp = await http.get(`/LikeScrap/listS/${this.userInfo.user_id}`);
+    // console.log(scrapTemp);
 
-    for (const ScrapList of temp2.data) {
+    for (const ScrapList of scrapTemp.data) {
       if (ScrapList.postId == this.post.postId) {
         this.bookmark = true;
       }
     }
+
+    // 댓글 갯수 받아오기
+    const commentTemp = await http.get(`/main/posts/main/posts/${this.post.postId}`);
+    // console.log(commentTemp.data.length);
+    this.cntComment = commentTemp.data.length;
   },
   data() {
     return {
@@ -210,6 +223,7 @@ export default {
       bookmark: false,
 
       cntLike: null,
+      cntComment: null,
 
       post: {},
     };

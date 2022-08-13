@@ -7,6 +7,7 @@ const userStore = {
         isLogin: false,
         isLoginError: false,
         userInfo: null,
+        kakaoUserInfo: [],
     },
     getters: {
         checkUserInfo: function (state) {
@@ -27,8 +28,16 @@ const userStore = {
             }
             state.userInfo = userInfo;
         },
+        SET_KAKAO_USER_INFO(state, kakaoInfo) { 
+            state.kakaoUserInfo = [];
+            state.kakaoUserInfo.push(kakaoInfo);
+        }
     },
     actions: {
+        async setKakaoUserInfo({commit}, kakaoInfo) { 
+            commit('SET_KAKAO_USER_INFO', kakaoInfo);
+            console.log("userStore: setKakaoUserInfo"+kakaoInfo);
+        },
         async userConfirm({ commit }, user) {
             await login(
                 user,

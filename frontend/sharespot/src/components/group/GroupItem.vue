@@ -61,10 +61,10 @@
             class="d-flex justify-content-between"
           >
             <p style="color: #8cc7b3; font-size: 5vw">{{ this.currentMember }}/{{ group.group_limit }}명</p>
-            <router-link to="/group/detail" style="text-decoration: none">
-
+        
               <div style="margin-left:5%;">
                 <v-chip
+                  @click="goGroupDetail"
                   v-if="this.currentMember < group.group_limit"
                   color="#CCE9E1"
                   style="
@@ -88,7 +88,7 @@
                   >참여불가</v-chip
                 >
               </div>
-            </router-link>
+          
           </div>
         </v-card>
       </v-col>
@@ -113,7 +113,12 @@ export default {
   },
 
   methods: {
-
+    goGroupDetail() {
+      this.$router.push({
+        name: "groupDetail",
+        params: { groupno: this.group.group_id }
+      })
+    },
   },
 
   async created() {

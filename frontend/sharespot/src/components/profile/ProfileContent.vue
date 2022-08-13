@@ -101,11 +101,13 @@ export default {
   async created() {
     // 유저의 게시글 불러오기
     const getPost = await http.get(`/main/posts/user/${this.$route.params.userid}`);
+
     this.postList = getPost.data;
     console.log("포스트리스트");
     // console.log(this.postList);
 
     // 유저의 뱃지 컬렉션 불러오기
+
 
     // 유저의 스크랩게시글 불러오기
     const getScrapPost = await http.get(`/LikeScrap/listS/${this.$route.params.userid}`);

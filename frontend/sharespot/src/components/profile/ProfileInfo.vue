@@ -126,30 +126,48 @@ export default {
 
 
     const profileUser = await http.get(`users/info/user/${this.$route.params.userid}`);
+    console.log('프로필유저', profileUser)
+    console.log('profileUser.data[0]', profileUser.data)
     const followerList = await http.get(`users/${this.$route.params.userid}/follower`);
-    const followingList = await http.get(`users/${this.$route.params.userid}/following`);
-
-    this.user.nickname = profileUser.data[0][1]
-    this.user.introduce = profileUser.data[0][2]
-    this.user.image = profileUser.data[0][3]
-
- 
-    
-    this.followingCnt = followingList.data.length
-    this.followerCnt = followerList.data.length
 
 
-    console.log('여기', this.userInfo.user_id)
 
-    
-    for (var i = 0; i <= followerList.data.length; i++) {
-      if (followerList.data[i].user_id == this.userInfo.user_id) {
-        
-        this.isfollow = true
+    // 만약 내 페이지면 팔로잉리스트를 겟할 필요가 없음
+    if (this.userInfo.user_id == this.$route.params.userid) {
+      this.followingCnt = this.followingUserList.length
+    }
+    else {
+      const followingList = await http.get(`users/${this.$route.params.userid}/following`); 
+      this.followingCnt = followingList.data.length
+    }
+
+      console.log(this.userInfo.user_id)
+    if (followerList.data.length !== 0) {
+      for (var i = 0; i < followerList.data.length; i++) {
+        if (followerList.data[i].user_id == this.userInfo.user_id) {
+          
+          this.isfollow = true
         break
       }
 
     };
+
+    }
+  
+    
+    this.user.nickname = profileUser.data[0][1]
+    console.log('profileUser.data[0]', profileUser.data)
+    this.user.introduce = profileUser.data[0][2]
+    this.user.image = profileUser.data[0][3]
+    this.followerCnt = followerList.data.length
+
+ 
+    
+
+
+
+
+    
   },
 
   mounted() {},
@@ -200,12 +218,12 @@ export default {
     async clickFollow() {
       const res = {
         "followerId": this.userInfo.user_id,
-        "userId": this.$route.params.userid
+        "user_Id": this.$route.params.userid
       }
       const user = {  // 팔로우할 유저
-        userid: this.$route.params.userid,
+        user_id: this.$route.params.userid,
         nickname: this.user.nickname,
-        img: this.user.image,
+        profileImage: this.user.image,
         introduce: this.user.introduce
       }
 
@@ -216,6 +234,7 @@ export default {
 
 
       this.follow(followInfo);
+      
       this.isfollow=true
       this.followerCnt ++
       // const temp = await http.get(`users/info/otherUser/${this.$route.params.userid}`);

@@ -133,28 +133,33 @@ const userLogStore = {
             try { 
 
                 const response = await http.post(`/users/${followInfo.res.followerId}/follow`, followInfo.res);
-                console.log(response.data);
-                console.log('여기')
-                console.log(followInfo.user)
+
+                if (response.data === 1) {
+                    console.log('팔로우 성공')
+                }
+                
+
                 store.commit("FOLLOW", followInfo.user);
-                console.log(userLogStore)
+
             } catch (error) {
                 alert("팔로우에 실패했습니다.");
             }
             // commit('FOLLOW', user);
 
-            console.log("userLogStore: action" );
+            // console.log("userLogStore: action" );
         },
 
         // 언팔로우 버튼을 눌렀을 때
         async unfollow(store, followInfo){
             try { 
-                console.log(followInfo.userId)
+
                 const response = await http.delete(`/users/${followInfo.userId}/${followInfo.followerId}/`);
-                console.log(response.data);
-                console.log('언팔')
+
+                if (response.data == 1) {
+                    console.log('언팔로우 성공')
+                }
                 store.commit("UNFOLLOW", followInfo.userId);
-                console.log(userLogStore)
+
             } catch (error) {
                 alert("언팔로우에 실패했습니다.");
             }
@@ -163,7 +168,7 @@ const userLogStore = {
             //         console.log('팔로우취소')
             //       }
 
-            console.log("userLogStore: action" );
+            // console.log("userLogStore: action" );
         },
 
 

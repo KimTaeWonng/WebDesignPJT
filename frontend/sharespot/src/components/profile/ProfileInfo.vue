@@ -218,7 +218,7 @@ export default {
     async clickFollow() {
       const res = {
         "followerId": this.userInfo.user_id,
-        "user_Id": this.$route.params.userid
+        "userId": this.$route.params.userid
       }
       const user = {  // 팔로우할 유저
         user_id: this.$route.params.userid,

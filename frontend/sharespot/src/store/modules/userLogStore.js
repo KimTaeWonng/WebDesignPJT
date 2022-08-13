@@ -78,9 +78,25 @@ const userLogStore = {
 
         // 언팔로우 버튼을 눌렀을 때
         UNFOLLOW(state, user) {
-            const i = state.followingUserList.indexOf(user);
+
+            console.log(state.followingUserList)
+            for (var i = 0; i < state.followingUserList.length; i++) {
+                console.log('언팔로우 인덱싱중')
+                console.log(state.followingUserList.length)
+                if (state.followingUserList[i].user_id == user) {
+                    console.log(state.followingUserList[i])
+        
+                    console.log(state.unfollowindex)
+                    break
+              }
+            }
+              console.log('팔로워 위치', i)
+        
+            // const i = state.followingUserList.indexOf(user);
+            // console.log(state.followingUserList)
+            console.log('유저', user)
             state.followingUserList.splice(i,1);
-            console.log("userLogStore: " + state.followingUserList);
+            console.log("userLogStore: ", state.followingUserList);
         },
 
         // 나를 팔로우하는 팔로워 유저 리스트
@@ -158,6 +174,7 @@ const userLogStore = {
                 if (response.data == 1) {
                     console.log('언팔로우 성공')
                 }
+
                 store.commit("UNFOLLOW", followInfo.userId);
 
             } catch (error) {
@@ -178,6 +195,8 @@ const userLogStore = {
                 const response = await http.get(`/users/${userid}/following`);
                 //console.log(response.data);
                 store.commit("SET_FOLLOWING_USERLIST", response.data);
+
+                
             } catch (error) {
                 alert("팔로잉 유저리스트 조회를 실패하였습니다.");
              }

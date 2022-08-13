@@ -17,7 +17,7 @@
       <v-col cols="4" align="center">
         <v-avatar size="80px">
           <v-img v-if="user.image == null">
-          <v-icon>mdi-account</v-icon></v-img>
+          <v-icon size="50">mdi-account-circle</v-icon></v-img>
           <v-img v-else :src="user.image"></v-img>
         </v-avatar>
       </v-col>
@@ -244,15 +244,31 @@ export default {
     },
 
   async clickUnFollow() {
+
+    console.log(this.followingUserList)
+    for (var i = 0; i < this.followingUserList.length; i++) {
+        console.log('언팔로우 인덱싱중')
+        console.log(this.followingUserList.length)
+        if (this.followingUserList[i].user_id == this.$route.params.userid) {
+            console.log(this.followingUserList[i])
+
+            console.log(this.unfollowindex)
+            break
+      }
+    }
+      console.log('팔로워 위치', i)
+
     const followInfo = {
       "followerId": this.userInfo.user_id,
       "userId": this.$route.params.userid
     }
+
+  
     console.log('팔로팔로')
     console.log(followInfo)
     this.unfollow(followInfo);
 
-    console.log('팔로잉유저리스트', this.followingUserList[0])
+    console.log('팔로잉유저리스트', this.followingUserList)
     this.isfollow = false
     this.followerCnt --
     },

@@ -102,7 +102,7 @@
             <div>
               <br>
               <!-- 모임 이름으로 대체 -->
-              <p style="font-weight:bold; float:left;">불금 보드게임은 국룰이죠 (4명)</p>
+              <p style="font-weight:bold; float:left;"> 데이터왜안받아와져왜 </p>
               <p align="right" style="margin-right:3%;">
                 <!-- 참여자 프로필 사진으로 대체 -->
                 <v-row>
@@ -152,7 +152,6 @@ export default {
     data() {
         return {
           dialog: false,
-          group: {},
           meeting: {},
         };
     },
@@ -163,7 +162,13 @@ export default {
     
     },
 
+    async created() {
+      this.meeting = this.detailMeeting
+    },
 
+    props: {
+      detailMeeting: Object,
+    },
 
 };
 </script>

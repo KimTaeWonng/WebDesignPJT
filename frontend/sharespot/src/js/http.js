@@ -8,5 +8,12 @@ const http = axios.create({
     },
 });
 
+const http2 = axios.create({
+    baseURL: "https://i7a505.p.ssafy.io/api/",
+    headers: {
+        "Content-type": "application/json"
+    },
+})
 
-export { http };
+
+export { http , http2 };

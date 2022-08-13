@@ -189,7 +189,7 @@ const routes = [
   },
   {
     // /:groupno 추가해야 함!
-    path: "/group/detail",
+    path: "/group/detail/:groupno",
     name: "groupDetail",
     // beforeEnter: onlyAuthUser,
     component: GroupDetail,

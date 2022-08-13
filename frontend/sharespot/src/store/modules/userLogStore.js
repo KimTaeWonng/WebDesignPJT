@@ -153,7 +153,7 @@ const userLogStore = {
                 const response = await http.delete(`/users/${followInfo.userId}/${followInfo.followerId}/`);
                 console.log(response.data);
                 console.log('언팔')
-                store.commit("UNFOLLOW", followInfo.user);
+                store.commit("UNFOLLOW", followInfo.userId);
                 console.log(userLogStore)
             } catch (error) {
                 alert("언팔로우에 실패했습니다.");

@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	boolean existsById(int id);
 
 
-	public static final String FIND_USER_PAGE = "SELECT name, nickname, introduce, profile_image, BD, user_grade from user_table where user_id = :userId";
+	public static final String FIND_USER_PAGE = "SELECT name, nickname, introduce, profile_image, BD, user_grade, register_time from user_table where user_id = :userId";
 	@Query(value = FIND_USER_PAGE, nativeQuery = true)
 	public Object[] findByUserId(@Param("userId") int userId);
 }

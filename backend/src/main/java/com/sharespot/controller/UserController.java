@@ -194,7 +194,7 @@ public class UserController {
 	}
 
 	@GetMapping("info/user/{userId}")
-	@ApiOperation(value = "다른 유저의 마이페이지 조회", notes = "이름, 닉네임, 소개글, 프로필이미지, 뱃지보유여부, 유저등급")
+	@ApiOperation(value = "다른 유저의 마이페이지 조회", notes = "이름, 닉네임, 소개글, 프로필이미지, 뱃지보유여부, 유저등급, 가입날짜")
 	public ResponseEntity<Object[]> getOtherUserInfo(@PathVariable ("userId") int userId){
 		Object[] users = userRepository.findByUserId(userId);
 		return new ResponseEntity<>(users, HttpStatus.OK);

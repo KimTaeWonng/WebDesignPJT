@@ -191,7 +191,6 @@
       </v-dialog>
 
 
-            <MeetingListItem></MeetingListItem>
           </p>
         </div>
 
@@ -202,7 +201,6 @@
 
 
 <script>
-import MeetingListItem from '@/components/group/MeetingListItem.vue';
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules"
 import { http } from "@/js/http.js";
@@ -217,7 +215,7 @@ extend("required", {
 
 
 export default {
-  components: { MeetingListItem, ValidationProvider, ValidationObserver },
+  components: { ValidationProvider, ValidationObserver },
     name: "GroupInfo",
 
     data() {
@@ -251,6 +249,7 @@ export default {
 
     mounted() {
     },
+
     methods: {
       submit() {
       this.$refs.observer.validate();
@@ -267,16 +266,23 @@ export default {
       }
     },
 
-    
+    async getGroup() {
+        const response = await http.get(`/group/${this.no}`);
+        this.group = response.data
+      },
     },
-    async created() {
-      this.group = this.detailGroup
-      this.meeting.groupId = this.group.group_id
+    // async getMeeting() {
+    //     const response = await http.get(`/group/${this.meeting.groupId}/meetings`);
+    //     this.meetings = response.data
+    //   },
+    // },
 
+    async created() {
+      this.getGroup()
     },
 
     props: {
-      detailGroup: Object,
+      no : String,
     },
 };
 </script>

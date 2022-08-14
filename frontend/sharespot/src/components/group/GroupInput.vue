@@ -54,18 +54,20 @@
                 ></label
               >
               <div>
+                <!-- @change="uploadImg()" -->
+                <!-- style="display: none" -->
                 <form method="post" enctype="multipart/form-data">
                   <input
-                    style="display: none"
+                    
                     ref="image"
-                    @change="uploadImg()"
+                  
                     type="file"
                     id="chooseFile"
                     name="chooseFile"
                     accept="image/*"
                   />
+                  <input type="submit">
                 </form>
-                <!-- <v-file-input v-model="group.image" accept="image/*"></v-file-input> -->
               </div>
             </div>
 
@@ -224,7 +226,7 @@
 <script>
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required, regex } from "vee-validate/dist/rules";
-import { http } from "@/js/http.js";
+import { http, http2 } from "@/js/http.js";
 import { mapState } from "vuex";
 
 const userStore = "userStore";
@@ -274,6 +276,7 @@ export default {
       },
     };
   },
+
   async created() {
     this.group.group_manager = this.userInfo.user_id;
     this.group.group_nick = this.userInfo.nickname;
@@ -285,20 +288,31 @@ export default {
   },
 
   methods: {
-    uploadImg() {
-      var image = this.$refs["image"].files[0];
-      const url = URL.createObjectURL(image);
-      this.image = url;
-      this.group.group_image = this.image;
-    },
+    // uploadImg() {
+    //   var image = this.$refs["image"].files[0];
+    //   const url = URL.createObjectURL(image);
+    //   this.image = url;
+    //   this.group.group_image = this.image;
+    // },
 
     submit() {
       this.$refs.observer.validate();
     },
+
     // 그룹 생성 함수
     async registGroup() {
       console.log(this.group)
       console.log(this.groupType)
+
+      let imageFile = this.$refs["image"].files[0];
+      console.log(imageFile)
+      const imagePath = await http2.post("/file/upload", imageFile)
+      console.log(imagePath)
+
+      // const image_response = await http2.get(`/file`)
+      // console.log(image_response.data)
+      // this.image = image_response.data
+      // this.group.group_image = this.image
       
       const response = await http.post("/group", this.group);
       // console.log(response.data);
@@ -334,7 +348,7 @@ export default {
     //   }
     // },
   },
-};
+}
 </script>
 
 <style scoped></style>

@@ -61,7 +61,7 @@ public class PostController {
 	}
 
 	@GetMapping("/posts/image")
-	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록과 이미지</b>를 반환한다.")
+	@ApiOperation(value = "게시글목록 + 이미지", notes = "<b>게시글 전체 목록과 이미지</b>를 반환한다.")
 	public ResponseEntity<List<Post>> getAllPostWithImage(Model model){
 		List<Post> posts = postRepository.findAll();
 		for (Post p : posts){
@@ -76,8 +76,8 @@ public class PostController {
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 
-	@GetMapping("/posts/oneImage")
-	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 내용과 이미지</b>를 반환한다.")
+	@GetMapping("/posts/oneImage/{postId}")
+	@ApiOperation(value = "게시글 상세조회 + 이미지", notes = "<b>해당 게시글의 내용과 이미지</b>를 반환한다.")
 	public ResponseEntity<Optional<Post>> get1Post(@PathVariable int postId, Model model){
 		Optional<Post> post = postRepository.findByPostId(postId);
 		Post p = post.get();

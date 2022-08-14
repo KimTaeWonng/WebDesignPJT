@@ -77,7 +77,7 @@ public class PostController {
 	@GetMapping("/posts/user/{userId}")
 	@ApiOperation(value = "유저의 게시글리스트 조회", notes = "해당 userId의 게시글 목록을 반환한다.")
 	public ResponseEntity<List<Object[]>> getUserPost(@PathVariable int userId){
-		List<Object[]> post = postRepository.findByUserId(userId);
+		List<Object[]> post = postRepository.findByUserId2(userId);
 		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
 	

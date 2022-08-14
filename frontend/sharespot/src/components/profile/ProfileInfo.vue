@@ -29,11 +29,11 @@
             <div style="font-size: 13px">게시글</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollower()">
-            <div style="font-weight: 800">{{ followerCnt }}</div>
+            <div style="font-weight: 800">{{ this.followerCnt }}</div>
             <div style="font-size: 13px">팔로워</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollowing()">
-            <div style="font-weight: 800"> {{ followingCnt }} </div>
+            <div style="font-weight: 800"> {{ this.followingCnt }} </div>
             <div style="font-size: 13px">팔로잉</div>
             
           </v-col>
@@ -112,12 +112,12 @@ export default {
         nickname: "",
         image: "",
         postCnt: "",
-        followerCnt: "",
-        followingCnt: "",
         introduce:
           "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
       },
-      isfollow: false
+      isfollow: false,
+      followerCnt: "",
+      followingCnt: "",
     };
   },
   async created() {
@@ -181,7 +181,7 @@ export default {
   
   methods: {
 
-    ...mapActions(userLogStore, ["setFollowingUserList", "follow", "unfollow"]),
+    ...mapActions(userLogStore, ["follow", "unfollow"]),
 
 
 
@@ -245,22 +245,22 @@ export default {
 
   async clickUnFollow() {
 
-    console.log(this.followingUserList)
-    for (var i = 0; i < this.followingUserList.length; i++) {
-        console.log('언팔로우 인덱싱중')
-        console.log(this.followingUserList.length)
-        if (this.followingUserList[i].user_id == this.$route.params.userid) {
-            console.log(this.followingUserList[i])
+    // console.log(this.followingUserList)
+    // for (var i = 0; i < this.followingUserList.length; i++) {
+    //     console.log('언팔로우 인덱싱중')
+    //     console.log(this.followingUserList.length)
+    //     if (this.followingUserList[i].user_id == this.$route.params.userid) {
+    //         console.log(this.followingUserList[i])
 
-            console.log(this.unfollowindex)
-            break
-      }
-    }
-      console.log('팔로워 위치', i)
+    //         console.log(this.unfollowindex)
+    //         break
+    //   }
+    // }
+    //   console.log('팔로워 위치', i)
 
     const followInfo = {
       "followerId": this.userInfo.user_id,
-      "userId": this.$route.params.userid
+      "userId": this.$route.params.userid,
     }
 
   

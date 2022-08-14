@@ -3,7 +3,7 @@
     <back-menu title="팔로잉" class="mb-1"></back-menu>
     <v-list>
       <v-list-item-group>
-       <follow-item v-for="(user, k) in followingUsers" :key="k" :userDetail="user"></follow-item>
+       <follow-item v-for="user in followingUsers" :key="`${user.user_id}`" :userDetail="user"></follow-item>
       </v-list-item-group>
 
         <!-- <v-list-item v-for="(user, i) in followingUsers" :key="i">
@@ -98,6 +98,12 @@ export default {
     // 팔로우 여부 리스트 만들어서 인덱스 슬라이싱
     //[팔로, 아님, 아님, 팔로]
 
+  },
+  updated() {
+    console.log('updated');
+    this.$nextTick(function () {
+      // 모든 화면이 렌더링된 후 실행합니다.
+    });
   },
   computed: {
     

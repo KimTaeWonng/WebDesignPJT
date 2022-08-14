@@ -72,7 +72,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('getAccounts'),
+        ...mapActions(userStore, ['getAccounts']),
 
         // getAccounts: function ($state) {
         //     console.log('getAccounts params')

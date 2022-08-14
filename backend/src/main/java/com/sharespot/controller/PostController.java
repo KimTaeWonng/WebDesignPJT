@@ -1,16 +1,17 @@
 package com.sharespot.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import com.sharespot.service.FileService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.sharespot.entity.Follow;
@@ -27,6 +28,7 @@ import com.sharespot.service.PostLikeService;
 import com.sharespot.service.ScrapService;
 
 @RestController
+@Slf4j
 @RequestMapping("/main")
 public class PostController {
 
@@ -48,13 +50,48 @@ public class PostController {
 	private PostLikeRepository postLikeRepository;	
 	@Autowired
 	private PostLikeService postLikeService;
+	@Autowired
+	private FileService fileService;
 	
 	@GetMapping("/posts")
 	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
 	public ResponseEntity<List<Post>> getAllPost(){
-		List<Post> posts = postRepository.findAll();
+		List<Post> posts = postRepository.findAll(Sort.by("postId").descending());
 		return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
 	}
+
+	@GetMapping("/posts/image")
+	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록과 이미지</b>를 반환한다.")
+	public ResponseEntity<List<Post>> getAllPostWithImage(Model model){
+		List<Post> posts = postRepository.findAll();
+		for (Post p : posts){
+			if(p.getImage() != null){
+				try{
+					model.addAttribute(p.getPostId().toString(), fileService.getImage(p.getImage()));
+				}catch (Exception e){
+					log.debug("이미지 불러오기 실패 : {}", e.getMessage());
+				}
+			}
+		}
+		return new ResponseEntity<>(posts, HttpStatus.OK);
+	}
+
+	@GetMapping("/posts/oneImage")
+	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 내용과 이미지</b>를 반환한다.")
+	public ResponseEntity<Optional<Post>> get1Post(@PathVariable int postId, Model model){
+		Optional<Post> post = postRepository.findByPostId(postId);
+		Post p = post.get();
+		if(post.isPresent() && p.getImage() != null){
+			try {
+				model.addAttribute(p.getPostId().toString(), fileService.getImage(p.getImage()));
+			}catch (Exception e){
+				log.debug("이미지 불러오기 실패 : {}", e.getMessage());
+			}
+		}
+
+		return new ResponseEntity<>(post, HttpStatus.OK);
+	}
+
 	
 	@GetMapping("/posts/{postNo}")
 	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 댓글</b>을 반환한다.")
@@ -186,14 +223,15 @@ public class PostController {
 	public ResponseEntity<List<Post>> scrapList(@PathVariable int userId){
 		
 		List<Scrap> scrap_list = scrapRepository.findByUserId(userId);
-		System.out.println(scrap_list);
+		
 		List<Post> savedPost = new ArrayList<Post>();
 		
 		for(Scrap s : scrap_list) {
-			Post post = postRepository.findById(s.getPostId()).get();
-						
-			savedPost.add(post);
+			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(s.getPostId());
 			
+			for(Post p :post) {
+				savedPost.add(p);
+			}
 		}
 		
 		return new ResponseEntity<List<Post>>(savedPost,HttpStatus.OK);
@@ -204,7 +242,7 @@ public class PostController {
 	@ApiOperation(value = "게시글 스크랩하기", notes = "유저가 스크랩 게시글을 추가")
 	public ResponseEntity<Integer> scrapPush(@PathVariable int userId, @PathVariable int postId){
 		
-		Scrap scrapEntity = Scrap.builder().userId(userId).postId(postId).postImage(postRepository.findById(postId).get().getImage()).build();
+		Scrap scrapEntity = Scrap.builder().userId(userId).postId(postId).build();
 		
 		int result = 1;
 		try {

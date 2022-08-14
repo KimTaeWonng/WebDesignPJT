@@ -63,17 +63,19 @@ public class CurationController {
 		return new ResponseEntity<List<Post>>(curationResult,HttpStatus.OK);
 	}
 	
-	@GetMapping("/posts/count")
+	@GetMapping("/posts/count/{userId}")
 	@ApiOperation(value = "큐레이션 갯수 탐색", notes = "게시글의 각 대분류 갯수를 가져온다.")
-	public ResponseEntity<HashMap<String,Integer>> curationCount(){
+	public ResponseEntity<HashMap<String,Integer>> curationCount(@PathVariable int userId){
+		
+		
 		
 		HashMap<String, Integer> hsm = new HashMap<String, Integer>();
 		
-		hsm.put("맛집", postRepository.countByClassBig("맛집"));
-		hsm.put("카페", postRepository.countByClassBig("카페"));
-		hsm.put("문화", postRepository.countByClassBig("문화"));
-		hsm.put("여행", postRepository.countByClassBig("여행"));
-		hsm.put("생활", postRepository.countByClassBig("생활"));
+		hsm.put("맛집", postRepository.countByClassBig(userId, "맛집"));
+		hsm.put("카페", postRepository.countByClassBig(userId, "카페"));
+		hsm.put("문화", postRepository.countByClassBig(userId, "문화"));
+		hsm.put("여행", postRepository.countByClassBig(userId, "여행"));
+		hsm.put("생활", postRepository.countByClassBig(userId, "생활"));
 		
 		return new ResponseEntity<HashMap<String,Integer>>(hsm,HttpStatus.OK);			
 	}

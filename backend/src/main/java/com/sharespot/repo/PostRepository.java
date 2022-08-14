@@ -27,5 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     public List<Post> findAllByOrderByUploadTimeDesc();
 
 	public List<Post> findAllByOrderByLikeCntDesc();
+	
+	public int countByClassBig(String word);
 
 }

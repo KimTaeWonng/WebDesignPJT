@@ -1,6 +1,7 @@
 package com.sharespot.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +61,21 @@ public class CurationController {
 		List<Post> curationResult = postService.defaultList();
 		
 		return new ResponseEntity<List<Post>>(curationResult,HttpStatus.OK);
+	}
+	
+	@GetMapping("/posts/count")
+	@ApiOperation(value = "큐레이션 갯수 탐색", notes = "게시글의 각 대분류 갯수를 가져온다.")
+	public ResponseEntity<HashMap<String,Integer>> curationCount(){
+		
+		HashMap<String, Integer> hsm = new HashMap<String, Integer>();
+		
+		hsm.put("맛집", postRepository.countByClassBig("맛집"));
+		hsm.put("카페", postRepository.countByClassBig("카페"));
+		hsm.put("문화", postRepository.countByClassBig("문화"));
+		hsm.put("여행", postRepository.countByClassBig("여행"));
+		hsm.put("생활", postRepository.countByClassBig("생활"));
+		
+		return new ResponseEntity<HashMap<String,Integer>>(hsm,HttpStatus.OK);			
 	}
 	
 	@GetMapping("/posts/hotspot")

@@ -33,4 +33,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query(value = COUNT_CLASS_BIG, nativeQuery = true)
 	public int countByClassBig(@Param("userId") int userId, @Param("word") String word);
 
+	public List<Post> findByClassBigOrderByLikeCntDesc(String word);
+
 }

@@ -80,13 +80,13 @@ public class CurationController {
 		return new ResponseEntity<HashMap<String,Integer>>(hsm,HttpStatus.OK);			
 	}
 	
-	@GetMapping("/posts/hotspot")
+	@GetMapping("/posts/hotspot/{word}")
 	@ApiOperation(value = "핫스팟", notes = "이달의 핫스팟 설정")
-	public ResponseEntity<List<PostLite>> hotSpot(){
+	public ResponseEntity<List<PostLite>> hotSpot(@PathVariable String word){
 		
-		List<Post> post = postRepository.findAllByOrderByLikeCntDesc();
+		List<Post> post = postRepository.findByClassBigOrderByLikeCntDesc(word);
 		
-		List<User> user = userRepository.findByUserGradeGreaterThanEqual(3);
+		List<User> user = userRepository.findByUserGradeGreaterThanEqual(0);
 		
 		List<PostLite> hotPost = new ArrayList<PostLite>();
 		

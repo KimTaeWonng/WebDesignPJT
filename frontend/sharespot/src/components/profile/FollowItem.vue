@@ -1,7 +1,9 @@
 <template>
 <v-list-item>
 <v-list-item-avatar @click="moveProfile(userItem.user_id)">
-  <v-img :src="userItem.profileImage"></v-img>
+          <v-img v-if="userItem.profileImage == null">
+          <v-icon size="50">mdi-account-circle</v-icon></v-img>
+  <v-img v-else :src="userItem.profileImage"></v-img>
 </v-list-item-avatar>
 
 <v-list-item-content class="mr-3"  @click="moveProfile(userItem.user_id)">
@@ -130,10 +132,12 @@ const userStore = "userStore";
     this.unfollow(followInfo);
     console.log('언팔로우 성공')
 
+
     console.log('팔로잉유저리스트', this.followingUserList[0])
     this.isfollowed = false
 
     },
+
   },
 };
 </script>

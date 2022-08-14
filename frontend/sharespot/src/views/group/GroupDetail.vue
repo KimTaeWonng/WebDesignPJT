@@ -31,6 +31,7 @@ export default {
         };
     },
 
+
     mounted() {
     },
 
@@ -38,6 +39,7 @@ export default {
       async getGroup() {
         const response = await http.get(`/group/${this.no}`);
         this.group = response.data
+
         // console.log(this.group)
         // console.log('타입', typeof(this.group))
       },

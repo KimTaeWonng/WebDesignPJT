@@ -53,9 +53,7 @@
                   >add_circle_outline</span
                 ></label
               >
-              <div>
-                <!-- @change="uploadImg()" -->
-                <!-- style="display: none" -->
+              <!-- <div>
                 <form method="post" enctype="multipart/form-data">
                   <input
                     
@@ -68,8 +66,22 @@
                   />
                   <input type="submit">
                 </form>
+              </div> -->
+
+              <div>
+                <form method="post" action="/api/file/upload" enctype="multipart/form-data">
+                    <input type="file" name="files" multiple="multiple">
+                    <input type="submit">
+                </form>
+
+                <form method="get" action="/api/file">
+                    파일경로:<input type="text" name="imagePath">
+                    <input type="submit" value="조회">
+                </form>
               </div>
             </div>
+
+            
 
             <div style="margin-left: 5%; margin-right: 5%">
               <v-img
@@ -304,16 +316,18 @@ export default {
       console.log(this.group)
       console.log(this.groupType)
 
-      let imageFile = this.$refs["image"].files[0];
-      console.log(imageFile)
-      const imagePath = await http2.post("/file/upload", imageFile)
+      const imageFile = this.$refs["image"].files[0];
+      console.log('이미지파일', imageFile)
+
+      const imagePath = await http2.post("/file", imageFile.name)
       console.log(imagePath)
 
-      // const image_response = await http2.get(`/file`)
+      // const image_response = await http2.get(`/file/imagePath=${imagePath}`)
       // console.log(image_response.data)
       // this.image = image_response.data
       // this.group.group_image = this.image
-      
+
+
       const response = await http.post("/group", this.group);
       // console.log(response.data);
       if (response.data == 1) {
@@ -322,6 +336,9 @@ export default {
       } else {
         alert("그룹 생성에 실패하였습니다.");
       }
+
+      // const addUser = await http.post(`/group/${this.group.group_id}/${this.group.group_manager}`, this.group.group_nick )
+      // console.log(addUser)
     },
     // async registGroup() {
     //   console.log(this.group)

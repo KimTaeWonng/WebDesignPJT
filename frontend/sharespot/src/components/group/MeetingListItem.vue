@@ -101,29 +101,49 @@
           <div style="margin-left:3%;">
             <div>
               <br>
+
               <!-- 모임 이름으로 대체 -->
-              <p style="font-weight:bold; float:left;"> 데이터왜안받아와져왜 </p>
-              <p align="right" style="margin-right:3%;">
-                <!-- 참여자 프로필 사진으로 대체 -->
-                <v-row>
-                  <v-img :src="require('/src/assets/profileSample.png')" contain width="5%" height="5%"/>
-                  <v-img :src="require('/src/assets/profileSample.png')" contain width="5%" height="5%"/>
-                  <v-img :src="require('/src/assets/profileSample.png')" contain width="5%" height="5%"/>
-                </v-row>
-              </p>
+              <v-row>
+                <v-col cols="8">
+                  <p style="font-weight:bold; float:left; font-size:8vw;"> {{ meeting.meetingTitle }} </p>
+                  <p align="right" style="margin-right:3%;"></p>
+                </v-col>
+                  <!-- 참여자 프로필 사진으로 대체 -->
+                <v-col cols="4">
+                  <v-row style="margin-right:20%; margin-top:10%;">
+                    <v-img :src="require('/src/assets/profileSample.png')" style="width:30%;"/>
+                    <v-img :src="require('/src/assets/profileSample.png')" style="width:30%;"/>
+                    <v-img :src="require('/src/assets/profileSample.png')" style="width:30%;"/>
+                  </v-row>
+                </v-col>
+              </v-row>
+
               <br>
-              <div style="vertical-align:middle;">
-                <span class="material-icons" style="font-size:3.5vw;">
+              
+              <div>
+                <v-icon class="material-icons" style="font-size:3.5vw;">
                   calendar_today
-                </span>
+                </v-icon>
                 <!-- 사용자 지정 모임일로 대체 -->
-                22.08.19
-                <br>
-                <span class="material-icons" style="font-size:3.5vw;">
-                  room
+                <span>
+                  {{ meeting.meetingDay }}
                 </span>
+
+                <br>
+
+                <v-icon class="material-icons" style="font-size:3.5vw;">
+                  room
+                </v-icon>
                 <!-- 사용자 지정 장소로 대체 -->
-                레드버튼 강남점
+                {{ meeting.placeName }} 
+
+                <br>
+
+                <v-icon style="font-size:3.5vw;">
+                  mdi-map
+                </v-icon>
+                <!-- 사용자 지정 장소로 대체 -->
+                {{ meeting.meetingUrl }}
               </div>
             </div>
           </div>
@@ -132,9 +152,11 @@
         
           <div class="d-flex justify-content-between" style="font-size:3.5vw; margin-left:3%;">
             <!-- 사용자 지정 모임비로 대체 -->
-            <p>₩ 모임비 10000원</p>
+            <p>₩ 모임비 {{ meeting.meetingMoney }}원</p>
             <!-- 현재인원/사용자 지정 참여인원 수로 대체 -->
-            <p style="margin-left:5%;">참여가능 (3/4)</p>
+            <p style="margin-left:5%;">
+              참여가능 (3/4)
+            </p>
           </div>  
 
         

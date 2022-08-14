@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.sharespot.entity.*;
+import com.sharespot.repo.*;
+import com.sharespot.service.FileService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,20 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.sharespot.entity.Follow;
-import com.sharespot.entity.Post;
-import com.sharespot.entity.PostLike;
-import com.sharespot.entity.Scrap;
-import com.sharespot.entity.User;
-import com.sharespot.repo.FollowRepository;
-import com.sharespot.repo.PostLikeRepository;
-import com.sharespot.repo.PostRepository;
-import com.sharespot.repo.ScrapRepository;
-import com.sharespot.repo.UserRepository;
 import com.sharespot.service.PostLikeService;
 import com.sharespot.service.ScrapService;
 
 @RestController
+@Slf4j
 @RequestMapping("/main")
 public class PostController {
 
@@ -48,6 +43,12 @@ public class PostController {
 	private PostLikeRepository postLikeRepository;	
 	@Autowired
 	private PostLikeService postLikeService;
+
+	@Autowired
+	private PostImageRepository postImageRepository;
+
+	@Autowired
+	private FileService fileService;
 	
 	@GetMapping("/posts")
 	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
@@ -57,10 +58,20 @@ public class PostController {
 	}
 	
 	@GetMapping("/posts/{postNo}")
-	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 댓글</b>을 반환한다.")
-	public ResponseEntity<Optional<Post>> getPost(@PathVariable int postNo){
-		Optional<Post> post = postRepository.findById(postNo);
-		return new ResponseEntity<>(post, HttpStatus.OK);
+	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 이미지</b>를 반환한다.")
+	public ResponseEntity<List<byte[]>> getPost(@PathVariable int postNo){
+		// post_image 테이블에서 해당 게시물의 사진들의 경로들을 목록으로 받아와서 list목록으로 사진을 반환한다.
+		List<PostImage> paths = postImageRepository.findAllByPostId(postNo);
+		List<byte[]> images = new ArrayList<>();
+		for (PostImage p : paths){
+			try {
+				images.add(fileService.getImage(p.getFilePath()));
+			}catch (Exception e){
+				log.debug(e.getMessage());
+			}
+		}
+
+		return new ResponseEntity<>(images , HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/user/{userId}")

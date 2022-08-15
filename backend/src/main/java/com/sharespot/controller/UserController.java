@@ -47,15 +47,15 @@ public class UserController {
 
 	@Autowired
 	private JwtServiceImpl jwtService;
-	
+
 	@Autowired
 	private UserService userService;
 	private final UserRepository userRepository;
-	
+
 	@Autowired
 	private MailService mailService;
 
-	@PostMapping("/signup")   //회원 등록
+	@PostMapping("/signup") // 회원 등록
 	@ApiOperation(value = "회원 등록")
 	public ResponseEntity<Map<String, Object>> signUp(@RequestBody User user) throws ParseException {
 
@@ -95,17 +95,17 @@ public class UserController {
 
 	@DeleteMapping("{id}")
 	@ApiOperation(value = "회원 탈퇴")
-	public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable int id , HttpServletRequest request) {
-		
+	public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable int id, HttpServletRequest request) {
+
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		System.out.println("통신 들어옴");
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(jwtService.getUserId() == id) {
+			if (jwtService.getUserId() == id) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
-			System.out.println(id);
+				System.out.println(id);
 				try {
-					//	로그인 사용자 정보.
+					// 로그인 사용자 정보.
 					userService.deleteUser(id);
 					result.put("message", SUCCESS);
 					result.put("Authorization", null);
@@ -115,12 +115,12 @@ public class UserController {
 					result.put("message", e.getMessage());
 					status = HttpStatus.ACCEPTED;
 				}
-			}else {
+			} else {
 				// 토큰 정보랑 불일치 할 경우
 				result.put("message", FAIL);
 			}
-		
-		}else {
+
+		} else {
 			// 토근 자체가 유효하지 않음
 			result.put("Authorization", null);
 			result.put("message", FAIL);
@@ -134,22 +134,22 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) throws Exception {
 
 		logger.debug("logout - 호출");
-		Map<String,Object> result = new HashMap<>();
-		
+		Map<String, Object> result = new HashMap<>();
+
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
 			result.put("Authorization", null);
 			result.put("message", SUCCESS);
 		} else {
 			result.put("message", FAIL);
 		}
-		
+
 		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 
 	}
-	
+
 	@GetMapping("/valid")
 	@ApiOperation(value = "토큰 유효성 검사")
-	public ResponseEntity<Map<String,Object>> tokenValidation(HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> tokenValidation(HttpServletRequest request) {
 		logger.info("tokenValidation");
 		Map<String, Object> result = new HashMap<>();
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
@@ -158,24 +158,22 @@ public class UserController {
 			result.put("Authorization", null);
 			result.put("message", FAIL);
 		}
-		return new ResponseEntity<Map<String,Object>>(result, HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 	}
 
-	
-	
 	@GetMapping("/info/{userid}")
 	@ApiOperation(value = "유저 본인의 정보를 불러온다", notes = "보려는 정보가 본인의 것이면 정보를 반환한다")
-	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable ("userid") int userid ,@ApiParam(value = "인증할 회원의 아이디.", required = true) 
-			HttpServletRequest request) {
-		//logger.debug("userid : {} ", userid);
+	public ResponseEntity<Map<String, Object>> getUserInfo(@PathVariable("userid") int userid,
+			@ApiParam(value = "인증할 회원의 아이디.", required = true) HttpServletRequest request) {
+		// logger.debug("userid : {} ", userid);
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 //		System.out.println(userid);
 		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(jwtService.getUserId() == userid) {
+			if (jwtService.getUserId() == userid) {
 				// 유효한 토큰에 자기 정보 요청 맞을경우
 				try {
-					//	로그인 사용자 정보.
+					// 로그인 사용자 정보.
 					Optional<User> userInfo = userService.getUser(userid);
 					result.put("userInfo", userInfo);
 					result.put("message", SUCCESS);
@@ -185,12 +183,12 @@ public class UserController {
 					result.put("message", e.getMessage());
 					status = HttpStatus.ACCEPTED;
 				}
-			}else {
+			} else {
 				// 토큰 정보랑 불일치 할 경우
 				result.put("message", FAIL);
 			}
-		
-		}else {
+
+		} else {
 			// 토근 자체가 유효하지 않음
 			result.put("Authorization", null);
 			result.put("message", FAIL);
@@ -200,14 +198,15 @@ public class UserController {
 
 	@GetMapping("info/user/{userId}")
 	@ApiOperation(value = "다른 유저의 마이페이지 조회", notes = "이름, 닉네임, 소개글, 프로필이미지, 뱃지보유여부, 유저등급, 가입날짜")
-	public ResponseEntity<Object[]> getOtherUserInfo(@PathVariable ("userId") int userId){
+	public ResponseEntity<Object[]> getOtherUserInfo(@PathVariable("userId") int userId) {
 		Object[] users = userRepository.findByUserId(userId);
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
 	@PutMapping("{userid}")
 	@ApiOperation(value = "회원 수정", notes = "입력한 정보를 바탕으로 회원정보를 수정한다")
-	public ResponseEntity<Map<String, Object>> modifyUser(@RequestBody User user, HttpServletRequest request)  throws Exception {
+	public ResponseEntity<Map<String, Object>> modifyUser(@RequestBody User user, HttpServletRequest request)
+			throws Exception {
 
 		User userEntity = User.builder().user_id(user.getUser_id()).email(user.getEmail()).password(user.getPassword())
 				.phone(user.getPhone()).gender(user.getGender()).birth(user.getBirth()).name(user.getName())
@@ -221,38 +220,27 @@ public class UserController {
 
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		if (jwtService.isUsable(request.getHeader("Authorization"))) {
-			if(jwtService.getUserId() != userEntity.getUser_id()) {
-				// 유효한 토큰에 자기 정보 요청 맞을경우
-				try {
-					//	로그인 사용자 정보.
-					userService.modify(user.getEmail(), userEntity);
-					result.put("message", SUCCESS);
-					status = HttpStatus.ACCEPTED;
-				} catch (Exception e) {
-					logger.error("회원 정보 업데이트 실패: {}", e);
-					result.put("message", e.getMessage());
-					status = HttpStatus.ACCEPTED;
-				}
-			}else {
-				// 토큰 정보랑 불일치 할 경우
-				result.put("message", FAIL);
-			}
-		
-		}else {
-			// 토근 자체가 유효하지 않음
-			result.put("Authorization", null);
-			result.put("message", FAIL);
-		}
-		return new ResponseEntity<Map<String, Object>>(result, status);
 
+		// 유효한 토큰에 자기 정보 요청 맞을경우
+		try {
+			// 로그인 사용자 정보.
+			userService.modify(user.getEmail(), userEntity);
+			result.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("회원 정보 업데이트 실패: {}", e);
+			result.put("message", e.getMessage());
+			status = HttpStatus.ACCEPTED;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(result, status);
 
 	}
 
 	@PostMapping("/login")
 	@ApiOperation(value = "회원 로그인", notes = "입력한 정보를 바탕으로 로그인")
-	public ResponseEntity<Map<String, Object>> login (
-			@RequestBody @ApiParam(value = "로그인은 이메일과 비밀번호를 이용.", required = true) User user)  throws Exception {
+	public ResponseEntity<Map<String, Object>> login(
+			@RequestBody @ApiParam(value = "로그인은 이메일과 비밀번호를 이용.", required = true) User user) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -266,7 +254,7 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {
-				
+
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
@@ -278,24 +266,32 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@PostMapping("/login/reset/{email}")
 	@ApiOperation(value = "비밀번호 재발급", notes = "해당 이메일로 비밀번호 재발급")
-	public ResponseEntity<Integer> resetPassword(@PathVariable String email){
-		
+	public ResponseEntity<Integer> resetPassword(@PathVariable String email) {
+
 		int result = 0;
-		
-		if(userService.idCheck(email)) {
-			
+
+		if (userService.idCheck(email)) {
+
 			User user = userRepository.findByEmail(email).get();
 			Mail mail = userService.sendEmailService(email, user.getName());
-			
+
 			mailService.mailSend(mail);
 			result = 1;
 		}
-		
-		return new ResponseEntity<Integer>(result,HttpStatus.OK);
-	}
 
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/list")
+	@ApiOperation(value = "모든 유저 리스트 출력",notes = "가입한 모든 유저를 출력한다.")
+	public ResponseEntity<List<User>> userList(){
+		
+		List<User> users = userService.getUsers();
+		
+		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+	}
 
 }

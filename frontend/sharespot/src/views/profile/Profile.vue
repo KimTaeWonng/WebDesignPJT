@@ -39,6 +39,7 @@ export default {
     mounted() {
 
     },
+    
     async created() {
         
         // const following = await http.get(`/users/${this.$route.params.userid}/following`);
@@ -72,7 +73,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('getAccounts'),
+        ...mapActions(userStore, ['getAccounts']),
 
         // getAccounts: function ($state) {
         //     console.log('getAccounts params')

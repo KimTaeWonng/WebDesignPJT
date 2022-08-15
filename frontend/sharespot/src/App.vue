@@ -36,7 +36,7 @@ export default {
     if (this.isLogin) {
       this.show = true;
       this.id = JSON.parse(sessionStorage.getItem("vuex")).userStore.userInfo.user_id;
-      console.log(this.id)
+      // console.log(this.id)
     }
   },
 

@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 
@@ -34,5 +35,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	public int countByClassBig(@Param("userId") int userId, @Param("word") String word);
 
 	public List<Post> findByClassBigOrderByLikeCntDesc(String word);
+
+    public Optional<Post> findByPostId(Integer PostId);
 
 }

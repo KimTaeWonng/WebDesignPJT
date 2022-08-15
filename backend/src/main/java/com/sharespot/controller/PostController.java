@@ -63,19 +63,17 @@ public class PostController {
 	
 	@GetMapping("/posts/{postNo}")
 	@ApiOperation(value = "게시글 상세조회", notes = "<b>해당 게시글의 이미지</b>를 반환한다.")
-	public ResponseEntity<List<byte[]>> getPost(@PathVariable int postNo){
+	public ResponseEntity<Optional<Post>> getPost(@PathVariable int postNo){
+		Optional<Post> post = postRepository.findByPostId(postNo);
+		return new ResponseEntity<>(post, HttpStatus.OK);
+	}
+
+	@GetMapping("/posts/{postNo}/image")
+	@ApiOperation(value = "게시글 이미지 목록조회", notes = "<b>해당 게시글의 이미지 목록</b>을 반환한다.")
+	public ResponseEntity<List<PostImage>> getPostImage(@PathVariable int postNo){
 		// post_image 테이블에서 해당 게시물의 사진들의 경로들을 목록으로 받아와서 list목록으로 사진을 반환한다.
 		List<PostImage> paths = postImageRepository.findAllByPostId(postNo);
-		List<byte[]> images = new ArrayList<>();
-		for (PostImage p : paths){
-			try {
-				images.add(fileService.getImage(p.getFilePath()));
-			}catch (Exception e){
-				log.debug(e.getMessage());
-			}
-		}
-
-		return new ResponseEntity<>(images , HttpStatus.OK);
+		return new ResponseEntity<>(paths , HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/user/{userId}")

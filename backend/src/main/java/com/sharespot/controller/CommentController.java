@@ -1,5 +1,8 @@
 package com.sharespot.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +46,8 @@ public class CommentController {
 		
 		User user = userService.getUser(comment.getUserId()).get();
 		
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		Comment commentEntity = Comment.builder()
 				.postId(comment.getPostId())
@@ -50,7 +55,7 @@ public class CommentController {
 				.comment(comment.getComment())
 				.userImage(user.getProfileImage())
 				.userNick(user.getNickname())
-				.uploadTime(comment.getUploadTime())
+				.uploadTime(sdf.format(timestamp))
 				.build();
 		
 		int result = 1;

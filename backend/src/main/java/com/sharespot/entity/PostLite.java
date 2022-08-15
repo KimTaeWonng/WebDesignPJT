@@ -34,5 +34,6 @@ public class PostLite {
 	private String nickname;
 	private String content;
 	private String image;
+	private String postGpsName;
 
 }

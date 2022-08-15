@@ -69,6 +69,7 @@ public class User {
 	@Column(name = "PB")
 	private Integer PB;
 	private Integer userGrade;
+	private String registerTime;
 	
 	@OneToOne
 	@JoinColumn(name ="user_id")

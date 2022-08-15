@@ -208,7 +208,7 @@ export default {
               for (const i of items) {
                 const data = {
                   postId: i.postId,
-                  userId: this.userInfo.user_id,
+                  userId: i.userId,
                   userImage: i.userImage,
                   postLat: i.postLat,
                   postLng: i.postLng,

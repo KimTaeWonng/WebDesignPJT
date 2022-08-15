@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    public static final String FIND_USER_POST = "SELECT post_id, class_big, post_lat, post_lng, image, class_big ,upload_time FROM post_table WHERE user_id = :userId order by post_id desc";
+    public static final String FIND_USER_POST = "SELECT post_id, class_big, post_lat, post_lng, image ,upload_time FROM post_table WHERE user_id = :userId order by post_id desc";
 
     @Query(value = FIND_USER_POST, nativeQuery = true)
     public List<Object[]> findByUserId2(@Param("userId") int userId);    

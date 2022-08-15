@@ -61,8 +61,9 @@
         </v-container>
         <!-- 뱃지보유여부가 false인 경우 -->
         <v-container class="mt-5" fluid v-if="this.bd == 0">
-          <div class="text-center">아직 보유하고 있는 뱃지가 없어요.😥</div>
-          <div class="text-center">다양한 활동으로 뱃지를 모아보세요!</div>
+          <v-img :src="require('@/assets/badge/badge_no.png')"></v-img>
+          <div class="text-center mt-5">아직 보유하고 있는 뱃지가 없어요.😥</div>
+          <div class="text-center mt-2">다양한 활동으로 뱃지를 모아보세요!</div>
         </v-container>
       </v-tab-item>
       <!-- 저장됨 탭 -->

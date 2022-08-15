@@ -3,7 +3,7 @@
     <back-menu title="팔로워" class="mb-1"></back-menu>
     <v-list>
       <v-list-item-group>
-       <follow-item v-for="(user, k) in followerUsers" :key="k" :userDetail="user"></follow-item>
+       <follow-item v-for="user in followerUsers" :key="`${user.user_id}`" :userDetail="user"></follow-item>
       </v-list-item-group>
     
       <!-- <v-list-item-group>

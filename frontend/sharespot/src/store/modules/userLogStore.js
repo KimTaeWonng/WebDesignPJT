@@ -5,6 +5,7 @@ const userLogStore = {
     // state: data. 수정은 store에서만 하는게 좋다.
     state: {
         searchWordList: [], //최근 검색 단어
+        searchWord: "",
         scrapPostList: [], //스크랩한 게시글 아이디
         likePostList: [], //좋아요한 게시글 아이디
         followingUserList: [], // 내가 팔로우하는 유저 정보들
@@ -43,6 +44,12 @@ const userLogStore = {
             console.log("userLogStore: " + state.searchWordList);
         }
         ,
+        SAVE_SEARCH_WORD(state,searchWord ) { 
+            state.searchWord = searchWord;
+            console.log("userLogStore: " + state.searchWord);
+        }
+        ,
+
         // 게시글 스크랩
         SCRAP_POST_LIST(state, postId) { 
             state.scrapPostList.push(postId);
@@ -139,6 +146,11 @@ const userLogStore = {
         unlikePostList({ commit}, postId) { 
             commit('UNLIKE_POST_LIST', postId);
             console.log("userLogStore: action" + postId);
+        },
+
+        saveSearchWord({ commit }, searchWord) {
+            commit('SAVE_SEARCH_WORD', searchWord)
+            console.log("userLogStore: action" + searchWord);
         },
         
         // 팔로우 버튼을 눌렀을 때

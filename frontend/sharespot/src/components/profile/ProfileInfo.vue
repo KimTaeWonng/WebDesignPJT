@@ -169,7 +169,12 @@ export default {
 
     
   },
-
+  updated() {
+    console.log('updated');
+    this.$nextTick(function () {
+      // 모든 화면이 렌더링된 후 실행합니다.
+    });
+  },
   mounted() {},
   
   computed: {

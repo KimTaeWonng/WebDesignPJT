@@ -52,9 +52,14 @@
           <v-row
             ><!-- 변경: 최근 검색 v-if 걸어서 최근 검색 있는 경우 보여주기 -->
             <v-list three-line subheader>
-              <v-subheader class="ml-4">최근 검색</v-subheader>
+              <v-row v-if="searchContent == null">
+              <v-subheader  class="ml-4">최근 검색</v-subheader>
+              <search-item style="margin-left: 10px;" v-for="user1 in this.searchWordList" :key="`${user1.user_id}`" :userDetail="user1"></search-item>
               <!-- 유저 프로필 + 닉네임 + 소개 -->
-              <v-list-item @click="changeRouter()">
+              </v-row>
+
+              
+              <!-- <v-list-item @click="changeRouter()">
                 <v-row style="padding: 10px">
                   <v-col cols="3" align="center">
                     <v-icon size="60">mdi-face-woman-profile</v-icon>
@@ -79,16 +84,18 @@
                     </v-list-item-content>
                   </v-col>
                 </v-row>
-              </v-list-item>
+              </v-list-item> -->
             </v-list>
           </v-row>
           <v-row>
             <!-- 최근 검색 없는 경우 -->
-            <v-subheader class="ml-4">최근 검색 내역이 없습니다.</v-subheader>
+            
+            <v-subheader v-if="searchContent == null && this.searchWordList.length == 0" class="ml-4">최근 검색 내역이 없습니다.</v-subheader>
           </v-row>
           <!-- 변경: 검색 결과 내역 -->
-          <v-row id="searchResult">
-            <v-list three-line subheader>
+          <v-row v-if="searchContent != null" id="searchResult">
+            <search-item style="margin-left: 10px;"  v-for="user2 in searchResultList" :key="`${user2.user_id}`" :userDetail="user2"></search-item>
+            <!-- <v-list three-line subheader>
               <v-list-item @click="changeRouter()">
                 <v-row style="padding: 10px">
                   <v-col cols="3" align="center">
@@ -115,16 +122,18 @@
                   </v-col>
                 </v-row>
               </v-list-item>
-            </v-list>
+            </v-list> -->
           </v-row>
-          <p
+          <V-col
+            v-if="this.searchResultList.length != 0"
             class="mt-1"
             align="center"
             style="font-size: 12px; color: #289672"
-            @click="changeRouter('userSearchResult')"
+            @click="goSearch('userSearchResult')"
           >
             결과 모두 보기
-          </p>
+          </V-col>
+
         </v-card>
         <!-- 모달 content end -->
       </v-dialog>
@@ -133,8 +142,13 @@
 </template>
 
 <script>
+import { http } from "@/js/http.js";
+import SearchItem from '../profile/SearchItem.vue';
+import { mapState, mapActions } from "vuex";
+const userLogStore = "userLogStore";
+
 export default {
-  components: {},
+  components: { SearchItem },
   name: "MainHeader",
 
   data() {
@@ -143,13 +157,46 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
-      searchContent: " ",
+      searchContent: "",
+      searchResultList: [],
+
     };
   },
 
   mounted() {},
+  async created() {
+    this.userItem = this.userDetail;
+    console.log('최근검색',this.searchWordList)
+    
 
+  },
+  computed: {
+    
+    ...mapState(userLogStore, ["searchWordList", "searchWord"]),
+
+  },
   methods: {
+    ...mapActions(userLogStore, ["saveSearchWord"]),
+
+    goSearch(pageName) {
+      console.log("click");
+      this.saveSearchWord(this.searchContent) 
+      this.dialog = false;
+      if (this.$route.path != pageName) {
+        this.$router.push({
+          name: "userSearchResult",
+          params: {word: this.searchContent}
+        })
+      }
+    },
+
+    // searchContent로 검색하는 함수
+    async search(searchContent) {
+      console.log(searchContent);
+      const result = await http.get(`/main/search-user/${searchContent}`);
+      console.log('검색결과', result.data)
+      this.searchResultList = result.data.slice(0, 3)
+    },
     changeRouter(pageName) {
       console.log("click");
       this.dialog = false;
@@ -157,10 +204,8 @@ export default {
         this.$router.push({ name: pageName });
       }
     },
-    // searchContent로 검색하는 함수
-    search(searchContent) {
-      console.log(searchContent);
-    },
+
+
   },
 };
 </script>

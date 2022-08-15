@@ -5,6 +5,7 @@ const userLogStore = {
     // state: data. 수정은 store에서만 하는게 좋다.
     state: {
         searchWordList: [], //최근 검색 단어
+        searchWord: "",
         scrapPostList: [], //스크랩한 게시글 아이디
         likePostList: [], //좋아요한 게시글 아이디
         followingUserList: [], // 내가 팔로우하는 유저 정보들
@@ -33,6 +34,9 @@ const userLogStore = {
     mutations: {
         // 유저 정보 검색기록
         SET_SEARCH_WORD_LIST(state, searchWord) { 
+            if (state.searchWordList.length > 5) {
+                state.searchWordList.splice(0, 1);
+            }
             state.searchWordList.push(searchWord);
             console.log("userLogStore: " +state.searchWordList);
         },
@@ -43,6 +47,12 @@ const userLogStore = {
             console.log("userLogStore: " + state.searchWordList);
         }
         ,
+        SAVE_SEARCH_WORD(state,searchWord ) { 
+            state.searchWord = searchWord;
+            console.log("userLogStore: " + state.searchWord);
+        }
+        ,
+
         // 게시글 스크랩
         SCRAP_POST_LIST(state, postId) { 
             state.scrapPostList.push(postId);
@@ -78,9 +88,22 @@ const userLogStore = {
 
         // 언팔로우 버튼을 눌렀을 때
         UNFOLLOW(state, user) {
-            const i = state.followingUserList.indexOf(user);
-            state.followingUserList.splice(i,1);
-            console.log("userLogStore: " + state.followingUserList);
+
+            console.log(state.followingUserList)
+            for (var i = 0; i < state.followingUserList.length; i++) {
+                console.log('언팔로우 인덱싱중')
+
+                if (state.followingUserList[i].user_id == user) {
+                    break
+              }
+            }
+        
+            // const i = state.followingUserList.indexOf(user);
+            // console.log(state.followingUserList)
+            console.log('유저', user)
+            state.followingUserList.splice(i, 1);
+            console.log('지운 사람의 아이디와 인덱스', user, i)
+            console.log("userLogStore: ", state.followingUserList);
         },
 
         // 나를 팔로우하는 팔로워 유저 리스트
@@ -95,7 +118,7 @@ const userLogStore = {
         // 유저 정보 검색기록
         setSearchWordList({ commit }, searchWord) { 
             commit('SET_SEARCH_WORD_LIST', searchWord)
-            console.log("userLogStore: action" +searchWord);
+            console.log("userLogStore: action" + searchWord);
         },
 
         // 유저 정보 검색 초기화
@@ -127,34 +150,45 @@ const userLogStore = {
             commit('UNLIKE_POST_LIST', postId);
             console.log("userLogStore: action" + postId);
         },
+
+        saveSearchWord({ commit }, searchWord) {
+            commit('SAVE_SEARCH_WORD', searchWord)
+            console.log("userLogStore: action" + searchWord);
+        },
         
         // 팔로우 버튼을 눌렀을 때
         async follow(store, followInfo){
             try { 
 
                 const response = await http.post(`/users/${followInfo.res.followerId}/follow`, followInfo.res);
-                console.log(response.data);
-                console.log('여기')
-                console.log(followInfo.user)
+
+                if (response.data === 1) {
+                    console.log('팔로우 성공')
+                }
+                
+
                 store.commit("FOLLOW", followInfo.user);
-                console.log(userLogStore)
+
             } catch (error) {
                 alert("팔로우에 실패했습니다.");
             }
             // commit('FOLLOW', user);
 
-            console.log("userLogStore: action" );
+            // console.log("userLogStore: action" );
         },
 
         // 언팔로우 버튼을 눌렀을 때
         async unfollow(store, followInfo){
             try { 
-                console.log(followInfo.userId)
+
                 const response = await http.delete(`/users/${followInfo.userId}/${followInfo.followerId}/`);
-                console.log(response.data);
-                console.log('언팔')
-                store.commit("UNFOLLOW", followInfo.user);
-                console.log(userLogStore)
+
+                if (response.data == 1) {
+                    console.log('언팔로우 성공')
+                }
+
+                store.commit("UNFOLLOW", followInfo.userId);
+
             } catch (error) {
                 alert("언팔로우에 실패했습니다.");
             }
@@ -163,7 +197,7 @@ const userLogStore = {
             //         console.log('팔로우취소')
             //       }
 
-            console.log("userLogStore: action" );
+            // console.log("userLogStore: action" );
         },
 
 
@@ -171,8 +205,10 @@ const userLogStore = {
         async setFollowingUserList(store, userid) { 
             try { 
                 const response = await http.get(`/users/${userid}/following`);
-                //console.log(response.data);
+                console.log('리스폰스.data', response.data);
                 store.commit("SET_FOLLOWING_USERLIST", response.data);
+
+                
             } catch (error) {
                 alert("팔로잉 유저리스트 조회를 실패하였습니다.");
              }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.sharespot.entity.Mail;
 import com.sharespot.entity.User;
 import com.sharespot.repo.UserRepository;
+import com.sharespot.security.EncryptionUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +30,9 @@ public class UserService {
 	public User createUser(User user) {
 
 //		if (userRepository.findById(user.getId()) == null) {
-//		User temp = user;
-//		temp.setPassword(Encry);
-		User saveduser = userRepository.save(user);
+		User temp = user;
+		temp.setPassword(EncryptionUtils.encryptSHA256(user.getPassword()));
+		User saveduser = userRepository.save(temp);
 		return saveduser;
 //		}else {
 //			
@@ -82,7 +83,7 @@ public class UserService {
 	}
 
 	public User login(String email, String password) {
-		return userRepository.findByEmailAndPassword(email, password);
+		return userRepository.findByEmailAndPassword(email, EncryptionUtils.encryptSHA256(password));
 	}
 
 	public List<User> getUsersBySearch(String searchWord, String searchWord2) {
@@ -103,7 +104,7 @@ public class UserService {
 			mail.setTitle(name + "님의 비밀번호 재발급 안내 이메일 입니다.");
 			mail.setContent("안녕하세요. ShareSpot 임시 비밀번호 안내 관련 이메일 입니다. 재설정된 비밀번호는" + "[ " + str + " ] 입니다.");
 
-			temp.setPassword(str);
+			temp.setPassword(EncryptionUtils.encryptSHA256(str));
 			userRepository.save(temp);
 
 			return mail;

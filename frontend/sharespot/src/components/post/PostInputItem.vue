@@ -71,7 +71,7 @@
                         multiple
                         style="display: none"
                         ref="image"
-                        @change="uploadImg()"
+                        @change="upload()"
                         type="file"
                         id="chooseFile"
                         name="chooseFile"
@@ -313,6 +313,7 @@
 
 <script>
 import tag from "@/assets/json/tag.json";
+import { http2 } from "@/js/http.js";
 
 
 export default {
@@ -385,12 +386,34 @@ export default {
   },
   computed: {},
   methods: {
-    uploadImg() {
-      var image = this.$refs["image"].files[0];
-      const url = URL.createObjectURL(image);
-      this.image = url;
-      this.user.img.push(this.image);
-      console.log(this.user.img)
+    upload() {
+      const formData = new FormData();
+      const file = this.$refs["image"].files[0];
+      console.log(file)
+
+      formData.append('files', file);
+      console.log(formData)
+
+      http2.post('/file', formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }).then((res) => {
+        // console.log(res)
+        // console.log(res.data[0])
+
+        const imagePath = res.data[0]
+        this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
+        // console.log(this.image)
+        this.user.img.push(this.image)
+        console.log(this.user.img)
+        // console.log(this.group.group_image)
+        // http2.get(`/file?imagePath=${imagePath}`)
+        
+
+      }).catch((err) => {
+        console.log(err)
+      })
     },
 
     test() {

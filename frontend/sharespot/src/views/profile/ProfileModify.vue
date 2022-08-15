@@ -232,10 +232,10 @@ export default {
     upload() {
       const formData = new FormData();
       const file = this.$refs["image"].files[0];
-      console.log(file)
+      // console.log(file)
 
       formData.append('files', file);
-      console.log(formData)
+      // console.log(formData)
 
       http2.post('/file', formData, {
         headers: {

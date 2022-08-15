@@ -15,7 +15,7 @@ import com.sharespot.entity.UserLite;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
 	boolean existsByEmail(String email);
-	Optional<User> findByemail(String email);
+	Optional<User> findByEmail(String email);
 	User findByEmailAndPassword(String email, String password);
 	List<User> findByNicknameContainingOrIntroduceContaining(String searchWord,String searchWord2);
 	List<User> findByUserGradeGreaterThanEqual(int usergrade);

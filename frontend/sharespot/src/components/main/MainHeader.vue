@@ -124,14 +124,16 @@
               </v-list-item>
             </v-list> -->
           </v-row>
-          <p
+          <V-col
+            v-if="this.searchResultList.length != 0"
             class="mt-1"
             align="center"
             style="font-size: 12px; color: #289672"
-            @click="changeRouter('userSearchResult')"
+            @click="goSearch('userSearchResult')"
           >
             결과 모두 보기
-          </p>
+          </V-col>
+
         </v-card>
         <!-- 모달 content end -->
       </v-dialog>
@@ -155,7 +157,7 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
-      searchContent: " ",
+      searchContent: "",
       searchResultList: [],
 
     };
@@ -176,7 +178,7 @@ export default {
   methods: {
     ...mapActions(userLogStore, ["saveSearchWord"]),
 
-    changeRouter(pageName) {
+    goSearch(pageName) {
       console.log("click");
       this.saveSearchWord(this.searchContent) 
       this.dialog = false;
@@ -187,6 +189,7 @@ export default {
         })
       }
     },
+
     // searchContent로 검색하는 함수
     async search(searchContent) {
       console.log(searchContent);
@@ -194,6 +197,14 @@ export default {
       console.log('검색결과', result.data)
       this.searchResultList = result.data.slice(0, 3)
     },
+    changeRouter(pageName) {
+      console.log("click");
+      this.dialog = false;
+      if (this.$route.path != pageName) {
+        this.$router.push({ name: pageName });
+      }
+    },
+
 
   },
 };

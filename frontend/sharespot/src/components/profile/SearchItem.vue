@@ -57,9 +57,11 @@ const userLogStore = "userLogStore";
       console.log('유저데이터', data)
 
       // 중복 제거
-      if (this.setSearchWordList.length != 0) {
-        for (var i = 0; i < this.setSearchWordList.length; i++) {
-          if (this.setSearchWordList[i].user_id == this.userItem.user_id) {
+      console.log('this.setSearchWordList.length', this.searchWordList)
+      if (this.searchWordList.length != 0) {
+
+        for (var i = 0; i < this.searchWordList.length; i++) {
+          if (this.searchWordList[i].user_id == this.userItem.user_id) {
             break
           }
           else {
@@ -70,11 +72,11 @@ const userLogStore = "userLogStore";
       else {
         this.setSearchWordList(data);
 
-        }
+      }
 
+      console.log('user_id', user_id)
 
-
-      // 아래는 이동 코드
+      //아래는 이동 코드
 
       this.$router.push({
         name: "profile",

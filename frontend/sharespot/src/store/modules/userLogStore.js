@@ -34,6 +34,9 @@ const userLogStore = {
     mutations: {
         // 유저 정보 검색기록
         SET_SEARCH_WORD_LIST(state, searchWord) { 
+            if (state.searchWordList.length > 5) {
+                state.searchWordList.splice(0, 1);
+            }
             state.searchWordList.push(searchWord);
             console.log("userLogStore: " +state.searchWordList);
         },
@@ -115,7 +118,7 @@ const userLogStore = {
         // 유저 정보 검색기록
         setSearchWordList({ commit }, searchWord) { 
             commit('SET_SEARCH_WORD_LIST', searchWord)
-            console.log("userLogStore: action" +searchWord);
+            console.log("userLogStore: action" + searchWord);
         },
 
         // 유저 정보 검색 초기화

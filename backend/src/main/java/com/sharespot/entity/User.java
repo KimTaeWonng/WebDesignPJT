@@ -37,7 +37,7 @@ public class User {
 	private String email;
 	
 	@NotBlank(message = "비밀번호를 입력해주세요")
-	@Size(min = 8, max = 20, message = "비밀번호는 8~20자로 입력해주세요")
+	//@Size(min = 8, max = 20, message = "비밀번호는 8~20자로 입력해주세요")
 	private String password;
 	
 	@Pattern(regexp = "(01[016789])(\\d{3,4})(\\d{4})", message ="올바른 휴대폰 번호를 입력해주세요.")

@@ -16,7 +16,7 @@ public class MailConfig {
 		
 		javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setUsername("apxjvm@gmail.com");
-        javaMailSender.setPassword("lhrszjommjqhuvrp"); //이제 구글 보안은 이 앱 비밀번호를 사용해서 해야합니다. (2단계 보안 설정 후)
+        javaMailSender.setPassword("lhrszjommjqhuvrp"); //이제 구글 보안은 이 앱 비밀번호를 사용해서 해야합니다. (2단계 보안 설정 후 앱 비밀번호를 발급받아 사용)
 
         javaMailSender.setPort(465);
 

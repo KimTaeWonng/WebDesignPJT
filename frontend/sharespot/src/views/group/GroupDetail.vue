@@ -1,10 +1,11 @@
 <template>
     <v-container>
-      <back-menu title="보드게임조아조아" :isRight="true" type="groupDetail" class="mb-1"></back-menu>
+      <back-menu :title="this.group.group_name" :isRight="true" type="groupDetail" class="mb-1"></back-menu>
       <v-row class="text-center">
         <v-col cols="12">
-          <group-info :no="no"></group-info>
-          <meeting-list-item v-for="(meeting,i) in meetings" :key="i" :detailGroup="meeting"></meeting-list-item>
+          <group-info :detailGroup="this.group">
+          </group-info>
+          <meeting-list-item v-for="(meeting,i) in meetings" :key="i" :detailMeeting="meeting"></meeting-list-item>
         </v-col>
       </v-row>
     </v-container>
@@ -17,36 +18,43 @@ import MeetingListItem from '@/components/group/MeetingListItem.vue';
 import { http } from "@/js/http.js";
 
 export default {
-    components: { BackMenu, GroupInfo, MeetingListItem },
+  components: { BackMenu, GroupInfo, MeetingListItem},
+
     name: 'S07P12A505GroupDetail',
     
     data() {
         return {
             isRight: true,
-            groups: [],
+            group: [],
             meetings: [],
             no: 0,
         };
     },
 
+
     mounted() {
     },
 
     methods: {
-      // async getGroup() {
-      //   const response = await http.get(`/group/${this.group}`);
-      //   this.groups = response.data
-      // },
+      async getGroup() {
+        const response = await http.get(`/group/${this.no}`);
+        this.group = response.data
+
+        // console.log(this.group)
+        // console.log('타입', typeof(this.group))
+      },
       
       async getMeeting() {
-        const response = await http.get(`/group/${this.meeting.groupId}/meetings`);
+        const response = await http.get(`/group/${this.no}/meetings`);
         this.meetings = response.data
+        // console.log('확인중', this.meetings)
       },
     },
 
     created() {
+    this.no = Number(this.$route.params.groupno)
+    this.getGroup()
     this.getMeeting()
-    this.no = this.$route.params.groupno
   },
 
 

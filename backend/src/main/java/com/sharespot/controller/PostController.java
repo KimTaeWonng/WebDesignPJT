@@ -1,5 +1,9 @@
 package com.sharespot.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +91,9 @@ public class PostController {
 		
 		User user = userRepository.findById(post.getUserId()).get();
 		
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		log.info(sdf.format(timestamp));
 		
 		Post postEntity = Post.builder()
 			.userId(post.getUserId())
@@ -101,7 +108,7 @@ public class PostController {
 			.classSmall(post.getClassSmall())
 			.classWho(post.getClassWho())
 			.classWhere(post.getClassWhere())
-			.uploadTime(post.getUploadTime())
+			.uploadTime(sdf.format(timestamp))
 				.likeCnt(post.getLikeCnt())
 				.commentCnt(post.getCommentCnt())
 			.build();

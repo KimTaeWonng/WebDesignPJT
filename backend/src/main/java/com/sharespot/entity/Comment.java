@@ -38,5 +38,5 @@ public class Comment {
 	
 	private String userImage;
 	private String userNick;
-	private Date uploadTime;
+	private String uploadTime;
 }

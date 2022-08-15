@@ -1,5 +1,6 @@
 package com.sharespot.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,8 @@ public class UserService {
 			if (StringUtils.isNotBlank(value.getPhone())) {
 				user.setPhone(value.getPhone());
 			}
+			user.setAL(value.getAL());
+			user.setBD(value.getBD());
 			user.setPB(value.getPB());
 			user.setBR(value.getBR());
 			user.setGD(value.getGD());

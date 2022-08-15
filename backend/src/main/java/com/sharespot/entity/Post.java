@@ -38,7 +38,7 @@ public class Post {
 	private String classSmall;
 	private String classWho;
 	private String classWhere;
-	private Date uploadTime;
+	private String uploadTime;
 	
 	private Integer likeCnt;
 	private Integer commentCnt;

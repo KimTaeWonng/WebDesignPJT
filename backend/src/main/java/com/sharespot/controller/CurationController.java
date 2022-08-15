@@ -100,7 +100,9 @@ public class CurationController {
 								.userId(p.getUserId())
 								.nickname(p.getNickname())
 								.content(p.getContent())
+								.postGpsName(p.getPostGpsName())
 								.image(p.getImage()).build();
+				
 				
 				hotPost.add(temp);
 				break;

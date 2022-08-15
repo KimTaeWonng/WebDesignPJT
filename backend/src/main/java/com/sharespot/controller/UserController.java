@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sharespot.entity.Mail;
 import com.sharespot.entity.User;
 import com.sharespot.repo.UserRepository;
 import com.sharespot.service.JwtService;
 import com.sharespot.service.JwtServiceImpl;
+import com.sharespot.service.MailService;
 import com.sharespot.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +51,9 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	private final UserRepository userRepository;
+	
+	@Autowired
+	private MailService mailService;
 
 	@PostMapping("/signup")   //회원 등록
 	@ApiOperation(value = "회원 등록")
@@ -272,6 +277,24 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@PostMapping("/login/reset/{email}")
+	@ApiOperation(value = "비밀번호 재발급", notes = "해당 이메일로 비밀번호 재발급")
+	public ResponseEntity<Integer> resetPassword(@PathVariable String email){
+		
+		int result = 0;
+		
+		if(userService.idCheck(email)) {
+			
+			User user = userRepository.findByEmail(email).get();
+			Mail mail = userService.sendEmailService(email, user.getName());
+			
+			mailService.mailSend(mail);
+			result = 1;
+		}
+		
+		return new ResponseEntity<Integer>(result,HttpStatus.OK);
 	}
 
 

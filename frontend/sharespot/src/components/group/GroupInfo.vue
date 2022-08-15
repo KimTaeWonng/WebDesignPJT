@@ -16,7 +16,7 @@
         <div style="text-align:left; vertical-align:middle;">
           <div style="font-weight:bold; margin-top:3%; margin-left:3%; font-size:5vw;" class="d-flex justify-content-between">
             <!-- 그룹 이름으로 대체 -->
-            <p style="float:left;">{{ group.group_name }}</p>
+            <p style="float:left;">{{ this.group.group_name }}</p>
             <v-btn color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
               가입  
             </v-btn>
@@ -26,7 +26,7 @@
         
         <div style="margin-left:3%; text-align:left; font-size:3.3vw; font-weight:bold;">
           <!-- 그룹 설명으로 대체 -->
-					{{ group.group_content }}
+					{{ this.group.group_content }}
 				</div>
         
         <br>
@@ -191,7 +191,6 @@
       </v-dialog>
 
 
-            <MeetingListItem></MeetingListItem>
           </p>
         </div>
 
@@ -202,7 +201,6 @@
 
 
 <script>
-import MeetingListItem from '@/components/group/MeetingListItem.vue';
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules"
 import { http } from "@/js/http.js";
@@ -217,8 +215,12 @@ extend("required", {
 
 
 export default {
-  components: { MeetingListItem, ValidationProvider, ValidationObserver },
-    name: "GroupInfo",
+  components: { ValidationProvider, ValidationObserver },
+  name: "GroupInfo",
+  props: {
+    detailGroup: Object
+  },
+
 
     data() {
         return {
@@ -238,10 +240,7 @@ export default {
             groupId: 1,
           },
 
-          // async created() {
-          //   this.group.group_manager = this.userInfo.user_id;
-          //   this.group.group_nick = this.userInfo.nickname;
-          // },
+        
         };
     },
 
@@ -249,8 +248,16 @@ export default {
     // ...mapState(userStore, ["userInfo"]),
     // },
 
+  created() {
+            this.group = this.detailGroup
+            console.log('그으룹', this.group)
+            
+            // this.group.group_manager = this.userInfo.user_id;
+            // this.group.group_nick = this.userInfo.nickname;
+          },
     mounted() {
     },
+
     methods: {
       submit() {
       this.$refs.observer.validate();
@@ -267,17 +274,18 @@ export default {
       }
     },
 
-    
+    async getGroup() {
+        const response = await http.get(`/group/${this.no}`);
+        this.group = response.data
+      },
     },
-    async created() {
-      this.group = this.detailGroup
-      this.meeting.groupId = this.group.group_id
+    // async getMeeting() {
+    //     const response = await http.get(`/group/${this.meeting.groupId}/meetings`);
+    //     this.meetings = response.data
+    //   },
+    // },
 
-    },
 
-    props: {
-      detailGroup: Object,
-    },
 };
 </script>
 

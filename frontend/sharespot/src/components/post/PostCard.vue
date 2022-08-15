@@ -117,7 +117,7 @@
           <v-icon> {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }} </v-icon>
         </v-btn>
         <!-- 지도 버튼 -->
-        <v-btn icon>
+        <v-btn icon  v-if="this.post.postLat != null" @click="clickMap()">
           <v-icon> mdi-map-outline </v-icon>
         </v-btn>
       </v-col>
@@ -318,6 +318,15 @@ export default {
           console.log("스크랩 취소 실패");
         }
       }
+    },
+    async clickMap(){
+      let gpsName = this.post.postGpsName;
+      console.log(gpsName);
+      if(gpsName == null){
+        gpsName = this.post.postLat
+      }
+      let link = "https://map.kakao.com/link/to/" + gpsName +"," + this.post.postLat +"," + this.post.postLng;
+      window.open(link);
     },
   },
 };

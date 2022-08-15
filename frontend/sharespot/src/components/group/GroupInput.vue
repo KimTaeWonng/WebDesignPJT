@@ -56,17 +56,18 @@
               <div>
                 <form method="post" enctype="multipart/form-data">
                   <input
-                    style="display: none"
+                    @change='upload'
                     ref="image"
-                    @change="uploadImg()"
+                    style="display:none"
                     type="file"
                     id="chooseFile"
                     name="chooseFile"
                     accept="image/*"
                   />
+                
                 </form>
-                <!-- <v-file-input v-model="group.image" accept="image/*"></v-file-input> -->
               </div>
+
             </div>
 
             <div style="margin-left: 5%; margin-right: 5%">
@@ -224,7 +225,7 @@
 <script>
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required, regex } from "vee-validate/dist/rules";
-import { http } from "@/js/http.js";
+import { http, http2 } from "@/js/http.js";
 import { mapState } from "vuex";
 
 const userStore = "userStore";
@@ -274,6 +275,7 @@ export default {
       },
     };
   },
+
   async created() {
     this.group.group_manager = this.userInfo.user_id;
     this.group.group_nick = this.userInfo.nickname;
@@ -285,29 +287,69 @@ export default {
   },
 
   methods: {
-    uploadImg() {
-      var image = this.$refs["image"].files[0];
-      const url = URL.createObjectURL(image);
-      this.image = url;
-      this.group.group_image = this.image;
+    // uploadImg() {
+    //   var image = this.$refs["image"].files[0];
+    //   const url = URL.createObjectURL(image);
+    //   this.image = url;
+    //   this.group.group_image = this.image;
+    // },
+
+    upload() {
+      const formData = new FormData();
+      const file = this.$refs["image"].files[0];
+      console.log(file)
+
+      formData.append('files', file);
+      console.log(formData)
+
+      http2.post('/file', formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }).then((res) => {
+        console.log(res)
+        console.log(res.data[0])
+
+        const imagePath = res.data[0]
+        this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
+        console.log(this.image)
+        this.group.group_image = this.image
+        console.log(this.group.group_image)
+        // http2.get(`/file?imagePath=${imagePath}`)
+        
+
+      }).catch((err) => {
+        console.log(err)
+      })
+      
+      
     },
 
     submit() {
       this.$refs.observer.validate();
     },
+
     // 그룹 생성 함수
     async registGroup() {
-      console.log(this.group)
-      console.log(this.groupType)
-      
+
       const response = await http.post("/group", this.group);
-      // console.log(response.data);
+      console.log(response);
+
       if (response.data == 1) {
         alert("그룹 생성이 완료되었습니다.");
         this.$router.push({ name: "groupList" });
       } else {
         alert("그룹 생성에 실패하였습니다.");
       }
+
+      const getgroup = await http.get('/group')
+      
+      const newgroup = getgroup.data.at(-1);
+
+      const gid = newgroup.group_id
+  
+      await http.post(`/group/${gid}/${this.group.group_manager}`, {gid:gid, userId:this.group.group_manager} )
+
     },
     // async registGroup() {
     //   console.log(this.group)
@@ -334,7 +376,7 @@ export default {
     //   }
     // },
   },
-};
+}
 </script>
 
 <style scoped></style>

@@ -17,7 +17,7 @@
       <v-col cols="4" align="center">
         <v-avatar size="80px">
           <v-img v-if="user.image == null">
-          <v-icon>mdi-account</v-icon></v-img>
+          <v-icon size="50">mdi-account-circle</v-icon></v-img>
           <v-img v-else :src="user.image"></v-img>
         </v-avatar>
       </v-col>
@@ -29,11 +29,11 @@
             <div style="font-size: 13px">게시글</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollower()">
-            <div style="font-weight: 800">{{ followerCnt }}</div>
+            <div style="font-weight: 800">{{ this.followerCnt }}</div>
             <div style="font-size: 13px">팔로워</div>
           </v-col>
           <v-col cols="4" align="center" @click="moveFollowing()">
-            <div style="font-weight: 800"> {{ followingCnt }} </div>
+            <div style="font-weight: 800"> {{ this.followingCnt }} </div>
             <div style="font-size: 13px">팔로잉</div>
             
           </v-col>
@@ -112,12 +112,12 @@ export default {
         nickname: "",
         image: "",
         postCnt: "",
-        followerCnt: "",
-        followingCnt: "",
         introduce:
           "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
       },
-      isfollow: false
+      isfollow: false,
+      followerCnt: "",
+      followingCnt: "",
     };
   },
   async created() {
@@ -126,32 +126,55 @@ export default {
 
 
     const profileUser = await http.get(`users/info/user/${this.$route.params.userid}`);
+    console.log('프로필유저', profileUser)
+    console.log('profileUser.data[0]', profileUser.data)
     const followerList = await http.get(`users/${this.$route.params.userid}/follower`);
-    const followingList = await http.get(`users/${this.$route.params.userid}/following`);
-
-    this.user.nickname = profileUser.data[0][1]
-    this.user.introduce = profileUser.data[0][2]
-    this.user.image = profileUser.data[0][3]
-
- 
-    
-    this.followingCnt = followingList.data.length
-    this.followerCnt = followerList.data.length
 
 
-    console.log('여기', this.userInfo.user_id)
 
-    
-    for (var i = 0; i <= followerList.data.length; i++) {
-      if (followerList.data[i].user_id == this.userInfo.user_id) {
-        
-        this.isfollow = true
+    // 만약 내 페이지면 팔로잉리스트를 겟할 필요가 없음
+    if (this.userInfo.user_id == this.$route.params.userid) {
+      this.followingCnt = this.followingUserList.length
+    }
+    else {
+      const followingList = await http.get(`users/${this.$route.params.userid}/following`); 
+      this.followingCnt = followingList.data.length
+    }
+
+      console.log(this.userInfo.user_id)
+    if (followerList.data.length !== 0) {
+      for (var i = 0; i < followerList.data.length; i++) {
+        if (followerList.data[i].user_id == this.userInfo.user_id) {
+          
+          this.isfollow = true
         break
       }
 
     };
-  },
 
+    }
+  
+    
+    this.user.nickname = profileUser.data[0][1]
+    console.log('profileUser.data[0]', profileUser.data)
+    this.user.introduce = profileUser.data[0][2]
+    this.user.image = profileUser.data[0][3]
+    this.followerCnt = followerList.data.length
+
+ 
+    
+
+
+
+
+    
+  },
+  updated() {
+    console.log('updated');
+    this.$nextTick(function () {
+      // 모든 화면이 렌더링된 후 실행합니다.
+    });
+  },
   mounted() {},
   
   computed: {
@@ -163,7 +186,7 @@ export default {
   
   methods: {
 
-    ...mapActions(userLogStore, ["setFollowingUserList", "follow", "unfollow"]),
+    ...mapActions(userLogStore, ["follow", "unfollow"]),
 
 
 
@@ -203,9 +226,9 @@ export default {
         "userId": this.$route.params.userid
       }
       const user = {  // 팔로우할 유저
-        userid: this.$route.params.userid,
+        user_id: this.$route.params.userid,
         nickname: this.user.nickname,
-        img: this.user.image,
+        profileImage: this.user.image,
         introduce: this.user.introduce
       }
 
@@ -216,6 +239,7 @@ export default {
 
 
       this.follow(followInfo);
+      
       this.isfollow=true
       this.followerCnt ++
       // const temp = await http.get(`users/info/otherUser/${this.$route.params.userid}`);
@@ -225,15 +249,31 @@ export default {
     },
 
   async clickUnFollow() {
+
+    // console.log(this.followingUserList)
+    // for (var i = 0; i < this.followingUserList.length; i++) {
+    //     console.log('언팔로우 인덱싱중')
+    //     console.log(this.followingUserList.length)
+    //     if (this.followingUserList[i].user_id == this.$route.params.userid) {
+    //         console.log(this.followingUserList[i])
+
+    //         console.log(this.unfollowindex)
+    //         break
+    //   }
+    // }
+    //   console.log('팔로워 위치', i)
+
     const followInfo = {
       "followerId": this.userInfo.user_id,
-      "userId": this.$route.params.userid
+      "userId": this.$route.params.userid,
     }
+
+  
     console.log('팔로팔로')
     console.log(followInfo)
     this.unfollow(followInfo);
 
-    console.log('팔로잉유저리스트', this.followingUserList[0])
+    console.log('팔로잉유저리스트', this.followingUserList)
     this.isfollow = false
     this.followerCnt --
     },

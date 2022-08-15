@@ -53,35 +53,22 @@
                   >add_circle_outline</span
                 ></label
               >
-              <!-- <div>
+              <div>
                 <form method="post" enctype="multipart/form-data">
                   <input
-                    
+                    @change='upload'
                     ref="image"
-                  
+                    style="display:none"
                     type="file"
                     id="chooseFile"
                     name="chooseFile"
                     accept="image/*"
                   />
-                  <input type="submit">
-                </form>
-              </div> -->
-
-              <div>
-                <form method="post" action="/api/file/upload" enctype="multipart/form-data">
-                    <input type="file" name="files" multiple="multiple">
-                    <input type="submit">
-                </form>
-
-                <form method="get" action="/api/file">
-                    파일경로:<input type="text" name="imagePath">
-                    <input type="submit" value="조회">
+                
                 </form>
               </div>
-            </div>
 
-            
+            </div>
 
             <div style="margin-left: 5%; margin-right: 5%">
               <v-img
@@ -307,29 +294,47 @@ export default {
     //   this.group.group_image = this.image;
     // },
 
+    upload() {
+      const formData = new FormData();
+      const file = this.$refs["image"].files[0];
+      console.log(file)
+
+      formData.append('files', file);
+      console.log(formData)
+
+      http2.post('/file', formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }).then((res) => {
+        console.log(res)
+        console.log(res.data[0])
+
+        const imagePath = res.data[0]
+        this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
+        console.log(this.image)
+        this.group.group_image = this.image
+        console.log(this.group.group_image)
+        // http2.get(`/file?imagePath=${imagePath}`)
+        
+
+      }).catch((err) => {
+        console.log(err)
+      })
+      
+      
+    },
+
     submit() {
       this.$refs.observer.validate();
     },
 
     // 그룹 생성 함수
     async registGroup() {
-      console.log(this.group)
-      console.log(this.groupType)
-
-      const imageFile = this.$refs["image"].files[0];
-      console.log('이미지파일', imageFile)
-
-      const imagePath = await http2.post("/file", imageFile.name)
-      console.log(imagePath)
-
-      // const image_response = await http2.get(`/file/imagePath=${imagePath}`)
-      // console.log(image_response.data)
-      // this.image = image_response.data
-      // this.group.group_image = this.image
-
 
       const response = await http.post("/group", this.group);
-      // console.log(response.data);
+      console.log(response);
+
       if (response.data == 1) {
         alert("그룹 생성이 완료되었습니다.");
         this.$router.push({ name: "groupList" });
@@ -337,8 +342,14 @@ export default {
         alert("그룹 생성에 실패하였습니다.");
       }
 
-      // const addUser = await http.post(`/group/${this.group.group_id}/${this.group.group_manager}`, this.group.group_nick )
-      // console.log(addUser)
+      const getgroup = await http.get('/group')
+      
+      const newgroup = getgroup.data.at(-1);
+
+      const gid = newgroup.group_id
+  
+      await http.post(`/group/${gid}/${this.group.group_manager}`, {gid:gid, userId:this.group.group_manager} )
+
     },
     // async registGroup() {
     //   console.log(this.group)

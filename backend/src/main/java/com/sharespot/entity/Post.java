@@ -5,9 +5,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

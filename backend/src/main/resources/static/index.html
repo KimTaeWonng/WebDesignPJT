@@ -6,12 +6,20 @@
 </head>
 <body>
 
+<h1>file upload + text input</h1>
+<form method="post" action="/api/file" enctype="multipart/form-data">
+    <input type="file" name="files" multiple="multiple">
+    <input type="text">
+    <input type="submit">
+</form>
+
 <h1>file upload</h1>
-<form method="post" action="/api/file/upload" enctype="multipart/form-data">
+<form method="post" action="/api/file" enctype="multipart/form-data">
     <input type="file" name="files" multiple="multiple">
     <input type="submit">
 </form>
 
+<h1>file 조회</h1>
 <form method="get" action="/api/file">
     파일경로:<input type="text" name="imagePath">
     <input type="submit" value="조회">

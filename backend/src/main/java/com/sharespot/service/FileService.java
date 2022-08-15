@@ -33,8 +33,8 @@ public class FileService {
     }
 
     public ArrayList<String> uploadImage(@RequestParam MultipartFile[] files) throws IOException {
-//        String UPLOAD_PATH = "/home/ubuntu/src/image/" + LocalDate.now(); // 업로드 할 위치 // 현재 날짜 값 폴더
-        String UPLOAD_PATH = "C:\\Users\\Administrator\\Desktop\\downtest\\" + LocalDate.now(); // 업로드 할 위치 // 현재 날짜 값 폴더
+        String UPLOAD_PATH = "/home/ubuntu/src/image/" + LocalDate.now(); // 업로드 할 위치 // 현재 날짜 값 폴더
+//        String UPLOAD_PATH = "C:\\Users\\Administrator\\Desktop\\downtest\\" + LocalDate.now(); // 업로드 할 위치 // 현재 날짜 값 폴더
 
         ArrayList<String> result = new ArrayList<>();
 

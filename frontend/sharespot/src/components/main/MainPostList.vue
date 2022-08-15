@@ -1,6 +1,11 @@
 <template>
   <v-list>
-    <post-card v-for="(post, i) in posts" :key="i" v-bind="post" :detailPost="post"></post-card>
+    <post-card
+      v-for="(post, i) in posts"
+      :key="i"
+      v-bind="post"
+      :detailPost="post"
+    ></post-card>
   </v-list>
 </template>
 

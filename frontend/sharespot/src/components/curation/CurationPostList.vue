@@ -24,6 +24,11 @@
         :detailPost="post"
       ></post-card>
     </v-list>
+    <infinite-loading v-if="this.type == 'curation'" @infinite="addTag" spinner="wavedots">
+      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
+        게시글을 다 봤어요 :)
+      </div>
+    </infinite-loading>
     
 
     <!-- 상세 태그 검색 플로팅 버튼 -->
@@ -167,6 +172,7 @@ export default {
     return {
       posts: [],
       loadNum: 0,
+      curationLoadNum:0,
       curationPosts: [],
 
       dialog: false,
@@ -284,7 +290,7 @@ export default {
     clear() {
       // 초기화 버튼
     },
-    async addTag() {
+    async addTag($state) {
       this.dialog = false;
       this.type = "curation";
 
@@ -322,18 +328,65 @@ export default {
       this.curationPosts = [];
 
       // 선택된 값을 보내줘서 해당 태그에 맞는 게시물들을 보여줌
-      const getCurationList = await http.get(`search/posts/category/${this.tag_big}/{small}`, {
+      await http.get(`search/posts/category/${this.tag_big}/{small}`, {
         params: {
           small: this.tag_small.join(","),
           who: this.tag_who.join(","),
           where: this.tag_where.join(","),
+          page: this.curationLoadNum,
+          size: 5,
         },
-      });
+        
+      }).then((res) => {
+          if (res.data.totalPages == this.curationLoadNum) {
+            $state.complete();
+          } else {
+            setTimeout(() => {
+              this.curationLoadNum++;
 
-      for (var i = 0; i < getCurationList.data.length; i++) {
-        this.curationPosts.push(getCurationList.data[i]);
-      }
-      console.log(this.curationPosts);
+
+              console.log(res.data.content);
+              const items = res.data.content;
+              for (const i of items) {
+                const datas = {
+                  postId: i.postId,
+                  userId: this.userInfo.user_id,
+                  userImage: i.userImage,
+                  postLat: i.postLat,
+                  postLng: i.postLng,
+                  nickname: i.nickname,
+                  uploadTime: i.uploadTime,
+                  postGpsName: i.postGpsName,
+                  image: i.image,
+                  likeCnt: i.likeCnt,
+                  commentCnt: i.commentCnt,
+                  classBig: i.classBig,
+                  classSmall: i.classSmall,
+                  classWhere: i.classWhere,
+                  classWho: i.classWho,
+                  content: i.content,
+                };
+                this.curationPosts.push(datas);
+              }
+
+              $state.loaded();
+            }, 1000);
+          }
+          if(res.data.last){
+            setTimeout(()=>{
+              $state.complete();
+            },1000);
+            
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // for (var i = 0; i < getCurationList.data.content.length; i++) {
+      //   this.curationPosts.push(getCurationList.data.content[i]);
+      // }
+      // console.log(this.curationPosts);
     },
     //거리조절 아이콘
     season (val) { 

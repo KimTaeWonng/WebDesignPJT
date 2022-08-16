@@ -48,25 +48,25 @@ export default {
   },
   async created() {
     // 내가 팔로잉한 유저들의 게시글 조회
-    try {
-      let response = await http.get(
-        `/main/posts/follow/${this.userInfo.user_id}`
-      );
-      // console.log(response.data.length);
-      if(response.data.length === 0){
-        this.isFollowEmpty = true;
-        // console.log("팔로잉 게시글이 없넹")
-        response = await http.get(
-          `/main/posts`
-        );
-        this.posts = response.data;
-        }else{
-          // console.log("팔로잉 게시글이 생겼어!")
-          this.posts = response.data;
-        }
-    } catch (error) {
-      alert("MainPost 게시물들 조회 실패");
-    }
+    // try {
+    //   let response = await http.get(
+    //     `/main/posts/follow/${this.userInfo.user_id}`
+    //   );
+    //   // console.log(response.data.length);
+    //   if(response.data.length === 0){
+    //     this.isFollowEmpty = true;
+    //     // console.log("팔로잉 게시글이 없넹")
+    //     response = await http.get(
+    //       `/main/posts`
+    //     );
+    //     this.posts = response.data;
+    //     }else{
+    //       // console.log("팔로잉 게시글이 생겼어!")
+    //       this.posts = response.data;
+    //     }
+    // } catch (error) {
+    //   alert("MainPost 게시물들 조회 실패");
+    // }
   },
   mounted() {},
 

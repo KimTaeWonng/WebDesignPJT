@@ -276,10 +276,9 @@
 </template>
 
 <script>
-import { http } from "@/js/http.js";
 import { mapState } from "vuex";
 import tag from "@/assets/json/tag.json";
-import { http2 } from "@/js/http.js";
+import { http } from "@/js/http.js";
 
 const userStore = "userStore";
 
@@ -407,13 +406,13 @@ export default {
       formData.append('files', file);
       console.log(formData)
 
-      http2.post('/file', formData, {
+      http.post('/file', formData, {
         headers: {
           'Content-Type' : 'multipart/form-data'
         }
       }).then((res) => {
-        // console.log(res)
-        // console.log(res.data[0])
+        console.log(res)
+        console.log(res.data[0])
 
         const imagePath = res.data[0]
         this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
@@ -590,6 +589,11 @@ export default {
     console.log(this.userInfo);
 
     // this.type == 'modify' 인 경우 루트 경로의 게시글 내용 가져오기 함수 필요
+    if (this.type == "modify") {
+      const getPost = await http.get(`/main/posts/${this.$route.params.postno}`);
+      console.log("포스트가져오기");
+      this.post = getPost.data;
+    }
   },
 };
 </script>

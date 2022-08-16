@@ -136,7 +136,7 @@ export default {
     }
 
     const member = await http.get(`/group/members/${this.group.group_id}`)
-    this.currentMember = 1+member.data.length
+    this.currentMember = member.data.length
     
   },
 

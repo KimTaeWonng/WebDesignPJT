@@ -225,7 +225,7 @@
 <script>
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required, regex } from "vee-validate/dist/rules";
-import { http, http2 } from "@/js/http.js";
+import { http } from "@/js/http.js";
 import { mapState } from "vuex";
 
 const userStore = "userStore";
@@ -287,7 +287,7 @@ export default {
   },
 
   methods: {
-    upload() {
+    async upload() {
       const formData = new FormData();
       const file = this.$refs["image"].files[0];
       console.log(file)
@@ -295,7 +295,7 @@ export default {
       formData.append('files', file);
       console.log(formData)
 
-      http2.post('/file', formData, {
+      await http.post('/file', formData, {
         headers: {
           'Content-Type' : 'multipart/form-data'
         }
@@ -323,7 +323,7 @@ export default {
     // 그룹 생성 함수
     async registGroup() {
 
-      const response = await http.post("/group", this.group);
+      const response = await http2.post("/group", this.group);
       console.log(response);
 
       if (response.data == 1) {
@@ -333,13 +333,13 @@ export default {
         alert("그룹 생성에 실패하였습니다.");
       }
 
-      const getgroup = await http.get('/group')
+      const getgroup = await http2.get('/group')
       
       const newgroup = getgroup.data.at(-1);
 
       const gid = newgroup.group_id
   
-      await http.post(`/group/${gid}/${this.group.group_manager}`, {gid:gid, userId:this.group.group_manager} )
+      await http2.post(`/group/${gid}/${this.group.group_manager}`, {gid:gid, userId:this.group.group_manager} )
 
     },
     // async registGroup() {

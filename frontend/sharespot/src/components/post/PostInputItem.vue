@@ -93,7 +93,7 @@
                     multiple="multiple"
                     style="display: none"
                     ref="image"
-                    @change="upload()"
+                    @change="upload(); getMeta();"
                     type="file"
                     id="chooseFile"
                     name="chooseFile"
@@ -136,8 +136,8 @@
             </v-col>
           </v-row> -->
 
-    <v-carousel height="290px" width="290px" hide-delimiter-background v-if="user.img.length">
-      <v-carousel-item v-for="(img, i) in user.img" :key="i" :src="img"> </v-carousel-item>
+    <v-carousel height="290px" width="290px" hide-delimiter-background>
+      <v-carousel-item v-for="(img, i) in post.image" :key="i" :src="img"> </v-carousel-item>
     </v-carousel>
     <!-- </v-parallax> -->
 
@@ -286,12 +286,26 @@
   </v-container>
 </template>
 
+
 <script>
 import tag from "@/assets/json/tag.json";
 import { mapState } from "vuex";
 import { http } from "@/js/http.js";
+import EXIF from 'exif-js';
+
 
 const userStore = "userStore";
+
+// window.onload = getExif;
+
+// function getExif() {
+//   var img1 = this.$refs["image"].files[0];
+//   EXIF.getData(img1, function () {
+//     var MetaData = EXIF.getAllTags(this);
+//     console.log(MetaData)
+//   })
+// } 
+
 
 export default {
   name: "PostInputItem",
@@ -311,7 +325,7 @@ export default {
         introduce: "",
         PB: "",
         BR: "",
-        img: [],
+        img: '',
       },
       modal: false,
       dialogm1: "",
@@ -371,7 +385,7 @@ export default {
         classWho: "",
         commentCnt: 0,
         content: "",
-        image: "",
+        image: [],
         likeCnt: 0,
         nickname: "",
         postGpsName: "",
@@ -410,37 +424,64 @@ export default {
     };
   },
   methods: {
-    upload() {
+    async upload() {
       const formData = new FormData();
       const file = this.$refs["image"].files[0];
-      console.log(file);
+      // console.log(file)
 
-      formData.append("files", file);
-      console.log(formData);
+      formData.append('files', file);
+      // console.log(formData)
 
-      http
-        .post("/file", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          console.log(res.data[0]);
+      await http.post('/file', formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }).then((res) => {
+        // console.log(res)
+        // console.log(res.data[0])
 
-          const imagePath = res.data[0];
-          this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`;
-          // console.log(this.image)
-          this.user.img.push(this.image);
-          console.log(this.user.img);
-          // console.log(this.group.group_image)
-          // http2.get(`/file?imagePath=${imagePath}`)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        const imagePath = res.data[0]
+        this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
+        console.log(this.image)
+        this.post.image.push(this.image)
+        // console.log(this.user.img)
+        // console.log(this.group.group_image)
+        // http2.get(`/file?imagePath=${imagePath}`)
+        
+
+      }).catch((err) => {
+        console.log(err)
+      })
     },
+    
+    async getMeta() {
+      const metaImg = this.$refs["image"].files[0];
+      EXIF.getData(metaImg, function () {
+        var exifLong = EXIF.getTag(this, "GPSLongitude");
+        var exifLat = EXIF.getTag(this, "GPSLatitude");
+        var exifLongRef = EXIF.getTag(this, "GPSLongitudeRef");
+        var exifLatRef = EXIF.getTag(this, "GPSLatitudeRef");
 
+        var latitude = 0
+        var longitude = 0
+
+        if (exifLatRef == "S") {
+            latitude = (exifLat[0]*-1) + (( (exifLat[1]*-60) + (exifLat[2]*-1) ) / 3600);						
+        } else {
+            latitude = exifLat[0] + (( (exifLat[1]*60) + exifLat[2] ) / 3600);
+        }
+
+        if (exifLongRef == "W") {
+            longitude = (exifLong[0]*-1) + (( (exifLong[1]*-60) + (exifLong[2]*-1) ) / 3600);						
+        } else {
+            longitude = exifLong[0] + (( (exifLong[1]*60) + exifLong[2] ) / 3600);
+        }
+
+        console.log(latitude) // 위도
+        console.log(longitude) // 경도
+      })
+    },
+    
     test() {
       // console.log(this.user);
       const data = this.categorys;
@@ -485,27 +526,8 @@ export default {
       // 게시글 등록 및 수정하기
       console.log("등록 포스트!");
 
+      // 등록할 때
       if (this.type == "register") {
-        // 등록할 때
-        var sendpost = {
-          classBig: this.tag_big,
-          classSmall: this.tag_small,
-          classWhere: this.tag_where,
-          classWho: this.tag_who,
-          commentCnt: 0,
-          content: this.post.content,
-          image: this.user.img[0],
-          likeCnt: 0,
-          nickname: this.userInfo.nickname,
-          postGpsName: "해안이네", // 임시데이터
-          postLat: 30, // 임시데이터
-          postLng: 120, // 임시데이터
-          uploadTime: "",
-          userId: this.userInfo.user_id,
-          userImage: this.userInfo.profileImage,
-        };
-        console.log(sendpost);
-
         const response = await http.post(`/main/posts`, {
           classBig: this.tag_big,
           classSmall: this.tag_small,
@@ -513,17 +535,30 @@ export default {
           classWho: this.tag_who,
           commentCnt: 0,
           content: this.post.content,
-          image: this.user.img[0],
+          image: this.post.image[0],
           likeCnt: 0,
           nickname: this.userInfo.nickname,
-          postGpsName: "해안이네", // 임시데이터
-          postLat: 30, // 임시데이터
-          postLng: 120, // 임시데이터
+          postGpsName: "해안이네", // 메타데이터 구현 후 변경 필요
+          postLat: 30, // 메타데이터 구현 후 변경 필요
+          postLng: 120, // 메타데이터 구현 후 변경 필요
           uploadTime: "",
           userId: this.userInfo.user_id,
           userImage: this.userInfo.profileImage,
         });
-        // console.log(response);
+
+        const getPosts = await http.get(`/main/posts`);
+        const newPostId = getPosts.data[0].postId;
+        console.log(newPostId);
+
+        // 다중 이미지 업로드
+        // const uploadImages = await http.post(`/file/post`, {
+
+        // }, {
+        //   params: {
+        //     postId: newPostId,
+        //   }
+        // })
+
         if (response.data == 1) {
           this.successDialog = true;
         }
@@ -537,7 +572,7 @@ export default {
         // 뱃지 보유여부 1로 회원정보 수정
         const modifyBD = await http.put(`/users/${this.userInfo.user_id}`, this.userInfo);
         console.log("뱃지보유여부 변경!!");
-        console.log(this.userInfo);
+        // console.log(this.userInfo);
         console.log(modifyBD);
 
         // /users/badge 뱃지생성 api (post)
@@ -632,15 +667,15 @@ export default {
   async created() {
     // this.type == 'modify' 인 경우 루트 경로의 게시글 내용 가져오기 함수 필요
     if (this.type == "modify") {
-      // const getPost = await http.get(`/main/posts/${this.$route.params.postno}`);
-      // console.log("포스트가져오기");
-      // this.post = getPost.data;
-      // console.log(getPost.data);
+      const getPost = await http.get(`/main/posts/${this.$route.params.postno}`);
+      this.post = getPost.data;
       // console.log(this.post);
-      // this.tag_big = getPost.data.classBig;
-      // this.tag_small = getPost.data.classSmall;
-      // this.tag_who = getPost.data.classWho;
-      // this.tag_where = getPost.data.classWhere;
+      this.tag_big = getPost.data.classBig;
+      this.tag_small = getPost.data.classSmall;
+      this.tag_who = getPost.data.classWho;
+      this.tag_where = getPost.data.classWhere;
+      this.isSelected = true;
+      this.user.img.push(this.post.image);
     }
   },
 };

@@ -15,7 +15,7 @@
       :detailPost="post"
     ></post-card>
   </v-list>
-  <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
+  <infinite-loading  @infinite="infiniteHandler" spinner="wavedots">
       <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
@@ -39,6 +39,7 @@ export default {
     return {
       posts: [],
       loadNum: 0,
+      loadSize: 5,
       isFollowEmpty: false,
     };
   },
@@ -80,10 +81,11 @@ export default {
         .get(`/main/posts/follow/${this.userInfo.user_id}`, {
           params: {
             page: this.loadNum,
-            size: 5,
+            size: this.loadSize,
           },
         })
         .then((res) => {
+          
           if (res.data.totalPages == this.loadNum) {
             $state.complete();
           } else {
@@ -91,6 +93,9 @@ export default {
               this.loadNum++;
 
               const items = res.data.content;
+              console.log(items.length);
+              console.log("data "+ res.data.totalPages);
+              
               for (const i of items) {
                 const data = {
                   postId: i.postId,
@@ -115,6 +120,12 @@ export default {
 
               $state.loaded();
             }, 1000);
+          }
+          if(res.data.last){
+            setTimeout(()=>{
+              $state.complete();
+            },1000);
+            
           }
         })
         .catch((err) => {

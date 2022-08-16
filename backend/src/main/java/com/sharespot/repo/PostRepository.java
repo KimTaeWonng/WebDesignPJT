@@ -24,6 +24,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value = FIND_USER_POST, nativeQuery = true)
     public List<Object[]> findByUserId2(@Param("userId") int userId);    
     
+    public List<Post> findByUserIdOrderByPostIdDesc(int userId);
+    
     public Page<Post> findByUserIdOrderByPostIdDesc(int userId, PageRequest pageable);
     
     public List<Post> findAllByOrderByUploadTimeDesc();

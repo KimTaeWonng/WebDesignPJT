@@ -276,10 +276,9 @@
 </template>
 
 <script>
-import { http } from "@/js/http.js";
 import { mapState } from "vuex";
 import tag from "@/assets/json/tag.json";
-import { http2 } from "@/js/http.js";
+import { http } from "@/js/http.js";
 
 const userStore = "userStore";
 
@@ -407,13 +406,13 @@ export default {
       formData.append('files', file);
       console.log(formData)
 
-      http2.post('/file', formData, {
+      http.post('/file', formData, {
         headers: {
           'Content-Type' : 'multipart/form-data'
         }
       }).then((res) => {
-        // console.log(res)
-        // console.log(res.data[0])
+        console.log(res)
+        console.log(res.data[0])
 
         const imagePath = res.data[0]
         this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`

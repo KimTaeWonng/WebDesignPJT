@@ -15,6 +15,11 @@
       :detailPost="post"
     ></post-card>
   </v-list>
+  <infinite-loading v-if="this.type == 'latest'" @infinite="infiniteHandler" spinner="wavedots">
+      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
+        게시글을 다 봤어요 :)
+      </div>
+    </infinite-loading>
   </div>
 </template>
 
@@ -66,6 +71,54 @@ export default {
   methods: {
     deleteInfo(){
       this.isFollowEmpty = false;
+    },
+    
+    async infiniteHandler($state) {
+      // 최신피드 (무한스크롤) 조회
+      await http
+        .get(`/main/search/posts/new`, {
+          params: {
+            page: this.loadNum,
+            size: 5,
+          },
+        })
+        .then((res) => {
+          if (res.data.totalPages == this.loadNum) {
+            $state.complete();
+          } else {
+            setTimeout(() => {
+              this.loadNum++;
+
+              const items = res.data.content;
+              for (const i of items) {
+                const data = {
+                  postId: i.postId,
+                  userId: this.userInfo.user_id,
+                  userImage: i.userImage,
+                  postLat: i.postLat,
+                  postLng: i.postLng,
+                  nickname: i.nickname,
+                  uploadTime: i.uploadTime,
+                  postGpsName: i.postGpsName,
+                  image: i.image,
+                  likeCnt: i.likeCnt,
+                  commentCnt: i.commentCnt,
+                  classBig: i.classBig,
+                  classSmall: i.classSmall,
+                  classWhere: i.classWhere,
+                  classWho: i.classWho,
+                  content: i.content,
+                };
+                this.posts.push(data);
+              }
+
+              $state.loaded();
+            }, 1000);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

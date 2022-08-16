@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import com.sharespot.repo.CommentRepository;
 import com.sharespot.repo.UserRepository;
 import com.sharespot.service.UserService;
 
+@Slf4j
 @RestController
 @RequestMapping("/main/posts")
 public class CommentController {
@@ -48,6 +51,8 @@ public class CommentController {
 		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		System.out.println(sdf.format(timestamp));
 		
 		Comment commentEntity = Comment.builder()
 				.postId(comment.getPostId())

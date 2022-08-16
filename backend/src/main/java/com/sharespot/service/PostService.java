@@ -92,7 +92,7 @@ public class PostService {
 	}
 	
 	public Page<Post> followList(int userId){
-		return postRepository.findByUserIdOrderByPostIdDesc(userId, PageRequest.of(0, 5,Sort.by("postId").ascending()));
+		return postRepository.findByUserIdOrderByPostIdDesc(userId, PageRequest.of(0, 1,Sort.by("postId").descending()));
 	}
 
 }

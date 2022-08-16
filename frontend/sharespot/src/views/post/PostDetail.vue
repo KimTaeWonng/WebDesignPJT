@@ -45,8 +45,16 @@
       <v-dialog v-model="dialog" max-width="200">
         <v-card>
           <div class="text-center" style="font-size: 4vw; align-items: center">
-            <v-col @click.stop="dialog = false()">
-              <span style="color: #ff0000">신고</span>
+            <v-col>
+              <span v-if="this.post.userId == this.userInfo.user_id"
+                ><router-link
+                  class="link"
+                  :to="{ name: 'postModify', params: { postno: this.post.postId } }"
+                >
+                  게시글 수정</router-link
+                ></span
+              >
+              <span v-else style="color: #ff0000">신고</span>
             </v-col>
 
             <v-divider></v-divider>

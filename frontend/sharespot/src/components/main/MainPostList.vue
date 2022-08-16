@@ -15,7 +15,7 @@
       :detailPost="post"
     ></post-card>
   </v-list>
-  <infinite-loading v-if="this.type == 'latest'" @infinite="infiniteHandler" spinner="wavedots">
+  <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
       <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
@@ -26,18 +26,19 @@
 <script>
 import { http } from "@/js/http.js";
 import { mapState } from "vuex";
-
+import InfiniteLoading from "vue-infinite-loading";
 import PostCard from "../post/PostCard.vue";
 
 const userStore = "userStore";
 
 export default {
-  components: { PostCard },
+  components: { PostCard, InfiniteLoading },
   name: "SharespotMainPostList",
 
   data() {
     return {
       posts: [],
+      loadNum: 0,
       isFollowEmpty: false,
     };
   },
@@ -72,11 +73,11 @@ export default {
     deleteInfo(){
       this.isFollowEmpty = false;
     },
-    
+
     async infiniteHandler($state) {
       // 최신피드 (무한스크롤) 조회
       await http
-        .get(`/main/search/posts/new`, {
+        .get(`/main/posts/follow/${this.userInfo.user_id}`, {
           params: {
             page: this.loadNum,
             size: 5,

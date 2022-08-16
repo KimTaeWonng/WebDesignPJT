@@ -186,7 +186,7 @@ public class PostController {
 		List<Post> savedPost = new ArrayList<Post>();
 		
 		for(Follow f : followr_list) {
-			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(f.getFollowerId());
+			Page<Post> post = postRepository.findByUserIdOrderByPostIdDesc(f.getFollowerId(), PageRequest.of(0, 5,Sort.by("postId").ascending()));
 			
 			for(Post p :post) {
 				savedPost.add(p);

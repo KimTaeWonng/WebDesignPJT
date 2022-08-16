@@ -350,6 +350,7 @@ export default {
         gd: 1, // 성별공개여부
         bd: 0, // 뱃지보유여부
         pb: 0, // 비공개계정
+        registerTime: "",
       },
       confirmPwd: "",
 
@@ -413,8 +414,10 @@ export default {
         this.user.gd = 0;
       }
 
+      console.log(this.user);
+
       const response = await http.post("/users/signup", this.user);
-      // console.log(response.data);
+      console.log(response);
       // console.log(this.user);
 
       if (response.data.message == "success") {

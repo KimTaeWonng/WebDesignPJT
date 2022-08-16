@@ -3,7 +3,7 @@
       <back-menu :title="this.group.group_name" :isRight="true" type="groupDetail" class="mb-1"></back-menu>
       <v-row class="text-center">
         <v-col cols="12">
-          <group-info :detailGroup="this.group">
+          <group-info :detailGroup="group">
           </group-info>
           <meeting-list-item v-for="(meeting,i) in meetings" :key="i" :detailMeeting="meeting"></meeting-list-item>
         </v-col>
@@ -25,8 +25,8 @@ export default {
     data() {
         return {
             isRight: true,
-            group: [],
-            meetings: [],
+            group: {},
+            meetings: {},
             no: 0,
         };
     },
@@ -39,20 +39,22 @@ export default {
       async getGroup() {
         const response = await http.get(`/group/${this.no}`);
         this.group = response.data
+      
 
         // console.log(this.group)
-        // console.log('타입', typeof(this.group))
+        // console.log(typeof(this.group))
       },
       
       async getMeeting() {
         const response = await http.get(`/group/${this.no}/meetings`);
         this.meetings = response.data
-        // console.log('확인중', this.meetings)
+        // console.log(this.meetings)
       },
     },
 
     created() {
     this.no = Number(this.$route.params.groupno)
+    console.log(this.no)
     this.getGroup()
     this.getMeeting()
   },

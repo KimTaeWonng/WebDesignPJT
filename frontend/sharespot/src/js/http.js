@@ -10,7 +10,7 @@ const http = axios.create({
 });
 
 const http2 = axios.create({
-    baseURL: "https://i7a505.p.ssafy.io/api/",
+    baseURL: "https://localhost:9999/api/",
     headers: {
         "Content-type": "application/json"
     },

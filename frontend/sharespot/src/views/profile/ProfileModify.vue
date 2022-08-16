@@ -188,7 +188,7 @@
 <script>
 import BackMenu from "@/components/layout/BackMenu.vue";
 import { mapState } from "vuex";
-import { http2 } from "@/js/http.js";
+import { http } from "@/js/http.js";
 
 const userStore = "userStore";
 
@@ -229,25 +229,25 @@ export default {
       console.log(this.user.img);
     },
 
-    upload() {
+    async upload() {
       const formData = new FormData();
       const file = this.$refs["image"].files[0];
-      // console.log(file)
+      console.log(file)
 
       formData.append('files', file);
-      // console.log(formData)
+      console.log(formData)
 
-      http2.post('/file', formData, {
+      await http.post('/file', formData, {
         headers: {
           'Content-Type' : 'multipart/form-data'
         }
       }).then((res) => {
-        // console.log(res)
-        // console.log(res.data[0])
+        console.log(res)
+        console.log(res.data[0])
 
         const imagePath = res.data[0]
         this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
-        // console.log(this.image)
+        console.log(this.image)
         this.user.img = this.image
         // console.log(this.group.group_image)
         // http2.get(`/file?imagePath=${imagePath}`)

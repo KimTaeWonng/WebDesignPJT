@@ -49,6 +49,7 @@ public class CommentController {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
+		System.out.println(sdf.format(timestamp));
 		Comment commentEntity = Comment.builder()
 				.postId(comment.getPostId())
 				.userId(comment.getUserId())

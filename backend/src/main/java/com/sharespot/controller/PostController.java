@@ -1,14 +1,8 @@
 package com.sharespot.controller;
 
-<<<<<<< Updated upstream
 
-=======
-import java.io.IOException;
->>>>>>> Stashed changes
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

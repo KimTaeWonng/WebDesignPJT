@@ -46,18 +46,18 @@
         >
 
         <!-- 거리조절 -->
-<v-subheader>거리조절 : {{slider}} km 이내</v-subheader>
-      <v-row class="distance-bar">
-        <v-col cols="12">
-          <v-slider
-            v-model="slider"
-            :max="max"
-            :min="min"
-            :thumb-size="24"
-            thumb-label="always"
-          ></v-slider>
-        </v-col>
-      </v-row>
+        <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
+        <v-row class="distance-bar">
+          <v-col cols="12">
+            <v-slider
+              v-model="slider"
+              :max="max"
+              :min="min"
+              :thumb-size="24"
+              thumb-label="always"
+            ></v-slider>
+          </v-col>
+        </v-row>
 
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
@@ -320,6 +320,9 @@ export default {
 
       this.curationPosts = [];
 
+      console.log(this.tag_small);
+      console.log(this.tag_small.join(","));
+
       // 선택된 값을 보내줘서 해당 태그에 맞는 게시물들을 보여줌
       const getCurationList = await http.get(`search/posts/category/${this.tag_big}/{small}`, {
         params: {
@@ -335,13 +338,15 @@ export default {
       console.log(this.curationPosts);
     },
     //거리조절 아이콘
-    season (val) { 
-        return this.icons[val]
-      },
+    season(val) {
+      return this.icons[val];
+    },
   },
 };
 </script>
 
 <style scoped>
-.distance-bar{max-width: 95%;}
+.distance-bar {
+  max-width: 95%;
+}
 </style>

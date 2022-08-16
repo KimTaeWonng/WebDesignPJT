@@ -52,25 +52,19 @@ public class FileController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-//    @PostMapping("/post")
-//    @ApiOperation(value = "게시판 이미지 업로드", notes = "선택된 이미지 파일들을 서버에 업로드하고 post_image 테이블에 추가한다.")
-//    public ResponseEntity<List<String>> uploadPostFile(@RequestParam MultipartFile[] files, @RequestParam int postId) throws IllegalStateException {
-//        List<String> result = null;
-//        try {
-//            result = fileService.uploadImage(files);
-//
-//            for (String r : result){
-//                PostImage postImage = PostImage.builder()
-//                        .postId(postId)
-//                        .filePath(r)
-//                        .build();
-//                postImageRepository.save(postImage);
-//            }
-//
-//        }catch (Exception e){
-//            log.debug("이미지 업로드 중 에러 : {}", e.getMessage());
-//        }
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
+    @PostMapping("/post/{postId}")
+    @ApiOperation(value = "게시판 이미지 업로드", notes = "선택된 이미지 파일들을 서버에 업로드하고 post_image 테이블에 추가한다.")
+    public ResponseEntity<Integer> uploadPostFile(@RequestBody String[] list ,@PathVariable int postId) throws IllegalStateException {
+        int result = 1;
+        for (String l : list) {
+            PostImage postImage = PostImage.builder()
+                    .postId(postId)
+                    .filePath(l)
+                    .build();
+            postImageRepository.save(postImage);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 }

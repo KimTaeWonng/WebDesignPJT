@@ -1,5 +1,6 @@
 package com.sharespot.controller;
 
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -15,7 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -181,20 +184,26 @@ public class PostController {
 	
 	@GetMapping("/posts/follow/{userId}")
 	@ApiOperation(value = "팔로잉한 유저들의 게시글", notes = "userId가 팔로잉한 유저들이 쓴 게시글들만 조회")
-	public ResponseEntity<List<Post>> followList(@PathVariable int userId, @RequestParam int page, @RequestParam int size){
+	public ResponseEntity<Page<Post>> followList(@PathVariable int userId, @RequestParam int page, @RequestParam int size){
 		
 		List<Follow> followingList = followRepository.findByFollowerId(userId);
 		List<Post> savedPost = new ArrayList<>();
 
 		for(Follow f : followingList) {
-			Page<Post> post = postRepository.findByUserIdOrderByPostIdDesc(
-					f.getUserId(), PageRequest.of(page, size,Sort.by("postId").descending()));
+			
+			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(f.getUserId());			
 			for(Post p :post) {
 				savedPost.add(p);
 			}
 		}
 		
-		return new ResponseEntity<>(savedPost,HttpStatus.OK);
+		
+		Pageable pageable = PageRequest.of(page, size,Sort.Direction.DESC,"postId");
+		final int start = (int)pageable.getOffset();
+		final int end = Math.min((start+pageable.getPageSize()), savedPost.size());
+		final Page<Post> pagedPost = new PageImpl<Post>(savedPost.subList(start, end), pageable, savedPost.size());
+		
+		return new ResponseEntity<>(pagedPost,HttpStatus.OK);
 		
 	}
 	

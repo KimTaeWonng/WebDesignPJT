@@ -5,7 +5,7 @@
       type="info"
       v-if="isFollowEmpty"
     >
-      팔로우한 유저가 없어서 모든 게시물이 표시됩니다.
+      팔로우한 유저의 게시글이 없어서 모든 게시물이 표시됩니다.
     </v-alert>
   <v-list>
     <post-card
@@ -48,13 +48,13 @@ export default {
       // console.log(response.data.length);
       if(response.data.length === 0){
         this.isFollowEmpty = true;
-        // console.log("팔로우한 유저가 없넹")
+        // console.log("팔로잉 게시글이 없넹")
         response = await http.get(
           `/main/posts`
         );
         this.posts = response.data;
         }else{
-          // console.log("팔로워가 생겼어!")
+          // console.log("팔로잉 게시글이 생겼어!")
           this.posts = response.data;
         }
     } catch (error) {

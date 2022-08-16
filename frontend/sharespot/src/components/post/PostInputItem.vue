@@ -3,7 +3,7 @@
     <!-- 상단 네브바 -->
     <v-row class="text-center d-flex mb-5" align="center" style="margin-top: 3px">
       <!-- 닫기 버튼 -->
-      <v-col cols="2" @click="changeRouter('')">
+      <v-col cols="2" @click="goMain('')">
         <v-icon>mdi-close</v-icon>
       </v-col>
       <!-- 로고 -->
@@ -21,6 +21,35 @@
         </v-row>
       </v-col>
     </v-row>
+
+    <!-- 게시 완료 dialog -->
+    <v-dialog v-model="successDialog" max-width="290">
+      <v-card>
+        <div>
+          <br />
+          <br />
+        </div>
+
+        <div class="text-center" style="color: rgb(40, 150, 114)">
+          <span class="material-icons" style="font-size: 80px"> task_alt </span>
+        </div>
+
+        <div class="text-center">
+          <div style="font-weight: bold"></div>
+          게시글이 등록되었습니다!
+        </div>
+
+        <div class="text-center" style="margin-top: 10%">
+          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark> 확인 </v-btn>
+        </div>
+
+        <div>
+          <br />
+          <br />
+        </div>
+      </v-card>
+    </v-dialog>
+
     <!-- 프로필 사진 변경 start 카드 크기 반응형으로 -->
     <!-- <v-row justify="space-around" style="margin: 0%">
       <v-card height="290px" width="290px">
@@ -47,35 +76,31 @@
       </v-card>
     </v-row> -->
 
-  
-        <!-- :style="{backgroundImage:`url('${image}')`}" -->
-        <div class="ml-9" style="margin: 5%">
-          <v-row align="center">
-            이미지 추가
-            <v-btn color="primary" dark icon>
-              <label for="file">
+    <!-- :style="{backgroundImage:`url('${image}')`}" -->
+    <div class="ml-9" style="margin: 5%">
+      <v-row align="center">
+        이미지 추가
+        <v-btn color="primary" dark icon>
+          <label for="file">
+            <v-avatar color="#289672" size="20">
+              <label for="chooseFile">
+                <v-icon color="#ffffff" small> mdi-plus </v-icon>
+              </label>
 
-                <v-avatar color="#289672" size="20">
-                  
-                  <label for="chooseFile">
-                    <v-icon color="#ffffff" small> mdi-plus </v-icon>
-                  </label>
-
-                  <div>
-                    <form method="post" enctype="multipart/form-data">
-                      <input
-                        multiple
-                        style="display: none"
-                        ref="image"
-                        @change="upload()"
-                        type="file"
-                        id="chooseFile"
-                        name="chooseFile"
-                        accept="image/*"
-                      />
-                    </form>
-                  </div>
-
+              <div>
+                <form method="post" enctype="multipart/form-data">
+                  <input
+                    multiple="multiple"
+                    style="display: none"
+                    ref="image"
+                    @change="upload()"
+                    type="file"
+                    id="chooseFile"
+                    name="chooseFile"
+                    accept="image/*"
+                  />
+                </form>
+              </div>
             </v-avatar>
           </label>
         </v-btn>
@@ -263,8 +288,8 @@
 
 
 <script>
-import { mapState } from "vuex";
 import tag from "@/assets/json/tag.json";
+import { mapState } from "vuex";
 import { http } from "@/js/http.js";
 
 
@@ -304,6 +329,7 @@ export default {
       modal: false,
       dialogm1: "",
       dialog: false,
+      successDialog: false,
 
       // componentKey: 0, // 소분류 key changing 이용하기 위한 key
 
@@ -452,12 +478,46 @@ export default {
       this.tag_who = this.whos[this.selected_3];
       this.tag_where = this.wheres[this.selected_4];
     },
+    goProfile(pageName) {
+      if (this.$route.path != pageName) {
+        this.$router.push({
+          name: "profile",
+          params: { userid: this.userInfo.user_id },
+        });
+      }
+    },
+    goMain(pageName) {
+      if (this.$route.path != pageName) {
+        this.$router.push({
+          name: "mainList",
+        });
+      }
+    },
     async registerPost() {
       // 게시글 등록 및 수정하기
       console.log("등록 포스트!");
 
       if (this.type == "register") {
         // 등록할 때
+        var sendpost = {
+          classBig: this.tag_big,
+          classSmall: this.tag_small,
+          classWhere: this.tag_where,
+          classWho: this.tag_who,
+          commentCnt: 0,
+          content: this.post.content,
+          image: this.user.img[0],
+          likeCnt: 0,
+          nickname: this.userInfo.nickname,
+          postGpsName: "해안이네", // 임시데이터
+          postLat: 30, // 임시데이터
+          postLng: 120, // 임시데이터
+          uploadTime: "",
+          userId: this.userInfo.user_id,
+          userImage: this.userInfo.profileImage,
+        };
+        console.log(sendpost);
+
         const response = await http.post(`/main/posts`, {
           classBig: this.tag_big,
           classSmall: this.tag_small,
@@ -465,17 +525,20 @@ export default {
           classWho: this.tag_who,
           commentCnt: 0,
           content: this.post.content,
-          image: this.image, // blob인거 바꿔줘야 함!!
+          image: this.user.img[0],
           likeCnt: 0,
           nickname: this.userInfo.nickname,
           postGpsName: "해안이네", // 임시데이터
           postLat: 30, // 임시데이터
           postLng: 120, // 임시데이터
-          uploadTime: this.getNowTime(),
+          uploadTime: "",
           userId: this.userInfo.user_id,
           userImage: this.userInfo.profileImage,
         });
-        console.log(response);
+        // console.log(response);
+        if (response.data == 1) {
+          this.successDialog = true;
+        }
       } else {
         // 수정할 때
       }
@@ -577,21 +640,19 @@ export default {
         }
       }
     },
-    getNowTime: function () {
-      // var today = new Date();
-      // today.setHours(today.getHours() + 9);
-      // return today.toISOString().replace("T", " ").substring(0, 19);
-      return new Date(new Date().getTime());
-    },
   },
   async created() {
-    console.log(this.userInfo);
-
     // this.type == 'modify' 인 경우 루트 경로의 게시글 내용 가져오기 함수 필요
     if (this.type == "modify") {
-      const getPost = await http.get(`/main/posts/${this.$route.params.postno}`);
-      console.log("포스트가져오기");
-      this.post = getPost.data;
+      // const getPost = await http.get(`/main/posts/${this.$route.params.postno}`);
+      // console.log("포스트가져오기");
+      // this.post = getPost.data;
+      // console.log(getPost.data);
+      // console.log(this.post);
+      // this.tag_big = getPost.data.classBig;
+      // this.tag_small = getPost.data.classSmall;
+      // this.tag_who = getPost.data.classWho;
+      // this.tag_where = getPost.data.classWhere;
     }
   },
 };

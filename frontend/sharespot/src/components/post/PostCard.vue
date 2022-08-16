@@ -50,7 +50,14 @@
       <v-card>
         <div class="text-center" style="font-size: 4vw; align-items: center">
           <v-col>
-            <span v-if="this.post.userId == this.userInfo.user_id">게시글 수정</span>
+            <span v-if="this.post.userId == this.userInfo.user_id"
+              ><router-link
+                class="link"
+                :to="{ name: 'postModify', params: { postno: this.post.postId } }"
+              >
+                게시글 수정</router-link
+              ></span
+            >
             <span v-else style="color: #ff0000">신고</span>
           </v-col>
 
@@ -323,8 +330,8 @@ export default {
     async clickMap() {
       let gpsName = this.post.postGpsName;
       // console.log(gpsName);
-      if(gpsName == null){
-        gpsName = this.post.postLat
+      if (gpsName == null) {
+        gpsName = this.post.postLat;
       }
       let link =
         "https://map.kakao.com/link/to/" +

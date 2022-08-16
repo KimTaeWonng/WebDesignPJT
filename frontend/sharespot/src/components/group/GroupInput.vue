@@ -225,7 +225,7 @@
 <script>
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required, regex } from "vee-validate/dist/rules";
-import { http, http2 } from "@/js/http.js";
+import { http } from "@/js/http.js";
 import { mapState } from "vuex";
 
 const userStore = "userStore";

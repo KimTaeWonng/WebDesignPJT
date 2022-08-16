@@ -589,6 +589,11 @@ export default {
     console.log(this.userInfo);
 
     // this.type == 'modify' 인 경우 루트 경로의 게시글 내용 가져오기 함수 필요
+    if (this.type == "modify") {
+      const getPost = await http.get(`/main/posts/${this.$route.params.postno}`);
+      console.log("포스트가져오기");
+      this.post = getPost.data;
+    }
   },
 };
 </script>

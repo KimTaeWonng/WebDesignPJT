@@ -24,6 +24,7 @@
         :detailPost="post"
       ></post-card>
     </v-list>
+    
 
     <!-- 상세 태그 검색 플로팅 버튼 -->
     <v-btn

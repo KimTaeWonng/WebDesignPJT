@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class FileController {
     }
 
     @PostMapping("/post/{postId}")
-    @ApiOperation(value = "게시판 이미지 업로드", notes = "선택된 이미지 파일들을 서버에 업로드하고 post_image 테이블에 추가한다.")
+    @ApiOperation(value = "게시판 이미지 업로드", notes = "받은 이미지 경로들을 post_image 테이블에 추가한다.")
     public ResponseEntity<Integer> uploadPostFile(@RequestBody String[] list ,@PathVariable int postId) throws IllegalStateException {
         int result = 1;
         for (String l : list) {
@@ -65,6 +66,13 @@ public class FileController {
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/post/{postId}")
+    @ApiOperation(value = "게시판 이미지들 조회", notes = "postId의 이미지 목록을 반환한다.")
+    public ResponseEntity<List<PostImage>> getPostFile(@PathVariable int postId){
+        List<PostImage> postImages = postImageRepository.findAllByPostId(postId);
+        return new ResponseEntity<>(postImages, HttpStatus.OK);
     }
 
 }

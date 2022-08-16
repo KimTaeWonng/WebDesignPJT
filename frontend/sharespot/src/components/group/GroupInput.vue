@@ -225,7 +225,7 @@
 <script>
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required, regex } from "vee-validate/dist/rules";
-import { http, http2 } from "@/js/http.js";
+import { http } from "@/js/http.js";
 import { mapState } from "vuex";
 
 const userStore = "userStore";
@@ -295,7 +295,7 @@ export default {
       formData.append('files', file);
       console.log(formData)
 
-      http2.post('/file', formData, {
+      http.post('/file', formData, {
         headers: {
           'Content-Type' : 'multipart/form-data'
         }

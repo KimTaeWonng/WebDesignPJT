@@ -205,7 +205,7 @@ export default {
     }
 
     // 댓글 갯수 받아오기
-    const commentTemp = await http.get(`/main/posts/main/posts/${this.post.postId}`);
+    const commentTemp = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
     // console.log(commentTemp.data.length);
     this.cntComment = commentTemp.data.length;
   },

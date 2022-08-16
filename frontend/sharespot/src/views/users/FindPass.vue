@@ -25,7 +25,7 @@
         <div style="margin-top:20%;">
           <p style="text-align: left; margin-left:3%">아이디 (이메일)</p>
             <div style="margin-left: 5%; margin-right: 5%; line-height: 0">
-              <v-textarea
+              <v-textarea v-model="email"
                 label=""
                 auto-grow
                 outlined
@@ -47,7 +47,7 @@
           </v-col>
           <v-col cols="6">
             <div>
-              <v-btn color="rgb(40,150,114)" dark width="80%" @click.stop="dialog = true">
+              <v-btn color="rgb(40,150,114)" dark width="80%" @click="resetPass" >
                 재설정하기
               </v-btn>
 
@@ -143,7 +143,11 @@
 </template>
   
 <script>
+import { http } from "@/js/http.js";
 import BackMenu from "@/components/layout/BackMenu.vue";
+
+
+
 
 export default {
     components: { BackMenu },
@@ -151,6 +155,7 @@ export default {
 
     data() {
         return {
+          email:"",
           dialog: false,
         };
     },
@@ -160,7 +165,20 @@ export default {
     },
 
     methods: {
-        
+      
+        async resetPass(){
+          console.log(this.email);
+          const response = await http.post(`/users/login/reset/${this.email}`)
+          console.log(response);
+          if(response.data==1){
+            this.dialog=true;
+          }else{
+            alert("사용자를 찾을 수 없습니다. 이메일을 다시 확인해주세요.");
+          }
+
+
+
+        }
     },
 };
 </script>

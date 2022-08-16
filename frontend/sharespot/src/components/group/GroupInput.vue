@@ -287,13 +287,6 @@ export default {
   },
 
   methods: {
-    // uploadImg() {
-    //   var image = this.$refs["image"].files[0];
-    //   const url = URL.createObjectURL(image);
-    //   this.image = url;
-    //   this.group.group_image = this.image;
-    // },
-
     upload() {
       const formData = new FormData();
       const file = this.$refs["image"].files[0];
@@ -307,22 +300,20 @@ export default {
           'Content-Type' : 'multipart/form-data'
         }
       }).then((res) => {
-        console.log(res)
-        console.log(res.data[0])
+        // console.log(res)
+        // console.log(res.data[0])
 
         const imagePath = res.data[0]
         this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
-        console.log(this.image)
+        // console.log(this.image)
         this.group.group_image = this.image
-        console.log(this.group.group_image)
+        // console.log(this.group.group_image)
         // http2.get(`/file?imagePath=${imagePath}`)
         
 
       }).catch((err) => {
         console.log(err)
       })
-      
-      
     },
 
     submit() {

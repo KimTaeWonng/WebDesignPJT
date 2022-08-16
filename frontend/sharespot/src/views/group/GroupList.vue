@@ -30,7 +30,7 @@ export default {
     methods: {
       async getGroup() {
         const response = await http.get("/group");
-        this.groups = response.data
+        this.groups = response.data.reverse()
       },
     },
 

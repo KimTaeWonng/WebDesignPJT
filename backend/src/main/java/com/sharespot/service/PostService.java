@@ -91,8 +91,8 @@ public class PostService {
 		return postRepository.findAllByOrderByUploadTimeDesc();
 	}
 	
-	public Page<Post> followList(int userId){
-		return postRepository.findByUserIdOrderByPostIdDesc(userId, PageRequest.of(0, 1,Sort.by("postId").descending()));
+	public Page<Post> followList(int userId, int page, int size){
+		return postRepository.findByUserIdOrderByPostIdDesc(userId, PageRequest.of(page, size,Sort.by("postId").descending()));
 	}
 
 }

@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import com.sharespot.service.PostLikeService;
 import com.sharespot.service.ScrapService;
 
+import javax.websocket.server.PathParam;
+
 @RestController
 @Slf4j
 @RequestMapping("/main")
@@ -179,16 +181,14 @@ public class PostController {
 	
 	@GetMapping("/posts/follow/{userId}")
 	@ApiOperation(value = "팔로잉한 유저들의 게시글", notes = "userId가 팔로잉한 유저들이 쓴 게시글들만 조회")
-	public ResponseEntity<List<Post>> followList(@PathVariable int userId){
+	public ResponseEntity<List<Post>> followList(@PathVariable int userId, @RequestParam int page, @RequestParam int size){
 		
 		List<Follow> followingList = followRepository.findByFollowerId(userId);
-		
 		List<Post> savedPost = new ArrayList<>();
-		
 
 		for(Follow f : followingList) {
-			Page<Post> post = postRepository.findByUserIdOrderByPostIdDesc(f.getFollowerId(), PageRequest.of(0, 1,Sort.by("postId").descending()));
-			
+			Page<Post> post = postRepository.findByUserIdOrderByPostIdDesc(
+					f.getUserId(), PageRequest.of(page, size,Sort.by("postId").descending()));
 			for(Post p :post) {
 				savedPost.add(p);
 			}

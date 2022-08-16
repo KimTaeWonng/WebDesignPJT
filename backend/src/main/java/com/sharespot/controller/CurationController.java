@@ -47,7 +47,7 @@ public class CurationController {
 	
 	@GetMapping("/posts/category/{big}/{small}")
 	@ApiOperation(value = "큐레이션 탐색", notes = "대분류와 소분류는 무조건 넣어야함(소분류부터 복수 선택 가능)")
-	public ResponseEntity<List<Post>> curationList(@PathVariable String big, @RequestParam String[] small, @RequestParam(name = "who", required = false, defaultValue = "혼자, 친구, 가족, 연인") String[] who, @RequestParam (name = "where", required = false, defaultValue = "집, 헬스장" )String[] where){
+	public ResponseEntity<List<Post>> curationList(@PathVariable String big, @RequestParam String[] small, @RequestParam(name = "who", required = false, defaultValue = "혼자, 친구, 가족, 연인") String[] who, @RequestParam (name = "where", required = false, defaultValue = "서울, 경기, 인천, 강원, 제주, 대전, 충북, 충남/세종, 부산, 울산, 경남, 대구, 경북, 광주, 전남, 전주/전북" )String[] where){
 		
 		List<Post> curationResult = postService.CurationList(big, small, who, where);
 		

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -89,8 +91,8 @@ public class PostService {
 		return postRepository.findAllByOrderByUploadTimeDesc();
 	}
 	
-	public List<Post> followList(int userId){
-		return postRepository.findByUserIdOrderByPostIdDesc(userId);
+	public Page<Post> followList(int userId){
+		return postRepository.findByUserIdOrderByPostIdDesc(userId, PageRequest.of(0, 5,Sort.by("postId").ascending()));
 	}
 
 }

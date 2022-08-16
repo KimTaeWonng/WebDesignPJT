@@ -276,8 +276,8 @@ export default {
         alert("그룹 생성에 실패하였습니다.");
       }
 
-      const getgroup = await http.get("/group");
-
+      const getgroup = await http.get('/group')
+      
       const newgroup = getgroup.data.at(-1);
 
       const gid = newgroup.group_id;
@@ -287,30 +287,24 @@ export default {
         userId: this.group.group_manager,
       });
     },
-    // async registGroup() {
-    //   console.log(this.group)
-    //   console.log(this.groupType)
 
-    //   if (this.groupType == "register") {
-    //     const response = await http.post("/group", this.group);
-    //     // console.log(response.data);
-    //     if (response.data == 1) {
-    //       alert("그룹 생성이 완료되었습니다.");
-    //       this.$router.push({ name: "groupList" });
-    //     } else {
-    //       alert("그룹 생성에 실패하였습니다.");
-    //     }
-    //   } else {
-    //       const response = await http.put("/group/{gid}", this.group);
-    //       // console.log(response.data);
-    //       if (response.data == 1) {
-    //         alert("그룹 수정이 완료되었습니다.");
-    //         this.$router.push({ name: "groupList" });
-    //       } else {
-    //         alert("그룹 수정에 실패하였습니다.");
-    //       }
-    //   }
-    // },
+    async modifyGroup() {
+      const getgroup = await http.get('/group')
+      
+      const newgroup = getgroup.data.at(-1);
+
+      const gid = newgroup.group_id
+      
+      const response = await http.put(`/group/${gid}`, this.group)
+      console.log(response);
+
+      if (response.data == 1) {
+        alert("그룹 수정이 완료되었습니다.");
+        this.$router.push({ name: "groupList" });
+      } else {
+        alert("그룹 수정에 실패하였습니다.");
+      }
+    }
   },
 };
 </script>

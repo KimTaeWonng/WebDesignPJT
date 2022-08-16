@@ -17,8 +17,14 @@
           <div style="font-weight:bold; margin-top:3%; margin-left:3%; font-size:5vw;" class="d-flex justify-content-between">
             <!-- 그룹 이름으로 대체 -->
             <p style="float:left;">{{ detailGroup.group_name }}</p>
-            <v-btn color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
-              가입  
+            <v-btn v-if="this.ismember == false" @click="join" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+              가입
+            </v-btn>
+            <v-btn v-else-if="this.userInfo.user_id == this.manager" @click="modify" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+              수정
+            </v-btn>
+            <v-btn v-else @click="quit" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+              탈퇴
             </v-btn>
           </div>
         </div>
@@ -227,6 +233,9 @@ export default {
         return {
           dialog: false,
           group: {},
+          membersid: [],
+          manager: 0,
+          ismember: false,
 
           meeting: {
             meetingTitle: '',
@@ -251,23 +260,77 @@ export default {
 
 
     async created() {
-      // console.log('groupinfo created')
-      // console.log(this.detailGroup)
       this.group = this.detailGroup
       console.log(this.userInfo.user_id)
-      // console.log(this.group)
+      const members = await http.get(`/group/members/${this.$route.params.groupno}`)
+    
+      for(let i=0; i<members.data.length; i++) {
+        this.membersid.push(members.data[i].userId)
+      }
+      console.log(this.membersid)
+
+      const res = await http.get(`group/${this.$route.params.groupno}`)
+      this.manager = res.data.group_manager
+      console.log(this.manager)
+
+      for (var i = 0; i < this.membersid.length; i++) {
+        if (this.membersid[i] == this.userInfo.user_id) {
+          this.ismember = true
+          break
+      }
+      };
+      console.log(this.ismember)
     },
 
     mounted() {
-      // this.group = this.detailGroup
-      // console.log(this.group)
-      // this.meetings = this.detailMeeting
-      // console.log(this.meetings)
+    
     },
 
     methods: {
       submit() {
       this.$refs.observer.validate();
+    },
+
+    async join() {
+      this.membersid.push(this.userInfo.userId)
+      await http.post(`/group/${this.$route.params.groupno}/${this.userInfo.user_id}`)
+      .then((res) => {
+        console.log(res)
+        console.log('그룹 참가')
+        this.ismember = true
+        console.log(this.membersid)
+      })
+      .catch((err) => {
+        console.log(err)
+        console.log('그룹 참가 실패')
+      })
+
+      this.$router.go();
+      },
+  
+    modify() {
+      this.$router.push({ name: "groupModify" })
+    },
+
+    async quit() {
+      for(let i = 0; i < this.membersid.length; i++) {
+        if(this.membersid[i] == this.userInfo.userId)  {
+          this.membersid.splice(i, 1);
+          i--;
+          break
+        }
+      }
+
+      const response = await http.delete(`/group/${this.$route.params.groupno}/${this.userInfo.user_id}`)
+        if (response.data == 1) {
+          console.log('그룹 탈퇴')
+          this.ismember == false
+          console.log(this.membersid)
+          // this.$router.go();
+        } else {
+          console.log('그룹 탈퇴 실패')
+        }
+      this.$router.go();
     },
 
     async registMeeting() {

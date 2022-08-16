@@ -76,20 +76,6 @@
                     </form>
                   </div>
 
-              <div>
-                <form method="post" enctype="multipart/form-data">
-                  <input
-                    multiple
-                    style="display: none"
-                    ref="image"
-                    @change="uploadImg()"
-                    type="file"
-                    id="chooseFile"
-                    name="chooseFile"
-                    accept="image/*"
-                  />
-                </form>
-              </div>
             </v-avatar>
           </label>
         </v-btn>
@@ -275,12 +261,25 @@
   </v-container>
 </template>
 
+
 <script>
 import { mapState } from "vuex";
 import tag from "@/assets/json/tag.json";
 import { http } from "@/js/http.js";
 
+
 const userStore = "userStore";
+
+// window.onload = getExif;
+
+// function getExif() {
+//   var img1 = this.$refs["image"].files[0];
+//   EXIF.getData(img1, function () {
+//     var MetaData = EXIF.getAllTags(this);
+//     console.log(MetaData)
+//   })
+// } 
+
 
 export default {
   name: "PostInputItem",
@@ -398,7 +397,7 @@ export default {
     };
   },
   methods: {
-    upload() {
+    async upload() {
       const formData = new FormData();
       const file = this.$refs["image"].files[0];
       console.log(file)
@@ -406,7 +405,7 @@ export default {
       formData.append('files', file);
       console.log(formData)
 
-      http.post('/file', formData, {
+      await http.post('/file', formData, {
         headers: {
           'Content-Type' : 'multipart/form-data'
         }
@@ -416,7 +415,7 @@ export default {
 
         const imagePath = res.data[0]
         this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
-        // console.log(this.image)
+        console.log(this.image)
         this.user.img.push(this.image)
         console.log(this.user.img)
         // console.log(this.group.group_image)

@@ -178,22 +178,22 @@ public class PostController {
 	}
 	
 	@GetMapping("/posts/follow/{userId}")
-	@ApiOperation(value = "팔로잉 유저 게시글", notes = "팔로잉한 유저가 쓴 게시글들만 조회")
+	@ApiOperation(value = "팔로잉한 유저들의 게시글", notes = "userId가 팔로잉한 유저들이 쓴 게시글들만 조회")
 	public ResponseEntity<List<Post>> followList(@PathVariable int userId){
 		
-		List<Follow> followr_list = followRepository.findByUserId(userId);
+		List<Follow> followingList = followRepository.findByFollowerId(userId);
 		
-		List<Post> savedPost = new ArrayList<Post>();
+		List<Post> savedPost = new ArrayList<>();
 		
-		for(Follow f : followr_list) {
-			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(f.getFollowerId());
+		for(Follow f : followingList) {
+			List<Post> post = postRepository.findByUserIdOrderByPostIdDesc(f.getUserId());
 			
 			for(Post p :post) {
 				savedPost.add(p);
 			}
 		}
 		
-		return new ResponseEntity<List<Post>>(savedPost,HttpStatus.OK);
+		return new ResponseEntity<>(savedPost,HttpStatus.OK);
 		
 	}
 	

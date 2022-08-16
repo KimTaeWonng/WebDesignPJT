@@ -31,10 +31,10 @@ export default {
     ...mapState(userStore, ["userInfo"]),
   },
   async created() {
-    console.log("created");
+    // console.log("created");
     await this.setFollowingUserList(this.userInfo.user_id);
-    console.log("===actions작동=====");
-    console.log('최근검색',this.searchWordList)
+    // console.log("===actions작동=====");
+    // console.log('최근검색',this.searchWordList)
     const followingUserList = this.followingUserList;
     console.log(this.followingUserList);
     console.log(this.followingUserList[0].user_id);

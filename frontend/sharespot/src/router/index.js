@@ -196,7 +196,7 @@ const routes = [
   },
   {
     // /:groupno 추가해야 함!
-    path: "/group/modify",
+    path: "/group/modify/:groupno",
     name: "groupModify",
     // beforeEnter: onlyAuthUser,
     component: GroupModify,

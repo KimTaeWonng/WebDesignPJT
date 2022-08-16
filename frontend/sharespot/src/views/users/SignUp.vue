@@ -243,7 +243,7 @@
                   </div>
 
                   <div class="text-center">
-                    <div style="font-weight: bold">관리자 <span>님의</span></div>
+                    <div style="font-weight: bold">{{ user.name }}<span>님의</span></div>
                     가입이 완료되었습니다!
                   </div>
 
@@ -421,6 +421,12 @@ export default {
       // console.log(this.user);
 
       if (response.data.message == "success") {
+        // const getuser = await http2.get('/users/list')
+
+        // const newuser = getuser.data.at(-1)
+        // const usernick = newuser.nickname
+        // console.log(usernick)
+
         this.dialog = true;
       } else {
         alert("ShareSpot 가입에 실패했습니다.");

@@ -1,19 +1,29 @@
 <template>
   <div>
-    <v-list>
+    <!-- 최신피드 -->
+    <v-list v-if="this.type == 'latest'">
       <post-card
         class="post-card"
         v-for="(post, i) in posts"
         :key="i"
-        v-bind="post"
         :detailPost="post"
       ></post-card>
     </v-list>
-    <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
+    <infinite-loading v-if="this.type == 'latest'" @infinite="infiniteHandler" spinner="wavedots">
       <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
+
+    <!-- 큐레이션 상세검색 피드 -->
+    <v-list v-else-if="this.type == 'curation'">
+      <post-card
+        class="post-card"
+        v-for="(post, i) in curationPosts"
+        :key="i"
+        :detailPost="post"
+      ></post-card>
+    </v-list>
 
     <!-- 상세 태그 검색 플로팅 버튼 -->
     <v-btn
@@ -37,7 +47,7 @@
 
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
-        <v-item-group mandatory align="center">
+        <v-item-group mandatory align="center" v-model="selected_1">
           <v-subheader>대분류</v-subheader>
           <v-item v-for="n in 5" :key="n" v-slot="{ active, toggle }">
             <v-btn
@@ -55,7 +65,7 @@
         </v-item-group>
 
         <!-- 소분류 -->
-        <v-item-group multiple align="center">
+        <v-item-group multiple align="center" v-model="selected_2">
           <v-subheader>소분류</v-subheader>
           <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -74,7 +84,7 @@
         </v-item-group>
 
         <!-- 누구랑 -->
-        <v-item-group multiple align="center">
+        <v-item-group multiple align="center" v-model="selected_3">
           <v-subheader>누구랑</v-subheader>
           <v-item v-for="(who, i) in whos" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -92,7 +102,7 @@
         </v-item-group>
 
         <!-- 어디서 -->
-        <v-item-group multiple align="center">
+        <v-item-group multiple align="center" v-model="selected_4">
           <v-subheader>어디서</v-subheader>
           <v-item v-for="(where, i) in wheres" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -142,6 +152,7 @@ export default {
     return {
       posts: [],
       loadNum: 0,
+      curationPosts: [],
 
       dialog: false,
 
@@ -175,11 +186,20 @@ export default {
         "전주/전북",
       ],
 
-      // // 선택한 태그 값들 (1, 2, ...)
-      // selected_1: "",
-      // selected_2: [],
-      // selected_3: [],
-      // selected_4: [],
+      // 선택한 태그 값들 (1, 2, ...)
+      selected_1: "",
+      selected_2: [],
+      selected_3: [],
+      selected_4: [],
+
+      // 선택한 태그 항목들 (맛집, 가족 ...)
+      tag_big: "",
+      tag_small: [],
+      tag_who: [],
+      tag_where: [],
+
+      // 타입을 latest와 curation으로 구분
+      type: "latest",
     };
   },
   computed: {
@@ -208,7 +228,7 @@ export default {
               for (const i of items) {
                 const data = {
                   postId: i.postId,
-                  userId: this.userInfo.user_id,
+                  userId: i.userId,
                   userImage: i.userImage,
                   postLat: i.postLat,
                   postLng: i.postLng,
@@ -246,10 +266,56 @@ export default {
     clear() {
       // 초기화 버튼
     },
-    addTag() {
+    async addTag() {
       this.dialog = false;
+      this.type = "curation";
+
+      // console.log(this.selected_1);
+      // console.log(this.selected_2);
+      // console.log(this.selected_3);
+      // console.log(this.selected_4);
+
+      // 선택항목 초기화
+      this.tag_big = "";
+      this.tag_small = [];
+      this.tag_who = [];
+      this.tag_where = [];
+
+      this.tag_big = this.categorys.tag[this.selected_1].big_name;
+      for (let i = 0; i < this.selected_2.length; i++) {
+        this.tag_small.push(
+          this.categorys.tag[this.selected_1].category[this.selected_2[i]].small_name
+        );
+      }
+
+      for (let i = 0; i < this.selected_3.length; i++) {
+        this.tag_who.push(this.whos[this.selected_3[i]]);
+      }
+
+      for (let i = 0; i < this.selected_4.length; i++) {
+        this.tag_where.push(this.wheres[this.selected_4[i]]);
+      }
+
+      // console.log(this.tag_big);
+      // console.log(this.tag_small);
+      // console.log(this.tag_who);
+      // console.log(this.tag_where);
+
+      this.curationPosts = [];
 
       // 선택된 값을 보내줘서 해당 태그에 맞는 게시물들을 보여줌
+      const getCurationList = await http.get(`search/posts/category/${this.tag_big}/{small}`, {
+        params: {
+          small: this.tag_small.join(","),
+          who: this.tag_who.join(","),
+          where: this.tag_where.join(","),
+        },
+      });
+
+      for (var i = 0; i < getCurationList.data.length; i++) {
+        this.curationPosts.push(getCurationList.data[i]);
+      }
+      console.log(this.curationPosts);
     },
   },
 };

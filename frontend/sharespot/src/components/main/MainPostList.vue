@@ -1,4 +1,12 @@
 <template>
+<div @click="deleteInfo">
+    <v-alert
+      dense
+      type="info"
+      v-if="isFollowEmpty"
+    >
+      팔로우한 유저의 게시글이 없어서 모든 게시물이 표시됩니다.
+    </v-alert>
   <v-list>
     <post-card
       v-for="(post, i) in posts"
@@ -7,6 +15,7 @@
       :detailPost="post"
     ></post-card>
   </v-list>
+  </div>
 </template>
 
 <script>
@@ -24,6 +33,7 @@ export default {
   data() {
     return {
       posts: [],
+      isFollowEmpty: false,
     };
   },
   computed: {
@@ -32,18 +42,32 @@ export default {
   async created() {
     // 내가 팔로잉한 유저들의 게시글 조회
     try {
-      const response = await http.get(
+      let response = await http.get(
         `/main/posts/follow/${this.userInfo.user_id}`
       );
-      //console.log(response.data);
-      this.posts = response.data;
+      // console.log(response.data.length);
+      if(response.data.length === 0){
+        this.isFollowEmpty = true;
+        // console.log("팔로잉 게시글이 없넹")
+        response = await http.get(
+          `/main/posts`
+        );
+        this.posts = response.data;
+        }else{
+          // console.log("팔로잉 게시글이 생겼어!")
+          this.posts = response.data;
+        }
     } catch (error) {
       alert("MainPost 게시물들 조회 실패");
     }
   },
   mounted() {},
 
-  methods: {},
+  methods: {
+    deleteInfo(){
+      this.isFollowEmpty = false;
+    },
+  },
 };
 </script>
 

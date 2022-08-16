@@ -67,8 +67,8 @@ export default {
   data() {
     return {
       user: {
-        email: null,
-        password: null,
+        email: "twvirus@naver.com",
+        password: "12341234",
       },
       isPwdShow: false,
     };

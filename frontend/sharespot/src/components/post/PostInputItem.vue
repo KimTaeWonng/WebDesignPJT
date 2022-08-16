@@ -440,8 +440,26 @@ export default {
           console.log(err);
         });
 
-      console.log("확인");
-      console.log(sendPost);
+      http.post('/file', formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }).then((res) => {
+        console.log(res)
+        console.log(res.data[0])
+
+        const imagePath = res.data[0]
+        this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
+        // console.log(this.image)
+        this.user.img.push(this.image)
+        console.log(this.user.img)
+        // console.log(this.group.group_image)
+        // http2.get(`/file?imagePath=${imagePath}`)
+        
+
+      }).catch((err) => {
+        console.log(err)
+      })
     },
 
     test() {

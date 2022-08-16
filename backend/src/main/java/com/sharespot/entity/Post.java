@@ -2,7 +2,6 @@ package com.sharespot.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

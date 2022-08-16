@@ -57,8 +57,8 @@ public class PostController {
 	@GetMapping("/posts")
 	@ApiOperation(value = "게시글목록", notes = "<b>게시글 전체 목록</b>을 반환한다.")
 	public ResponseEntity<List<Post>> getAllPost(){
-		List<Post> posts = postRepository.findAll();
-		return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
+		List<Post> posts = postRepository.findAll(Sort.by("postId").descending());
+		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 	
 	@GetMapping("/posts/{postNo}")

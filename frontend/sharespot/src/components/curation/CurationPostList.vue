@@ -45,6 +45,20 @@
           >태그 상세 검색</v-card-title
         >
 
+        <!-- 거리조절 -->
+<v-subheader>거리조절 : {{slider}} km 이내</v-subheader>
+      <v-row class="distance-bar">
+        <v-col cols="12">
+          <v-slider
+            v-model="slider"
+            :max="max"
+            :min="min"
+            :thumb-size="24"
+            thumb-label="always"
+          ></v-slider>
+        </v-col>
+      </v-row>
+
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
         <v-item-group mandatory align="center" v-model="selected_1">
@@ -155,6 +169,9 @@ export default {
       curationPosts: [],
 
       dialog: false,
+      slider: 10,
+      min: 0,
+      max: 30,
 
       categorys: tag, // 대분류,소분류 태그 json
       small: [
@@ -228,7 +245,7 @@ export default {
               for (const i of items) {
                 const data = {
                   postId: i.postId,
-                  userId: i.userId,
+                  userId: this.userInfo.user_id,
                   userImage: i.userImage,
                   postLat: i.postLat,
                   postLng: i.postLng,
@@ -317,8 +334,14 @@ export default {
       }
       console.log(this.curationPosts);
     },
+    //거리조절 아이콘
+    season (val) { 
+        return this.icons[val]
+      },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.distance-bar{max-width: 95%;}
+</style>

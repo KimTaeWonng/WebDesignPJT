@@ -3,6 +3,8 @@
     <back-menu title="회원가입" class="mb-1"></back-menu>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit" class="mr-6 ml-6">
+
+      
         <!-- 아이디(이메일) 입력 -->
         <validation-provider v-slot="{ errors }" name="아이디" rules="required|email|idCheck">
           <v-text-field
@@ -243,7 +245,7 @@
                   </div>
 
                   <div class="text-center">
-                    <div style="font-weight: bold">관리자 <span>님의</span></div>
+                    <div style="font-weight: bold">{{user.name}}<span>님의</span></div>
                     가입이 완료되었습니다!
                   </div>
 

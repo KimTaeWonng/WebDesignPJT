@@ -270,7 +270,7 @@
 </template>
 
 <script>
-import { http } from "@/js/http.js";
+import { http, http2 } from "@/js/http.js";
 import { required, email, max, regex, confirmed } from "vee-validate/dist/rules";
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from "vee-validate";
 
@@ -336,7 +336,7 @@ export default {
       showGDTooltip: false,
       brState: true,
       gdState: true,
-
+    
       // 유저 정보
       user: {
         email: "",
@@ -355,6 +355,8 @@ export default {
         registerTime: "",
       },
       confirmPwd: "",
+      
+
 
       codes: "", // 카카오로그인 코드
     };
@@ -422,7 +424,15 @@ export default {
       console.log(response);
       // console.log(this.user);
 
+  
       if (response.data.message == "success") {
+        // const getuser = await http2.get('/users/list')
+
+        // const newuser = getuser.data.at(-1)
+        // const usernick = newuser.nickname
+        // console.log(usernick)
+        
+
         this.dialog = true;
       } else {
         alert("ShareSpot 가입에 실패했습니다.");

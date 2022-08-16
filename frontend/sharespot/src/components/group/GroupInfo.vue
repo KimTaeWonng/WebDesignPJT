@@ -5,9 +5,9 @@
         <v-row>
           <!-- 그룹 대표 이미지로 대체 -->
           <v-img
-              :src="require('/src/assets/groupinfo.png')"
+              :src="detailGroup.group_image"
               class="mt-3"
-              contain          
+              contain        
             />
         </v-row>
         <br>
@@ -16,7 +16,7 @@
         <div style="text-align:left; vertical-align:middle;">
           <div style="font-weight:bold; margin-top:3%; margin-left:3%; font-size:5vw;" class="d-flex justify-content-between">
             <!-- 그룹 이름으로 대체 -->
-            <p style="float:left;">{{ this.group.group_name }}</p>
+            <p style="float:left;">{{ detailGroup.group_name }}</p>
             <v-btn color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
               가입  
             </v-btn>
@@ -26,7 +26,7 @@
         
         <div style="margin-left:3%; text-align:left; font-size:3.3vw; font-weight:bold;">
           <!-- 그룹 설명으로 대체 -->
-					{{ this.group.group_content }}
+					{{ detailGroup.group_content }}
 				</div>
         
         <br>
@@ -39,7 +39,7 @@
           <p style="text-align: left; margin-left:3%; margin-top:3%; font-weight:bold; font-size:5vw;">
             모임 일정
             <span class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;" @click.stop="dialog = true">add_circle_outline</span>
-
+          
             <v-dialog
         v-model="dialog"
         width="90%"
@@ -204,9 +204,10 @@
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules"
 import { http } from "@/js/http.js";
-// import { mapState } from "vuex";
+// import MeetingListItem from '@/components/group/MeetingListItem.vue';
+import { mapState } from "vuex";
 
-// const userStore = "userStore";
+const userStore = "userStore";
 
 extend("required", {
   ...required,
@@ -244,18 +245,24 @@ export default {
         };
     },
 
-    // computed: {
-    // ...mapState(userStore, ["userInfo"]),
-    // },
+    computed: {
+    ...mapState(userStore, ["userInfo"]),
+    },
 
-  created() {
-            this.group = this.detailGroup
-            console.log('그으룹', this.group)
-            
-            // this.group.group_manager = this.userInfo.user_id;
-            // this.group.group_nick = this.userInfo.nickname;
-          },
+
+    async created() {
+      // console.log('groupinfo created')
+      // console.log(this.detailGroup)
+      this.group = this.detailGroup
+      console.log(this.userInfo.user_id)
+      // console.log(this.group)
+    },
+
     mounted() {
+      // this.group = this.detailGroup
+      // console.log(this.group)
+      // this.meetings = this.detailMeeting
+      // console.log(this.meetings)
     },
 
     methods: {
@@ -264,26 +271,20 @@ export default {
     },
 
     async registMeeting() {
-      console.log(this.meeting);
-      const response = await http.post(`/group/${this.group.group_id}/meetings`, this.meeting);
+      // console.log(this.meeting);
+      this.meeting.groupId = this.$route.params.groupno
+      const response = await http.post(`/group/${this.$route.params.groupno}/meetings`, this.meeting);
       if (response.data == 1) {
         alert("모임 생성이 완료되었습니다.");
-        this.$router.push({ name: "groupList" });
+        this.$router.go();
       } else {
         alert("모임 생성에 실패하였습니다.");
       }
     },
 
-    async getGroup() {
-        const response = await http.get(`/group/${this.no}`);
-        this.group = response.data
-      },
     },
-    // async getMeeting() {
-    //     const response = await http.get(`/group/${this.meeting.groupId}/meetings`);
-    //     this.meetings = response.data
-    //   },
-    // },
+
+    
 
 
 };

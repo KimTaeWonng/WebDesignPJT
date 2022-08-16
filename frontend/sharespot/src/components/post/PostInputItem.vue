@@ -276,7 +276,6 @@
 </template>
 
 <script>
-import { http } from "@/js/http.js";
 import { mapState } from "vuex";
 import tag from "@/assets/json/tag.json";
 import { http } from "@/js/http.js";

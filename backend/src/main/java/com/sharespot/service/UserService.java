@@ -12,8 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sharespot.entity.Badge;
 import com.sharespot.entity.Mail;
 import com.sharespot.entity.User;
+import com.sharespot.repo.BadgeRepository;
 import com.sharespot.repo.UserRepository;
 import com.sharespot.security.EncryptionUtils;
 
@@ -26,6 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 
 	private final UserRepository userRepository;
+	
+	private final BadgeRepository badgeRepository;
 
 	@Transactional
 	public User createUser(User user) {
@@ -128,6 +132,26 @@ public class UserService {
 			str += charSet[idx];
 		}
 		return str;
+	}
+	
+	public int getMaxGrade(int userid) {
+		int max = 0;
+		
+		Badge badge = badgeRepository.findById(userid).get();
+		
+		max = Math.max(max, badge.getBadgeCafe());
+		max = Math.max(max, badge.getBadgeComment());
+		max = Math.max(max, badge.getBadgeCulture());
+		max = Math.max(max, badge.getBadgeFeed());
+		max = Math.max(max, badge.getBadgeFollow());
+		max = Math.max(max, badge.getBadgeFollower());
+		max = Math.max(max, badge.getBadgeFood());
+		max = Math.max(max, badge.getBadgeGroup());
+		max = Math.max(max, badge.getBadgeLife());
+		max = Math.max(max, badge.getBadgeMeet());
+		max = Math.max(max, badge.getBadgeTrip());	
+		
+		return max;
 	}
 
 }

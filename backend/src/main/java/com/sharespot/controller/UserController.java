@@ -1,6 +1,8 @@
 package com.sharespot.controller;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,9 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> signUp(@RequestBody User user) throws ParseException {
 
 		Map<String, Object> result = new HashMap<>();
+		
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		User userEntity = User.builder().user_id(user.getUser_id()).email(user.getEmail()).password(user.getPassword())
 				.phone(user.getPhone()).gender(user.getGender()).birth(user.getBirth()).name(user.getName())
@@ -69,7 +74,8 @@ public class UserController {
 				.GD(user.getGD()) // isgender
 				.BR(user.getBR()) // isBirth
 				.PB(user.getPB()) // isPublic
-				.userGrade(user.getUserGrade()).build();
+				.userGrade(user.getUserGrade())
+				.registerTime(sdf.format(timestamp)).build();
 
 		try {
 			User savedUser = userService.createUser(userEntity);
@@ -216,7 +222,7 @@ public class UserController {
 				.GD(user.getGD()) // isgender
 				.BR(user.getBR()) // isBirth
 				.PB(user.getPB()) // isPublic
-				.userGrade(user.getUserGrade()).build();
+				.build();
 
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -292,6 +298,24 @@ public class UserController {
 		List<User> users = userService.getUsers();
 		
 		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+	}
+	
+	@GetMapping("/grade/{userId}")
+	@ApiOperation(value = "유저의 등급 설정",notes = "유저의 뱃지를 읽어와 최고 등급을 설정한다")
+	public ResponseEntity<Integer> settingGrade(@PathVariable int userId){
+		
+		int result = 0;
+		
+		result = userService.getMaxGrade(userId);
+		
+		User user = userService.getUser(userId).get();
+		
+		user.setUserGrade(result);
+		
+		userService.createUser(user);
+		
+		return new ResponseEntity<Integer>(result,HttpStatus.OK);
+		
 	}
 
 }

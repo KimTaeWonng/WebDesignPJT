@@ -42,7 +42,7 @@
           <v-col cols="6">
             <!-- 변경: 내 프로필이면 프로필 편집 버튼, 타인 프로필이면 팔로우 버튼 보임 (팔로우가 되어있는 상태면 팔로잉버튼) -->
             <!-- 변경: 팔로우버튼 누르면 팔로우, 팔로잉버튼 누르면 팔로잉 취소하기 -->
-
+            <follow-item v-for="user in followingUsers" :key="`${user.user_id}`" :userDetail="user"></follow-item>
             <v-btn
               v-if="this.userInfo.user_id == this.$route.params.userid"
               class="profile-btn"

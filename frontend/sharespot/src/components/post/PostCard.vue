@@ -322,9 +322,9 @@ export default {
     },
     async clickMap() {
       let gpsName = this.post.postGpsName;
-      console.log(gpsName);
-      if (gpsName == null) {
-        gpsName = this.post.postLat;
+      // console.log(gpsName);
+      if(gpsName == null){
+        gpsName = this.post.postLat
       }
       let link =
         "https://map.kakao.com/link/to/" +

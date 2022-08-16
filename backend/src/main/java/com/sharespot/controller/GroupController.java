@@ -3,6 +3,7 @@ package com.sharespot.controller;
 import com.sharespot.entity.Group;
 import com.sharespot.entity.GroupUser;
 import com.sharespot.entity.User;
+import com.sharespot.repo.GroupRepository;
 import com.sharespot.repo.GroupUserRepository;
 import com.sharespot.service.GUService;
 import com.sharespot.service.GroupService;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +34,23 @@ public class GroupController {
     @Autowired
     private GroupUserRepository guRepository;
     @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
     private GUService guService;
+
+    @GetMapping("/userGroup/{userId}")
+    @ApiOperation(value = "유저의 모임목록 검색", notes = "userId를 넣으면 <b>가입한 그룹 목록</b>을 반환한다.")
+    public ResponseEntity<List<Optional<Group>>> getUserGroup(@PathVariable int userId){
+        List<GroupUser> groupUsers = guRepository.findByUserId(userId);
+        List<Optional<Group>> group = new ArrayList<>();
+
+        for (GroupUser gu : groupUsers){
+            group.add(groupRepository.findById(gu.getGroupId()));
+        }
+
+        return new ResponseEntity<>(group, HttpStatus.OK);
+    }
 
     @GetMapping
     @ApiOperation(value = "그룹목록", notes = "<b>그룹 전체 목록</b>을 반환한다.")

@@ -18,4 +18,6 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Integer>{
 	
 	public List<GroupUser> findByGroupId(int gid);
 
+	public List<GroupUser> findByUserId(int userId);
+
 }

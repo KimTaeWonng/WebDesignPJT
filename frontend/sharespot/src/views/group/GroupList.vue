@@ -13,7 +13,10 @@
 import GroupItem from '@/components/group/GroupItem.vue';
 import GroupSearchBar from '@/components/layout/GroupSearchBar.vue';
 import { http } from "@/js/http.js";
+import { mapState, mapActions } from "vuex";
 
+const userLogStore = "userLogStore";
+const userStore = "userStore";
 
 export default {
   components: { GroupItem, GroupSearchBar },
@@ -23,18 +26,31 @@ export default {
         return {
           groups: [],
         };
-    },
+  },
+     computed: {
+    ...mapState(userLogStore, [
+      "myGroupList"
+    ]),
+    ...mapState(userStore, ["userInfo"]),
+  },
     mounted() {
     },
 
-    methods: {
+  methods: {
+      ...mapActions(userLogStore, ["setGroupList"]),
       async getGroup() {
         const response = await http.get("/group");
+        console.log('그룹가져오기', response)
         this.groups = response.data.reverse()
       },
     },
 
-    created() {
+  async created() {
+    await this.setGroupList(this.userInfo.user_id);
+    console.log('내 그룹',this.myGroupList)
+      
+
+
     this.getGroup()
   },
 

@@ -243,7 +243,7 @@
                   </div>
 
                   <div class="text-center">
-                    <div style="font-weight: bold">{{ user.name }}<span>님의</span></div>
+                    <div style="font-weight: bold">{{user.name}} <span>님의</span></div>
                     가입이 완료되었습니다!
                   </div>
 
@@ -367,22 +367,23 @@ export default {
 
     // 카카오 로그인 정보 불러오기
     // 이메일
-    this.user.email = this.kakaoUserInfo[0].email;
+    // this.user.email = this.kakaoUserInfo[0].email;
     // 성별
-    if (this.kakaoUserInfo[0].gender == "female") {
-      this.user.gender = 1;
-    } else {
-      this.user.gender = 0;
-    }
+    // if (this.kakaoUserInfo[0].gender == "female") {
+    //   this.user.gender = 1;
+    // } else {
+    //   this.user.gender = 0;
+    // }
   },
   methods: {
     // 카카오로그인 access-token 받아오기
-    async getToken() {
-      const response = await http.get(`/oauth/kakao`, {
-        params: {
-          code: this.codes,
-        },
-      });
+    async getToken(response) {
+      // const response = await http.get(`/oauth/kakao`, {
+      //   params: {
+      //     code: this.codes,
+      //   },
+      // });i
+
       console.log(response);
     },
 
@@ -414,19 +415,11 @@ export default {
         this.user.gd = 0;
       }
 
-      console.log(this.user);
-
       const response = await http.post("/users/signup", this.user);
-      console.log(response);
+      // console.log(response.data);
       // console.log(this.user);
 
       if (response.data.message == "success") {
-        // const getuser = await http2.get('/users/list')
-
-        // const newuser = getuser.data.at(-1)
-        // const usernick = newuser.nickname
-        // console.log(usernick)
-
         this.dialog = true;
       } else {
         alert("ShareSpot 가입에 실패했습니다.");

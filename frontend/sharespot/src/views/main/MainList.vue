@@ -27,12 +27,14 @@ export default {
       "likePostList",
       "followingUserList",
       "followUserList",
+      "myGroupList",
     ]),
     ...mapState(userStore, ["userInfo"]),
   },
   async created() {
     // console.log("created");
     await this.setFollowingUserList(this.userInfo.user_id);
+    await this.setGroupList(this.userInfo.user_id);
     // console.log("===actions작동=====");
     // console.log('최근검색',this.searchWordList)
     const followingUserList = this.followingUserList;
@@ -44,7 +46,7 @@ export default {
   mounted() {},
 
   methods: {
-    ...mapActions(userLogStore, ["setFollowingUserList"]),
+    ...mapActions(userLogStore, ["setFollowingUserList", "setGroupList"]),
     // clickFollow() {
     //   this.follow({
     //     userid: 23,

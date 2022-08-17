@@ -24,7 +24,7 @@
           <v-row>
             <v-col cols="4" align="center">
               <!-- {{ user.postCnt }} -->
-              <div style="font-weight: 800">3</div>
+              <div style="font-weight: 800">{{ this.postCnt }}</div>
               <div style="font-size: 13px">게시글</div>
             </v-col>
             <v-col cols="4" align="center" @click="moveFollower()">
@@ -115,11 +115,15 @@ export default {
       isfollow: false,
       followerCnt: "",
       followingCnt: "",
-
+      postCnt: "",
       levelImg: "",
     };
   },
   async created() {
+    // 개시물 수 받아오기
+    const postList = await http.get(`/main/posts/user/${this.$route.params.userid}`);
+    this.postCnt = postList.data.length
+
     // 유저 등급 받아오기
     const getUserLevel = await http.get(`/users/grade/${this.$route.params.userid}`);
     console.log(getUserLevel.data);

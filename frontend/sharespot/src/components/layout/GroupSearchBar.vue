@@ -9,9 +9,31 @@
           placeholder="검색어를 입력하세요"
           clearable
           color="black"
-          v-model="searchContent"
           @keyup.enter="search(searchContent)"
+          @click="searchModal = true"
         ></v-text-field>
+
+<v-dialog v-model="searchModal" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-list-group
+        v-for="group in searchResultList"
+        :key="group.group_id"
+      >
+          <v-list-item-content style="font-weight:bold; font-size:4vw;" @click="goGroup(group.group_id)">
+            <v-list-item-title v-text="group.group_name"></v-list-item-title>
+          </v-list-item-content>
+
+
+        <!-- <v-list-item
+          v-for="child in item.items"
+          :key="child.title"
+        > -->
+          <!-- <v-list-item-content style="font-weight:bold; font-size:3vw;">
+            <v-list-item-title v-text="child.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item> -->
+      </v-list-group>
+</v-dialog>  
+
       </v-col>
       <!-- MY 버튼-->
       <v-col cols="2" align="center" @click="showMyGroup()">
@@ -34,22 +56,22 @@
     <v-list>
       <v-list-group
         v-for="item in items"
-        :key="item.title"
+        :key="item.group_id"
       >
         <template v-slot:activator>
-          <v-list-item-content style="font-weight:bold; font-size:4vw;">
-            <v-list-item-title v-text="item.title"></v-list-item-title>
+          <v-list-item-content style="font-weight:bold; font-size:4vw;" @click="goGroup(item.group_id)">
+            <v-list-item-title v-text="item.group_name"></v-list-item-title>
           </v-list-item-content>
         </template>
 
-        <v-list-item
+        <!-- <v-list-item
           v-for="child in item.items"
           :key="child.title"
-        >
-          <v-list-item-content style="font-weight:bold; font-size:3vw;">
+        > -->
+          <!-- <v-list-item-content style="font-weight:bold; font-size:3vw;">
             <v-list-item-title v-text="child.title"></v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
       </v-list-group>
     </v-list>
   </v-card>
@@ -65,6 +87,12 @@
 </template>
 
 <script>
+const userLogStore = "userLogStore";
+
+import { mapState } from "vuex";
+import { http } from "@/js/http.js";
+
+
 export default {
   name: "SearchBar",
 
@@ -72,54 +100,52 @@ export default {
     return {
       searchContent: "",
       dialog: false,
-      items: [
-        {
-          action: 'mdi-ticket',
-          items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
-          ],
-          title: '[보드게임] 강남보드모임 GB',
-        },
-        {
-          action: 'mdi-silverware-fork-knife',
-          active: true,
-          items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
-          ],
-          title: '[보드게임] 강남보드모임 GB',
-        },
-        {
-          action: 'mdi-school',
-          items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
-          ],
-          title: '[보드게임] 강남보드모임 GB',
-        },
-      ],
+      searchModal: false,
+      items: [],
+      searchResultList: [],
     };
   },
+  async created() {
+    
+    const groupList = [];
+    for (var i = 0; i < this.myGroupList.length; i++) {
+      const temp = {
+        group_name: this.myGroupList[i].group_name,
+        group_id: this.myGroupList[i].group_id
+      };
+      groupList.push(temp);
+    }
 
+    console.log(groupList)
+
+    this.items = groupList
+  },
   mounted() {},
-
+  computed: {
+    ...mapState(userLogStore, ["myGroupList"]),
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
     },
 
     // searchContent로 검색하는 함수
-    search(searchContent) {
+    async search(searchContent) {
       console.log(searchContent);
+      const result = await http.get(`/group/search/${searchContent}`);
+      console.log('검색결과', result.data)
+      this.searchResultList = result.data
     },
 
     // 내가 가입한 그룹 리스트를 보여주는 함수
     showMyGroup() {
       console.log("click");
+    },
+    goGroup(group_id) {
+      this.$router.push({
+        name: "groupDetail",
+        params: { groupno: group_id},
+      });
     },
   },
 };

@@ -67,6 +67,32 @@ export default {
     return {
       commentContent: "",
       comments: [],
+
+      badges: {
+        badgeCafe: 0,
+        badgeComment: 0,
+        badgeCulture: 0,
+        badgeFeed: 0,
+        badgeFollow: 0,
+        badgeFollower: 0,
+        badgeFood: 0,
+        badgeGroup: 0,
+        badgeLife: 0,
+        badgeMeet: 0,
+        badgeTrip: 0,
+        mainCafe: 0,
+        mainComment: 0,
+        mainCulture: 0,
+        mainFeed: 0,
+        mainFollow: 0,
+        mainFollower: 0,
+        mainFood: 0,
+        mainGroup: 0,
+        mainLife: 0,
+        mainMeet: 0,
+        mainTrip: 0,
+        userId: "",
+      },
     };
   },
   async created() {
@@ -78,6 +104,9 @@ export default {
     console.log(comment);
     this.comments = comment.data;
     console.log(comment.data);
+
+    const getBadgeList = await http.get(`/users/badge/${this.userInfo.user_id}`);
+    this.badges = getBadgeList.data;
   },
 
   computed: {
@@ -99,6 +128,12 @@ export default {
       console.log(res);
 
       await http.post(`/main/posts/${this.$route.params.postno}/comments`, res);
+
+      if (this.badges.badgeComment == 0) {
+        this.badges.badgeComment = 1;
+        const modifybadge = await http.put(`/users/badge`, this.badges);
+        console.log(modifybadge);
+      }
 
       this.$router.go();
     },

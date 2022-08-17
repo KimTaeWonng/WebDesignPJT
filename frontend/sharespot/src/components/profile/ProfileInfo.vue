@@ -109,8 +109,7 @@ export default {
         nickname: "",
         image: "",
         postCnt: "",
-        introduce:
-          "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
+        introduce: "",
       },
       isfollow: false,
       followerCnt: "",
@@ -122,7 +121,7 @@ export default {
   async created() {
     // 개시물 수 받아오기
     const postList = await http.get(`/main/posts/user/${this.$route.params.userid}`);
-    this.postCnt = postList.data.length
+    this.postCnt = postList.data.length;
 
     // 유저 등급 받아오기
     const getUserLevel = await http.get(`/users/grade/${this.$route.params.userid}`);

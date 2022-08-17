@@ -34,9 +34,14 @@
           <span class="material-icons" style="font-size: 80px"> task_alt </span>
         </div>
 
-        <div class="text-center">
+        <div class="text-center" v-if="this.type == 'register'">
           <div style="font-weight: bold"></div>
           게시글이 등록되었습니다!
+        </div>
+
+        <div class="text-center" v-if="this.type == 'modify'">
+          <div style="font-weight: bold"></div>
+          게시글이 수정되었습니다!
         </div>
 
         <div class="text-center" style="margin-top: 10%">
@@ -283,7 +288,7 @@
         <span class="mb-3">내용 작성</span>
       </v-row>
       <v-row>
-        <v-textarea v-model="post.content" auto-grow outlined></v-textarea>
+        <v-textarea color="#289672" v-model="post.content" auto-grow outlined></v-textarea>
       </v-row>
     </div>
   </v-container>
@@ -525,7 +530,7 @@ export default {
     },
     async registerPost() {
       // 게시글 등록 및 수정하기
-      console.log("등록 포스트!");
+      // console.log("등록 포스트!");
 
       // 등록할 때
       if (this.type == "register") {
@@ -581,7 +586,9 @@ export default {
           userId: this.userInfo.user_id,
           userImage: this.userInfo.profileImage,
         });
-        console.log(response.data);
+        if (response.data == 1) {
+          this.successDialog = true;
+        }
       }
 
       // userInfo의 bd가 0이면 1로 변경
@@ -601,6 +608,13 @@ export default {
         const getBadgeList = await http.get(`/users/badge/${this.userInfo.user_id}`);
         this.badges = getBadgeList.data;
         console.log(this.badges);
+      }
+
+      // 최초 게시글 뱃지 생성
+      if (this.badges.badgeFeed == 0) {
+        this.badges.badgeFeed = 1;
+        const modifybadge = await http.put(`/users/badge`, this.badges);
+        console.log(modifybadge);
       }
 
       // /search/posts/count/{userid} api 받아옴

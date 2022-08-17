@@ -609,11 +609,11 @@ export default {
 
       // 3, 30, 100, 200, 300 개면 해당 레벨업에 맞게 /users/badge 뱃지수정 api(put)
       if (
-        getClassBigCnt.data.맛집 == 3 ||
-        getClassBigCnt.data.맛집 == 30 ||
-        getClassBigCnt.data.맛집 == 100 ||
-        getClassBigCnt.data.맛집 == 200 ||
-        getClassBigCnt.data.맛집 == 300
+        getClassBigCnt.data.맛집 == 2 ||
+        getClassBigCnt.data.맛집 == 29 ||
+        getClassBigCnt.data.맛집 == 99 ||
+        getClassBigCnt.data.맛집 == 199 ||
+        getClassBigCnt.data.맛집 == 299
       ) {
         this.badges.badgeFood++;
         const modifyBadgeFood = await http.put(`/users/badge`, this.badges);
@@ -624,11 +624,11 @@ export default {
           console.log("맛집 레벨 수정 실패");
         }
       } else if (
-        getClassBigCnt.data.카페 == 3 ||
-        getClassBigCnt.data.카페 == 30 ||
-        getClassBigCnt.data.카페 == 100 ||
-        getClassBigCnt.data.카페 == 200 ||
-        getClassBigCnt.data.카페 == 300
+        getClassBigCnt.data.카페 == 2 ||
+        getClassBigCnt.data.카페 == 29 ||
+        getClassBigCnt.data.카페 == 99 ||
+        getClassBigCnt.data.카페 == 199 ||
+        getClassBigCnt.data.카페 == 299
       ) {
         this.badges.badgeCafe++;
         const modifyBadgeCafe = await http.put(`/users/badge`, this.badges);
@@ -638,11 +638,11 @@ export default {
           console.log("카페 레벨 수정 실패");
         }
       } else if (
-        getClassBigCnt.data.문화 == 3 ||
-        getClassBigCnt.data.문화 == 30 ||
-        getClassBigCnt.data.문화 == 100 ||
-        getClassBigCnt.data.문화 == 200 ||
-        getClassBigCnt.data.문화 == 300
+        getClassBigCnt.data.문화 == 2 ||
+        getClassBigCnt.data.문화 == 29 ||
+        getClassBigCnt.data.문화 == 99 ||
+        getClassBigCnt.data.문화 == 199 ||
+        getClassBigCnt.data.문화 == 299
       ) {
         this.badges.badgeCulture++;
         const modifyBadgeCulture = await http.put(`/users/badge`, this.badges);
@@ -652,11 +652,11 @@ export default {
           console.log("문화 레벨 수정 실패");
         }
       } else if (
-        getClassBigCnt.data.여행 == 3 ||
-        getClassBigCnt.data.여행 == 30 ||
-        getClassBigCnt.data.여행 == 100 ||
-        getClassBigCnt.data.여행 == 200 ||
-        getClassBigCnt.data.여행 == 300
+        getClassBigCnt.data.여행 == 2 ||
+        getClassBigCnt.data.여행 == 29 ||
+        getClassBigCnt.data.여행 == 99 ||
+        getClassBigCnt.data.여행 == 199 ||
+        getClassBigCnt.data.여행 == 299
       ) {
         this.badges.badgeTrip++;
         const modifyBadgeTrip = await http.put(`/users/badge`, this.badges);
@@ -666,11 +666,11 @@ export default {
           console.log("여행 레벨 수정 실패");
         }
       } else if (
-        getClassBigCnt.data.생활 == 3 ||
-        getClassBigCnt.data.생활 == 30 ||
-        getClassBigCnt.data.생활 == 100 ||
-        getClassBigCnt.data.생활 == 200 ||
-        getClassBigCnt.data.생활 == 300
+        getClassBigCnt.data.생활 == 2 ||
+        getClassBigCnt.data.생활 == 29 ||
+        getClassBigCnt.data.생활 == 99 ||
+        getClassBigCnt.data.생활 == 199 ||
+        getClassBigCnt.data.생활 == 299
       ) {
         this.badges.badgeLife++;
         const modifyBadgeLife = await http.put(`/users/badge`, this.badges);

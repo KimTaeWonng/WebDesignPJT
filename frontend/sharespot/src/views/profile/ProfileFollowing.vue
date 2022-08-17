@@ -5,50 +5,6 @@
       <v-list-item-group>
        <follow-item v-for="user in followingUsers" :key="`${user.user_id}`" :userDetail="user"></follow-item>
       </v-list-item-group>
-
-        <!-- <v-list-item v-for="(user, i) in followingUsers" :key="i">
-          <v-list-item-avatar @click="moveProfile(user.user_id)">
-            <v-img :src="user.profileImage"></v-img>
-          </v-list-item-avatar>
-          <v-list-item-content class="mr-3" @click="moveProfile()">
-            <v-list-item-title v-text="user.nickname" style="font-weight: bold;"></v-list-item-title>
-            <v-list-item-subtitle v-text="user.introduce" style="font-size: 13px;"></v-list-item-subtitle>
-          </v-list-item-content>
-         -->
-          <!-- <v-btn
-            v-if="this.followingUsers.indexOf(user.user_id) == -1"
-            class="profile-btn"
-            style="height: 25px; font-size: 12px"
-            color="#289672"
-            @click="clickFollow()"
-            >팔로우</v-btn
-          > -->
-
-          <!-- <v-btn
-            v-if="this.isfollow == false"
-            class="profile-btn"
-            style="height: 25px; font-size: 12px"
-            color="#289672"
-            @click="clickFollow()"
-            >팔로우</v-btn
-          > -->
-
-          <!-- <v-btn
-            v-else
-            class="profile-btn"
-            style="height: 25px; font-size: 12px"
-            color="#289672"
-            @click="clickUnFollow()"
-            >언팔로우</v-btn> -->
-          <!-- <v-btn
-            class="following-btn"
-            style="height: 25px; font-size: 12px;"
-            color="#f3f3f3"
-            
-            >팔로잉</v-btn
-          > -->
-        <!-- </v-list-item>
-      </v-list-item>-->
     </v-list>
   </v-container>
 </template>
@@ -88,15 +44,6 @@ export default {
     }
     console.log('followingUsers', this.followingUsers)
 
-    
-    // const following = await http.get(`/users/${this.$route.params.userid}/following`);
-    // console.log('여기')
-    // console.log(following.data)
-    // this.followingUsers = following.data
-    
-
-    // 팔로우 여부 리스트 만들어서 인덱스 슬라이싱
-    //[팔로, 아님, 아님, 팔로]
 
   },
   updated() {
@@ -112,15 +59,6 @@ export default {
 
   },
   methods: {
-
-    
-    // moveProfile(user_id) {
-    //     this.$router.push({
-    //       name: "profile",
-    //       params: {userid: user_id}
-        
-    //   })
-    // },
 
     }
 };

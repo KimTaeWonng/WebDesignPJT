@@ -30,7 +30,7 @@
           <div>
             <v-row class="text-center d-flex" align="center" style="margin: 3px">
               <!-- < 버튼 -->
-              <v-col cols="2" @click="dialog = false">
+              <v-col cols="2" @click="this.$router.push('/main/mainlist')">
                 <v-icon>mdi-chevron-left</v-icon>
               </v-col>
               <!-- 검색창 -->
@@ -57,34 +57,6 @@
               <search-item style="margin-left: 10px;" v-for="user1 in this.searchWordList" :key="`${user1.user_id}`" :userDetail="user1"></search-item>
               <!-- 유저 프로필 + 닉네임 + 소개 -->
               </v-row>
-
-              
-              <!-- <v-list-item @click="changeRouter()">
-                <v-row style="padding: 10px">
-                  <v-col cols="3" align="center">
-                    <v-icon size="60">mdi-face-woman-profile</v-icon>
-                  </v-col>
-                  <v-col cols="9">
-                    <v-list-item-content>
-                      <v-list-item-title>User Nick Name</v-list-item-title>
-                      <v-list-item-subtitle>한줄소개</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-col>
-                </v-row>
-              </v-list-item>
-              <v-list-item @click="changeRouter()">
-                <v-row style="padding: 10px">
-                  <v-col cols="3" align="center">
-                    <v-icon size="60">mdi-face-man-profile</v-icon>
-                  </v-col>
-                  <v-col cols="9">
-                    <v-list-item-content>
-                      <v-list-item-title>User Nick Name</v-list-item-title>
-                      <v-list-item-subtitle>한줄소개</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-col>
-                </v-row>
-              </v-list-item> -->
             </v-list>
           </v-row>
           <v-row>
@@ -95,34 +67,6 @@
           <!-- 변경: 검색 결과 내역 -->
           <v-row v-if="searchContent != null" id="searchResult">
             <search-item style="margin-left: 10px;"  v-for="user2 in searchResultList" :key="`${user2.user_id}`" :userDetail="user2"></search-item>
-            <!-- <v-list three-line subheader>
-              <v-list-item @click="changeRouter()">
-                <v-row style="padding: 10px">
-                  <v-col cols="3" align="center">
-                    <v-icon size="60">mdi-face-woman-profile</v-icon>
-                  </v-col>
-                  <v-col cols="9">
-                    <v-list-item-content>
-                      <v-list-item-title>{{ searchContent }}</v-list-item-title>
-                      <v-list-item-subtitle>한줄소개</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-col>
-                </v-row>
-              </v-list-item>
-              <v-list-item @click="changeRouter()">
-                <v-row style="padding: 10px">
-                  <v-col cols="3" align="center">
-                    <v-icon size="60">mdi-face-man-profile</v-icon>
-                  </v-col>
-                  <v-col cols="9">
-                    <v-list-item-content>
-                      <v-list-item-title>User Nick Name</v-list-item-title>
-                      <v-list-item-subtitle>한줄소개</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-col>
-                </v-row>
-              </v-list-item>
-            </v-list> -->
           </v-row>
           <V-col
             v-if="this.searchResultList.length != 0"
@@ -204,6 +148,7 @@ export default {
         this.$router.push({ name: pageName });
       }
     },
+
 
 
   },

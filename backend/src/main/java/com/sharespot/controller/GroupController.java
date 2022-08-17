@@ -1,8 +1,10 @@
 package com.sharespot.controller;
 
 import com.sharespot.entity.Group;
+import com.sharespot.entity.GroupLite;
 import com.sharespot.entity.GroupUser;
 import com.sharespot.entity.User;
+import com.sharespot.repo.GroupLiteRepository;
 import com.sharespot.repo.GroupUserRepository;
 import com.sharespot.service.GUService;
 import com.sharespot.service.GroupService;
@@ -25,6 +27,7 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
+    private final GroupLiteRepository groupLiteRepository;
     
     @Autowired
     private UserService userService;
@@ -52,15 +55,15 @@ public class GroupController {
     @ApiOperation(value = "그룹작성", notes = "<b>그룹</b>을 작성한다.")
     public ResponseEntity<Integer> createGroup(@RequestBody Group group){
         Group groupEntity = Group.builder()
-                .group_manager(group.getGroup_manager())
-                .group_name(group.getGroup_name())
-                .group_content(group.getGroup_content())
-                .group_limit(group.getGroup_limit())
-                .group_gender(group.getGroup_gender())
-                .group_age_min(group.getGroup_age_min())
-                .group_age_max(group.getGroup_age_max())
-                .group_image(group.getGroup_image())
-                .group_nick(group.getGroup_nick())
+                .groupManager(group.getGroupManager())
+                .groupName(group.getGroupName())
+                .groupContent(group.getGroupContent())
+                .groupLimit(group.getGroupLimit())
+                .groupGender(group.getGroupGender())
+                .groupAgeMin(group.getGroupAgeMin())
+                .groupAgeMax(group.getGroupAgeMax())
+                .groupImage(group.getGroupImage())
+                .groupNick(group.getGroupNick())
                 .build();
         groupService.createGroup(groupEntity);
         return new ResponseEntity<Integer>(1, HttpStatus.OK);
@@ -76,15 +79,15 @@ public class GroupController {
     @ApiOperation(value = "그룹수정", notes = "해당 <b>그룹</b>을 수정한다.")
     public ResponseEntity<Integer> updateGroup(@RequestBody Group group, @PathVariable int gid){
         Group groupEntity = Group.builder()
-                .group_manager(group.getGroup_manager())
-                .group_name(group.getGroup_name())
-                .group_content(group.getGroup_content())
-                .group_limit(group.getGroup_limit())
-                .group_gender(group.getGroup_gender())
-                .group_age_min(group.getGroup_age_min())
-                .group_age_max(group.getGroup_age_max())
-                .group_image(group.getGroup_image())
-                .group_nick(group.getGroup_nick())
+        		.groupManager(group.getGroupManager())
+                .groupName(group.getGroupName())
+                .groupContent(group.getGroupContent())
+                .groupLimit(group.getGroupLimit())
+                .groupGender(group.getGroupGender())
+                .groupAgeMin(group.getGroupAgeMin())
+                .groupAgeMax(group.getGroupAgeMax())
+                .groupImage(group.getGroupImage())
+                .groupNick(group.getGroupNick())
                 .build();
 
         int result = groupService.updateGroup(gid, groupEntity);
@@ -132,6 +135,16 @@ public class GroupController {
 		}
     	
     	return new ResponseEntity<Integer>(result,HttpStatus.OK);
+    	
+    }
+    
+    @GetMapping("/search/{word}")
+    @ApiOperation(value = "그룹 검색", notes = "그룹 이름으로 검색")
+    public ResponseEntity<List<GroupLite>> searchGroup(@PathVariable String word){
+    	
+    	List<GroupLite> searchList = groupLiteRepository.findByGroupNameContaining(word);
+    	
+    	return new ResponseEntity<List<GroupLite>>(searchList,HttpStatus.OK);
     	
     }
 

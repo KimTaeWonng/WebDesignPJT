@@ -387,13 +387,13 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/reset/password/{userId}/{pass}")
+	@PostMapping("/reset/password/{userId}")
 	@ApiOperation(value = "유저 비밀번호 재설정", notes = "유저의 비밀번호를 재설정한다")
-	public ResponseEntity<User> resetPassword(@PathVariable int userId, @PathVariable String pass){
+	public ResponseEntity<User> resetPassword(@PathVariable int userId, @RequestBody String pass){
 		
-		User user = userService.resetPassword(pass, userId);
+		User temp = userService.resetPassword(pass, userId);
 		
-		return new ResponseEntity<User>(user,HttpStatus.OK);
+		return new ResponseEntity<User>(temp,HttpStatus.OK);
 		
 	}
 

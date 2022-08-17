@@ -114,14 +114,14 @@
         </v-btn>
       </v-row>
     </div>
-
+<!-- 
               <div id="app" class="kakaoMap">
               <div>
                 <div id="map"></div>
                 <div id="clickLatlng"></div>
                 <div id="gpsName"></div>
               </div>
-          </div>
+          </div> -->
 
     <!-- <v-row class="text-center" style="margin-bottom:12%; margin-right:12%;" align="center">
             <v-col>
@@ -446,87 +446,87 @@ export default {
       },
     };
   },
-    mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey="+ process.env.VUE_APP_KAKAOMAP_KEY + "&libraries=services";
-      document.head.appendChild(script);
-    }
-    this.changeSize(0);
-  },
+  //   mounted() {
+  //   if (window.kakao && window.kakao.maps) {
+  //     this.initMap();
+  //   } else {
+  //     const script = document.createElement("script");
+  //     /* global kakao */
+  //     script.onload = () => kakao.maps.load(this.initMap);
+  //     script.src =
+  //       "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey="+ process.env.VUE_APP_KAKAOMAP_KEY + "&libraries=services";
+  //     document.head.appendChild(script);
+  //   }
+  //   this.changeSize(0);
+  // },
   methods: {
 
     // 지도 스크립트 start
 
-    async initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(this.userLat, this.userLng),
-        level: 3,
-      };
+    // async initMap() {
+    //   const container = document.getElementById("map");
+    //   const options = {
+    //     center: new kakao.maps.LatLng(this.userLat, this.userLng),
+    //     level: 3,
+    //   };
 
-      //지도 객체를 등록합니다.
-      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-      this.map = new kakao.maps.Map(container, options);
+    //   //지도 객체를 등록합니다.
+    //   //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
+    //   this.map = new kakao.maps.Map(container, options);
 
-      // 지도를 클릭한 위치에 표출할 마커입니다
-        var marker = new kakao.maps.Marker({
-            // 지도 중심좌표에 마커를 생성합니다
-            position: this.map.getCenter()
-        }); 
-        // 지도에 마커를 표시합니다
-        marker.setMap(this.map);
+    //   // 지도를 클릭한 위치에 표출할 마커입니다
+    //     var marker = new kakao.maps.Marker({
+    //         // 지도 중심좌표에 마커를 생성합니다
+    //         position: this.map.getCenter()
+    //     }); 
+    //     // 지도에 마커를 표시합니다
+    //     marker.setMap(this.map);
 
-        // 지도에 클릭 이벤트를 등록합니다
-        // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
-        await kakao.maps.event.addListener(this.map, 'click', (mouseEvent) => {
+    //     // 지도에 클릭 이벤트를 등록합니다
+    //     // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+    //     await kakao.maps.event.addListener(this.map, 'click', (mouseEvent) => {
     
-    // 클릭한 위도, 경도 정보를 가져옵니다 
-    var latlng = mouseEvent.latLng; 
+    // // 클릭한 위도, 경도 정보를 가져옵니다 
+    // var latlng = mouseEvent.latLng; 
 
 
-    var geocoder = new kakao.maps.services.Geocoder();
-    var callback = (result, status) => {
-            if (status === kakao.maps.services.Status.OK) {
+    // var geocoder = new kakao.maps.services.Geocoder();
+    // var callback = (result, status) => {
+    //         if (status === kakao.maps.services.Status.OK) {
 
-        // console.log('지역 명칭 : ' + result[0].address_name);
-        // console.log('행정구역 코드 : ' + result[0].code);
+    //     // console.log('지역 명칭 : ' + result[0].address_name);
+    //     // console.log('행정구역 코드 : ' + result[0].code);
 
-        console.log(result[0].address.address_name);
-        // this.userPlaceName = result[0].address.address_name;
-    }
+    //     console.log(result[0].address.address_name);
+    //     // this.userPlaceName = result[0].address.address_name;
+    // }
 
-      }
-    console.log(latlng);
+    //   }
+    // console.log(latlng);
     
-    // geocoder.coord2RegionCode(latlng.La, latlng.Ma, callback);
-    geocoder.coord2Address(latlng.La, latlng.Ma, callback);
+    // // geocoder.coord2RegionCode(latlng.La, latlng.Ma, callback);
+    // geocoder.coord2Address(latlng.La, latlng.Ma, callback);
     
-    // 마커 위치를 클릭한 위치로 옮깁니다
-    marker.setPosition(latlng);
+    // // 마커 위치를 클릭한 위치로 옮깁니다
+    // marker.setPosition(latlng);
     
-    // var message = '위도: ' + latlng.getLat() + ', ';
-    // message += '경도: ' + latlng.getLng();
+    // // var message = '위도: ' + latlng.getLat() + ', ';
+    // // message += '경도: ' + latlng.getLng();
 
-      // this.tempLat = latlng.getLat;
-      // this.tempLng = latlng.Ma;
+    //   // this.tempLat = latlng.getLat;
+    //   // this.tempLng = latlng.Ma;
       
     
-    // var resultDiv = document.getElementById('clickLatlng'); 
-    // resultDiv.innerHTML = message;
-        });
-    },
+    // // var resultDiv = document.getElementById('clickLatlng'); 
+    // // resultDiv.innerHTML = message;
+    //     });
+    // },
     
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
-    },
+    // changeSize(size) {
+    //   const container = document.getElementById("map");
+    //   container.style.width = `${size}px`;
+    //   container.style.height = `${size}px`;
+    // },
 
     // 지도 스크립트 end
 
@@ -561,22 +561,22 @@ export default {
         });
     },
 
-    getGpsName(lat, lng){
-      let geocoder = new kakao.maps.services.Geocoder();
+    // getGpsName(lat, lng){
+    //   let geocoder = new kakao.maps.services.Geocoder();
 
-      let coord = new kakao.maps.LatLng(lat, lng);
-      let callback = function(result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-              // console.log(result[0].address.address_name);
-              // this.userPlaceName = result[0].address.address_name;
-              var message = result[0].address.address_name;
-              var resultDiv = document.getElementById('gpsName'); 
-              resultDiv.innerHTML = message;
-          }
-      }
-      geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
-      // console.log(document.getElementById('gpsName').innerHTML);
-    },
+    //   let coord = new kakao.maps.LatLng(lat, lng);
+    //   let callback = function(result, status) {
+    //       if (status === kakao.maps.services.Status.OK) {
+    //           // console.log(result[0].address.address_name);
+    //           // this.userPlaceName = result[0].address.address_name;
+    //           var message = result[0].address.address_name;
+    //           var resultDiv = document.getElementById('gpsName'); 
+    //           resultDiv.innerHTML = message;
+    //       }
+    //   }
+    //   geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+    //   // console.log(document.getElementById('gpsName').innerHTML);
+    // },
 
     async getMeta() {
       const metaImg = this.$refs["image"].files[0];
@@ -586,9 +586,9 @@ export default {
       // console.log(longitude);
       this.userLat = latitude;
       this.userLng = longitude
-      this.changeSize(0);
-      this.initMap();
-      this.map.relayout;
+      // this.changeSize(0);
+      // this.initMap();
+      // this.map.relayout;
     },
 
     test() {
@@ -825,9 +825,9 @@ export default {
 #v-chip {
   color: #289672;
 }
-.kakaoMap{
+/* .kakaoMap{
   width: 100% !important;
   height: 90% !important;
   text-align: center !important;
-}
+} */
 </style>

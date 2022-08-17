@@ -95,6 +95,9 @@
     </template>
 
     <!-- 사진 -->
+    <!-- <v-carousel height="290px" width="290px" hide-delimiter-background>
+      <v-carousel-item v-for="(img, i) in post.image" :key="i" :src="img"> </v-carousel-item>
+    </v-carousel> -->
     <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img>
 
     <v-row no-gutters>

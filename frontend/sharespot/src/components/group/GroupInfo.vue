@@ -44,7 +44,9 @@
         <div>
           <p style="text-align: left; margin-left:3%; margin-top:3%; font-weight:bold; font-size:5vw;">
             모임 일정
-            <span class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;" @click.stop="dialog = true">add_circle_outline</span>
+            <span v-if="this.ismember == true" class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;" @click.stop="dialog = true">
+              add_circle_outline
+            </span>
           
             <v-dialog
         v-model="dialog"
@@ -131,7 +133,6 @@
                 <validation-provider
               v-slot="{ errors }"
               name="지도 URL"
-              rules="required"
             >
                   <v-text-field
                     v-model="meeting.meetingUrl"
@@ -343,6 +344,20 @@ export default {
       } else {
         alert("모임 생성에 실패하였습니다.");
       }
+
+      const getmeeting = await http.get(`/group/${this.$route.params.groupno}/meetings`)
+
+      const newmeeting = getmeeting.data.at(-1);
+      console.log(newmeeting)
+
+      const mid = newmeeting.meetingId
+      console.log(mid)
+
+      await http.post(`/group/meetings/members/${mid}/${this.userInfo.user_id}`, {
+        mid: mid,
+        userId: this.userInfo.user_id
+      })
+
     },
 
     },

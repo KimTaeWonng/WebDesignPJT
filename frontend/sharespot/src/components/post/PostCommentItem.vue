@@ -4,7 +4,10 @@
     <!-- :alt="`${chat.title} avatar`"  이거 ${user.username} 이런식으로 불러오기-->
     <v-col cols="2" allign="center">
       <v-list-item-avatar>
-        <v-img :src="comment.userImage"></v-img>
+        <v-img v-if="comment.userImage == null">
+          <v-icon size="50">mdi-account-circle</v-icon></v-img
+        >
+        <v-img v-else :src="comment.userImage"></v-img>
       </v-list-item-avatar>
     </v-col>
     <v-col cols="8" style="padding: 4px">

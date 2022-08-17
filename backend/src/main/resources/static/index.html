@@ -5,6 +5,25 @@
     <title>Title</title>
 </head>
 <body>
-<a href="https://localhost:9999/swagger-ui/index.html">Swagger</a>
+
+<h1>file upload</h1>
+<form method="post" action="/api/file" enctype="multipart/form-data">
+    <input type="file" name="files" multiple="multiple">
+    <input type="submit">
+</form>
+
+<!--<h1>file upload (post)</h1>-->
+<!--<form method="post" action="/api/file/post" enctype="multipart/form-data">-->
+<!--    <input type="file" name="files" multiple="multiple">-->
+<!--    <input type="submit">-->
+<!--</form>-->
+
+<h1>file 조회</h1>
+<form method="get" action="/api/file">
+    파일경로:<input type="text" name="imagePath">
+    <input type="submit" value="조회">
+</form>
+
 </body>
+
 </html>

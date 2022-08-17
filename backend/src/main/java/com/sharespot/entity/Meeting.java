@@ -1,5 +1,8 @@
 package com.sharespot.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +16,9 @@ import java.util.Date;
 
 @SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name="meeting")
 public class Meeting {
@@ -24,17 +27,17 @@ public class Meeting {
     @Column(columnDefinition = "INT UNSIGNED")
     private Integer meetingId;
 
-    @Column(columnDefinition = "group_id")
     private Integer groupId;
-
-    @NotBlank(message = "정모 제목을 입력해주세요")
     private String meetingTitle;
     private BigDecimal meetingLat;
     private BigDecimal meetingLng;
     private String meetingUrl;
     private Integer meetingMoney;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd-HH:mm", timezone="Asia/Seoul")
     private Date meetingDay;
 
 //    @NotBlank(message = "정모 인원을 입력해주세요")
     private Integer meetingPeople;
+    private String placeName;
 }

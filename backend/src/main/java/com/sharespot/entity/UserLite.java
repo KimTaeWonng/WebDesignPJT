@@ -1,16 +1,14 @@
 package com.sharespot.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,22 +19,18 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name="comment_table")
-public class Comment {
+@Table(name="user_table")
+public class UserLite {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(columnDefinition = "INT UNSIGNED")
-	private Integer commentId;
+	private Integer user_id;
 	
-	private Integer postId;
-	private Integer userId;
+	private String nickname;
+	private String introduce;
+	private String profileImage;
 	
-	@NotBlank(message = "댓글 내용을 입력해주세요")
-	private String comment;
-	
-	private String userImage;
-	private String userNick;
-	private String uploadTime;
+
 }

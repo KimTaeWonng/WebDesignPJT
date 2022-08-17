@@ -1,8 +1,5 @@
 <template>
-  <div @click="deleteInfo">
-    <v-alert dense type="info" v-if="isFollowEmpty">
-      팔로우한 유저의 게시글이 없어서 모든 게시물이 표시됩니다.
-    </v-alert>
+  <div>
     <v-list>
       <post-card v-for="(post, i) in posts" :key="i" v-bind="post" :detailPost="post"></post-card>
     </v-list>
@@ -11,6 +8,14 @@
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
+
+    <v-snackbar style="margin-bottom: 17%" v-model="snackbar" shaped color="#289672" outlined>
+      팔로우한 유저의 게시글이 없어서 <br />모든 게시물이 표시됩니다.
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="#289672" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -21,6 +26,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import PostCard from "../post/PostCard.vue";
 
 const userStore = "userStore";
+const userLogStore = "userLogStore";
 
 export default {
   components: { PostCard, InfiniteLoading },
@@ -31,95 +37,128 @@ export default {
       posts: [],
       loadNum: 0,
       loadSize: 5,
-      isFollowEmpty: false,
+      snackbar: false,
     };
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
+    ...mapState(userLogStore, ["followingUserList"]),
   },
   async created() {
-    // 내가 팔로잉한 유저들의 게시글 조회
-    // try {
-    //   let response = await http.get(
-    //     `/main/posts/follow/${this.userInfo.user_id}`
-    //   );
-    //   // console.log(response.data.length);
-    //   if(response.data.length === 0){
-    //     this.isFollowEmpty = true;
-    //     // console.log("팔로잉 게시글이 없넹")
-    //     response = await http.get(
-    //       `/main/posts`
-    //     );
-    //     this.posts = response.data;
-    //     }else{
-    //       // console.log("팔로잉 게시글이 생겼어!")
-    //       this.posts = response.data;
-    //     }
-    // } catch (error) {
-    //   alert("MainPost 게시물들 조회 실패");
-    // }
+    if (this.followingUserList.length === 0) {
+      this.snackbar = true;
+    }
   },
   mounted() {},
 
   methods: {
-    deleteInfo() {
-      this.isFollowEmpty = false;
-    },
-
     async infiniteHandler($state) {
-      // 최신피드 (무한스크롤) 조회
-      await http
-        .get(`/main/posts/follow/${this.userInfo.user_id}`, {
-          params: {
-            page: this.loadNum,
-            size: this.loadSize,
-          },
-        })
-        .then((res) => {
-          if (res.data.totalPages == this.loadNum) {
-            $state.complete();
-          } else {
-            setTimeout(() => {
-              this.loadNum++;
-
-              const items = res.data.content;
-              console.log(items.length);
-              console.log("data " + res.data.totalPages);
-
-              for (const i of items) {
-                const data = {
-                  postId: i.postId,
-                  userId: i.userId,
-                  userImage: i.userImage,
-                  postLat: i.postLat,
-                  postLng: i.postLng,
-                  nickname: i.nickname,
-                  uploadTime: i.uploadTime,
-                  postGpsName: i.postGpsName,
-                  image: i.image,
-                  likeCnt: i.likeCnt,
-                  commentCnt: i.commentCnt,
-                  classBig: i.classBig,
-                  classSmall: i.classSmall,
-                  classWhere: i.classWhere,
-                  classWho: i.classWho,
-                  content: i.content,
-                };
-                this.posts.push(data);
-              }
-
-              $state.loaded();
-            }, 1000);
-          }
-          if (res.data.last) {
-            setTimeout(() => {
+      if (this.followingUserList.length === 0) {
+        await http
+          .get(`/main/search/posts/new`, {
+            params: {
+              page: this.loadNum,
+              size: 5,
+            },
+          })
+          .then((res) => {
+            if (res.data.totalPages == this.loadNum) {
               $state.complete();
-            }, 1000);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            } else {
+              setTimeout(() => {
+                this.loadNum++;
+
+                const items = res.data.content;
+                for (const i of items) {
+                  const data = {
+                    postId: i.postId,
+                    userId: i.userId,
+                    userImage: i.userImage,
+                    postLat: i.postLat,
+                    postLng: i.postLng,
+                    nickname: i.nickname,
+                    uploadTime: i.uploadTime,
+                    postGpsName: i.postGpsName,
+                    image: i.image,
+                    likeCnt: i.likeCnt,
+                    commentCnt: i.commentCnt,
+                    classBig: i.classBig,
+                    classSmall: i.classSmall,
+                    classWhere: i.classWhere,
+                    classWho: i.classWho,
+                    content: i.content,
+                  };
+                  this.posts.push(data);
+                }
+
+                $state.loaded();
+              }, 1000);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        // 최신피드 (무한스크롤) 조회
+        await http
+          .get(`/main/posts/follow/${this.userInfo.user_id}`, {
+            params: {
+              page: this.loadNum,
+              size: this.loadSize,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data.content.length === 0) {
+              this.isFollowEmpty = true;
+            }
+            {
+              if (res.data.totalPages == this.loadNum) {
+                $state.complete();
+              } else {
+                setTimeout(() => {
+                  this.loadNum++;
+
+                  const items = res.data.content;
+                  console.log(items.length);
+                  console.log("data " + res.data.totalPages);
+
+                  for (const i of items) {
+                    const data = {
+                      postId: i.postId,
+                      userId: i.userId,
+                      userImage: i.userImage,
+                      postLat: i.postLat,
+                      postLng: i.postLng,
+                      nickname: i.nickname,
+                      uploadTime: i.uploadTime,
+                      postGpsName: i.postGpsName,
+                      image: i.image,
+                      likeCnt: i.likeCnt,
+                      commentCnt: i.commentCnt,
+                      classBig: i.classBig,
+                      classSmall: i.classSmall,
+                      classWhere: i.classWhere,
+                      classWho: i.classWho,
+                      content: i.content,
+                    };
+                    this.posts.push(data);
+                  }
+
+                  $state.loaded();
+                }, 1000);
+              }
+            }
+            if (res.data.last) {
+              setTimeout(() => {
+                $state.complete();
+              }, 1000);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
   },
 };

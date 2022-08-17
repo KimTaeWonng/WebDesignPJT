@@ -139,7 +139,7 @@
             </v-col>
           </v-row> -->
 
-    <v-carousel height="290px" width="290px" hide-delimiter-background>
+    <v-carousel height="290px" width="290px" hide-delimiter-background show-arrows-on-hover>
       <v-carousel-item v-for="(img, i) in post.image" :key="i" :src="img"> </v-carousel-item>
     </v-carousel>
     <!-- </v-parallax> -->

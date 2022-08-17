@@ -5,6 +5,7 @@ import com.sharespot.entity.GroupLite;
 import com.sharespot.entity.GroupUser;
 import com.sharespot.entity.User;
 import com.sharespot.repo.GroupLiteRepository;
+import com.sharespot.repo.GroupRepository;
 import com.sharespot.repo.GroupUserRepository;
 import com.sharespot.service.GUService;
 import com.sharespot.service.GroupService;

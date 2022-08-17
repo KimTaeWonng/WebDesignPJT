@@ -12,7 +12,10 @@
         <!-- 검색창 -->
         <v-col cols="2">
           <v-list-item-avatar>
-            <v-img :src="this.userInfo.profileImage"></v-img>
+            <v-img v-if="this.userInfo.profileImage == null">
+              <v-icon size="50">mdi-account-circle</v-icon></v-img
+            >
+            <v-img v-else :src="this.userInfo.profileImage"></v-img>
           </v-list-item-avatar>
         </v-col>
         <v-col cols="8" style="padding: 0" class="mt-8">

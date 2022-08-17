@@ -9,7 +9,10 @@
         <!-- :alt="`${chat.title} avatar`"  이거 ${user.username} 이런식으로 불러오기-->
         <v-col style="padding: 12px 0px 0px 0px" cols="2" align="center">
           <v-list-item-avatar>
-            <v-img :src="this.post.userImage"></v-img>
+            <v-img v-if="this.post.userImage == null">
+              <v-icon size="50">mdi-account-circle</v-icon></v-img
+            >
+            <v-img v-else :src="this.post.userImage"></v-img>
           </v-list-item-avatar>
         </v-col>
         <v-col style="padding: 12px 0px 0px 0px" cols="8">

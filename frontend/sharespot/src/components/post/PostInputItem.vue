@@ -563,6 +563,25 @@ export default {
         }
       } else {
         // 수정할 때
+        const response = await http.put(`/main/posts/${this.$route.params.postno}`, {
+          classBig: this.tag_big,
+          classSmall: this.tag_small,
+          classWhere: this.tag_where,
+          classWho: this.tag_who,
+          commentCnt: 0,
+          content: this.post.content,
+          image: this.post.image[0],
+          likeCnt: 0,
+          nickname: this.userInfo.nickname,
+          postGpsName: "해안이네", // 메타데이터 구현 후 변경 필요
+          postId: this.$route.params.postno,
+          postLat: 30, // 메타데이터 구현 후 변경 필요
+          postLng: 120, // 메타데이터 구현 후 변경 필요
+          uploadTime: "",
+          userId: this.userInfo.user_id,
+          userImage: this.userInfo.profileImage,
+        });
+        console.log(response.data);
       }
 
       // userInfo의 bd가 0이면 1로 변경
@@ -674,7 +693,12 @@ export default {
       this.tag_who = getPost.data.classWho;
       this.tag_where = getPost.data.classWhere;
       this.isSelected = true;
-      this.user.img.push(this.post.image);
+
+      this.post.image = [];
+      const getImages = await http.get(`/file/post/${this.post.postId}`);
+      for (var i = 0; i < getImages.data.length; i++) {
+        this.post.image.push(getImages.data[i].filePath);
+      }
     }
   },
 };

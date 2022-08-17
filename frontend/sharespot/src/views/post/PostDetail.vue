@@ -79,7 +79,7 @@
       </template>
 
       <!-- 사진 -->
-      <v-carousel height="290px" width="290px" hide-delimiter-background>
+      <v-carousel height="290px" width="290px" hide-delimiter-background show-arrows-on-hover>
         <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
       </v-carousel>
       <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->

@@ -243,7 +243,7 @@
                   </div>
 
                   <div class="text-center">
-                    <div style="font-weight: bold">{{ user.name }}<span>님의</span></div>
+                    <div style="font-weight: bold">관리자 <span>님의</span></div>
                     가입이 완료되었습니다!
                   </div>
 
@@ -350,7 +350,6 @@ export default {
         gd: 1, // 성별공개여부
         bd: 0, // 뱃지보유여부
         pb: 0, // 비공개계정
-        registerTime: "",
       },
       confirmPwd: "",
 
@@ -377,12 +376,13 @@ export default {
   },
   methods: {
     // 카카오로그인 access-token 받아오기
-    async getToken() {
-      const response = await http.get(`/oauth/kakao`, {
-        params: {
-          code: this.codes,
-        },
-      });
+    async getToken(response) {
+      // const response = await http.get(`/oauth/kakao`, {
+      //   params: {
+      //     code: this.codes,
+      //   },
+      // });i
+
       console.log(response);
     },
 
@@ -414,19 +414,11 @@ export default {
         this.user.gd = 0;
       }
 
-      console.log(this.user);
-
       const response = await http.post("/users/signup", this.user);
-      console.log(response);
+      // console.log(response.data);
       // console.log(this.user);
 
       if (response.data.message == "success") {
-        // const getuser = await http2.get('/users/list')
-
-        // const newuser = getuser.data.at(-1)
-        // const usernick = newuser.nickname
-        // console.log(usernick)
-
         this.dialog = true;
       } else {
         alert("ShareSpot 가입에 실패했습니다.");

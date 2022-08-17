@@ -134,6 +134,17 @@ public class UserService {
 		return str;
 	}
 	
+	public User resetPassword(String str,int userId) {
+		
+		User user = userRepository.findById(userId).get();
+		
+		user.setPassword(EncryptionUtils.encryptSHA256(str));
+		
+		userRepository.save(user);
+		
+		return user;
+	}
+	
 	public int getMaxGrade(int userid) {
 		int max = 0;
 		

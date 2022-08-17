@@ -229,15 +229,20 @@ export default {
         http.get(`/group/meetings/members/${this.meeting.meetingId}`)
         .then(res => {
           // console.log(res)
-          // console.log(res.data)
+          console.log(res.data)
           this.members = res.data
+          console.log('모임멤버', this.members)
           this.manager = res.data[0].userId
-          // console.log(this.members)
+          console.log('모임장', this.manager)
           for(let i=0; i<res.data.length; i++) {
-            // console.log(res.data[i])
+            console.log('모임데이터', res.data[i])
+            console.log(res.data[i].userId)
             this.membersid.push(res.data[i].userId)
-            this.membersid = [new Set(this.membersid)]
-            // console.log(this.membersid)
+
+            const set = new Set(this.membersid)
+            const newArr = [...set]
+            this.membersid = newArr
+            console.log('멤버들', this.membersid)
           }
           
         })   
@@ -296,8 +301,11 @@ export default {
     async created() {
       this.meeting = this.detailMeeting
       this.me = this.userInfo.user_id
-      console.log(this.me)
+      console.log('나', this.me)
+      console.log(this.userInfo.nickname)
+
       this.getmembers()
+      console.log('멤버', this.members)
       
     },
 

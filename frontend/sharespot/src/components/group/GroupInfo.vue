@@ -262,17 +262,17 @@ export default {
 
     async created() {
       this.group = this.detailGroup
-      console.log(this.userInfo.user_id)
+      console.log('나', this.userInfo.user_id)
       const members = await http.get(`/group/members/${this.$route.params.groupno}`)
     
       for(let i=0; i<members.data.length; i++) {
         this.membersid.push(members.data[i].userId)
       }
-      console.log(this.membersid)
+      console.log('그룹가입자', this.membersid)
 
       const res = await http.get(`group/${this.$route.params.groupno}`)
       this.manager = res.data.group_manager
-      console.log(this.manager)
+      console.log('그룹장', this.manager)
 
       for (var i = 0; i < this.membersid.length; i++) {
         if (this.membersid[i] == this.userInfo.user_id) {
@@ -280,7 +280,7 @@ export default {
           break
       }
       };
-      console.log(this.ismember)
+      console.log('그룹가입여부', this.ismember)
     },
 
     mounted() {
@@ -353,10 +353,7 @@ export default {
       const mid = newmeeting.meetingId
       console.log(mid)
 
-      await http.post(`/group/meetings/members/${mid}/${this.userInfo.user_id}`, {
-        mid: mid,
-        userId: this.userInfo.user_id
-      })
+      await http.post(`/group/meetings/members/${mid}/${this.userInfo.user_id}`)
 
     },
 

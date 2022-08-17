@@ -314,7 +314,7 @@ public class UserController {
 		
 			user.setUserGrade(result);
 		
-			userService.createUser(user);
+			userRepository.save(user);
 		}
 		
 		return new ResponseEntity<Integer>(result,HttpStatus.OK);

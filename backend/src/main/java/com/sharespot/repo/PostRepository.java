@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Repository
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
@@ -40,5 +42,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	public List<Post> findByClassBigOrderByLikeCntDesc(String word);
 
     public Optional<Post> findByPostId(Integer PostId);
+
+    @Transactional
+	public void deleteAllByUserId(Integer user_id);
+
+	
 
 }

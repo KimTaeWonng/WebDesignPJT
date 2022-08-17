@@ -9,12 +9,25 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Integer> {
 
 //    Optional<Group> findByGroup_id(Integer id);
 	
-	public static final String FIND_GROUP_NAME = "SELECT group_id, group_name, group_gender, group_age_min, group_age_max FROM group_table WHERE group_name like %:word% ";
+	public static final String FIND_GROUP_NAME = "SELECT * FROM group_table WHERE group_name like %:word% ";
 	@Query(value = FIND_GROUP_NAME, nativeQuery = true)
-	public List<Object[]> findByGroupNameContaining(@Param("word")String word);
+	public List<Group> findByGroupNameContaining(@Param("word")String word);
+	
+	
+	public static final String DELETE_GROUP_BY_GM = "DELETE * FROM group_table WHERE group_manager =:group_manager";
+	@Transactional
+	@Query(value = DELETE_GROUP_BY_GM, nativeQuery = true)
+	public void deleteAllByGroupManager(@Param("group_manager") Integer group_manager);
+	
+	
+	public static final String FIND_GROUP_ID = "SELECT group_id FROM group_table WHERE group_manager =:user_id ";
+	@Query(value = FIND_GROUP_ID, nativeQuery = true)
+	public List<Integer> findAllGroupIdByGroupManager(@Param("user_id")Integer user_id);
 }

@@ -140,15 +140,9 @@ public class UserService {
 		Badge badge = badgeRepository.findById(userid).get();
 		
 		max = Math.max(max, badge.getBadgeCafe());
-		max = Math.max(max, badge.getBadgeComment());
 		max = Math.max(max, badge.getBadgeCulture());
-		max = Math.max(max, badge.getBadgeFeed());
-		max = Math.max(max, badge.getBadgeFollow());
-		max = Math.max(max, badge.getBadgeFollower());
 		max = Math.max(max, badge.getBadgeFood());
-		max = Math.max(max, badge.getBadgeGroup());
 		max = Math.max(max, badge.getBadgeLife());
-		max = Math.max(max, badge.getBadgeMeet());
 		max = Math.max(max, badge.getBadgeTrip());	
 		
 		return max;

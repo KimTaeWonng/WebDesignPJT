@@ -26,6 +26,7 @@ import com.sharespot.service.PostLikeService;
 import com.sharespot.service.ScrapService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
 
 @RestController
@@ -51,6 +52,9 @@ public class PostController {
 	private PostLikeRepository postLikeRepository;	
 	@Autowired
 	private PostLikeService postLikeService;
+	
+	@Autowired
+	private CommentRepository commentRepository;
 
 	@Autowired
 	private PostImageRepository postImageRepository;
@@ -194,11 +198,19 @@ public class PostController {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	
+	@Transactional
 	@DeleteMapping("/posts/{postNo}")
 	@ApiOperation(value = "게시글 삭제", notes = "<b>해당 게시글을 삭제</b>한다.")
 	public ResponseEntity<Integer> deletePost(@PathVariable int postNo){
 		int result = 0;
 		if(postRepository.findById(postNo).isPresent()) {
+			
+			Post post = postRepository.findById(postNo).get();
+			
+			//postLikeRepository.deleteAllByUserId(post.getUserId());
+			postLikeRepository.deleteAllByPostId(postNo);
+			
+			commentRepository.deleteAllByPostId(postNo);
 			postRepository.deleteById(postNo);
 			result = 1;
 		}

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sharespot.entity.Mail;
@@ -378,9 +379,21 @@ public class UserController {
 			user.setUserGrade(result);
 		
 			userRepository.save(user);
+			
+			result = 1;
 		}
 		
 		return new ResponseEntity<Integer>(result,HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/reset/password/{userId}/{pass}")
+	@ApiOperation(value = "유저 비밀번호 재설정", notes = "유저의 비밀번호를 재설정한다")
+	public ResponseEntity<User> resetPassword(@PathVariable int userId, @PathVariable String pass){
+		
+		User user = userService.resetPassword(pass, userId);
+		
+		return new ResponseEntity<User>(user,HttpStatus.OK);
 		
 	}
 

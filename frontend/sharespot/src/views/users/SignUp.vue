@@ -243,7 +243,7 @@
                   </div>
 
                   <div class="text-center">
-                    <div style="font-weight: bold">관리자 <span>님의</span></div>
+                    <div style="font-weight: bold">{{user.name}} <span>님의</span></div>
                     가입이 완료되었습니다!
                   </div>
 
@@ -366,13 +366,13 @@ export default {
 
     // 카카오 로그인 정보 불러오기
     // 이메일
-    this.user.email = this.kakaoUserInfo[0].email;
+    // this.user.email = this.kakaoUserInfo[0].email;
     // 성별
-    if (this.kakaoUserInfo[0].gender == "female") {
-      this.user.gender = 1;
-    } else {
-      this.user.gender = 0;
-    }
+    // if (this.kakaoUserInfo[0].gender == "female") {
+    //   this.user.gender = 1;
+    // } else {
+    //   this.user.gender = 0;
+    // }
   },
   methods: {
     // 카카오로그인 access-token 받아오기

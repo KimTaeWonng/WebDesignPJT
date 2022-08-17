@@ -93,7 +93,10 @@
                     multiple="multiple"
                     style="display: none"
                     ref="image"
-                    @change="upload(); getMeta();"
+                    @change="
+                      upload();
+                      getMeta();
+                    "
                     type="file"
                     id="chooseFile"
                     name="chooseFile"
@@ -286,13 +289,11 @@
   </v-container>
 </template>
 
-
 <script>
 import tag from "@/assets/json/tag.json";
 import { mapState } from "vuex";
 import { http } from "@/js/http.js";
-import EXIF from 'exif-js';
-
+import EXIF from "exif-js";
 
 const userStore = "userStore";
 
@@ -304,8 +305,7 @@ const userStore = "userStore";
 //     var MetaData = EXIF.getAllTags(this);
 //     console.log(MetaData)
 //   })
-// } 
-
+// }
 
 export default {
   name: "PostInputItem",
@@ -325,7 +325,7 @@ export default {
         introduce: "",
         PB: "",
         BR: "",
-        img: '',
+        img: "",
       },
       modal: false,
       dialogm1: "",
@@ -429,31 +429,32 @@ export default {
       const file = this.$refs["image"].files[0];
       // console.log(file)
 
-      formData.append('files', file);
+      formData.append("files", file);
       // console.log(formData)
 
-      await http.post('/file', formData, {
-        headers: {
-          'Content-Type' : 'multipart/form-data'
-        }
-      }).then((res) => {
-        // console.log(res)
-        // console.log(res.data[0])
+      await http
+        .post("/file", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          // console.log(res)
+          // console.log(res.data[0])
 
-        const imagePath = res.data[0]
-        this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`
-        console.log(this.image)
-        this.post.image.push(this.image)
-        // console.log(this.user.img)
-        // console.log(this.group.group_image)
-        // http2.get(`/file?imagePath=${imagePath}`)
-        
-
-      }).catch((err) => {
-        console.log(err)
-      })
+          const imagePath = res.data[0];
+          this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`;
+          console.log(this.image);
+          this.post.image.push(this.image);
+          // console.log(this.user.img)
+          // console.log(this.group.group_image)
+          // http2.get(`/file?imagePath=${imagePath}`)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    
+
     async getMeta() {
       const metaImg = this.$refs["image"].files[0];
       EXIF.getData(metaImg, function () {
@@ -462,26 +463,26 @@ export default {
         var exifLongRef = EXIF.getTag(this, "GPSLongitudeRef");
         var exifLatRef = EXIF.getTag(this, "GPSLatitudeRef");
 
-        var latitude = 0
-        var longitude = 0
+        var latitude = 0;
+        var longitude = 0;
 
         if (exifLatRef == "S") {
-            latitude = (exifLat[0]*-1) + (( (exifLat[1]*-60) + (exifLat[2]*-1) ) / 3600);						
+          latitude = exifLat[0] * -1 + (exifLat[1] * -60 + exifLat[2] * -1) / 3600;
         } else {
-            latitude = exifLat[0] + (( (exifLat[1]*60) + exifLat[2] ) / 3600);
+          latitude = exifLat[0] + (exifLat[1] * 60 + exifLat[2]) / 3600;
         }
 
         if (exifLongRef == "W") {
-            longitude = (exifLong[0]*-1) + (( (exifLong[1]*-60) + (exifLong[2]*-1) ) / 3600);						
+          longitude = exifLong[0] * -1 + (exifLong[1] * -60 + exifLong[2] * -1) / 3600;
         } else {
-            longitude = exifLong[0] + (( (exifLong[1]*60) + exifLong[2] ) / 3600);
+          longitude = exifLong[0] + (exifLong[1] * 60 + exifLong[2]) / 3600;
         }
 
-        console.log(latitude) // 위도
-        console.log(longitude) // 경도
-      })
+        console.log(latitude); // 위도
+        console.log(longitude); // 경도
+      });
     },
-    
+
     test() {
       // console.log(this.user);
       const data = this.categorys;
@@ -550,14 +551,12 @@ export default {
         const newPostId = getPosts.data[0].postId;
         console.log(newPostId);
 
-        // 다중 이미지 업로드
-        // const uploadImages = await http.post(`/file/post`, {
+        //다중 이미지 업로드
+        const uploadImages = await http.post(`/file/post/${newPostId}`, this.post.image);
 
-        // }, {
-        //   params: {
-        //     postId: newPostId,
-        //   }
-        // })
+        if (uploadImages.data == 1) {
+          console.log("다중 이미지 업로드 성공");
+        }
 
         if (response.data == 1) {
           this.successDialog = true;

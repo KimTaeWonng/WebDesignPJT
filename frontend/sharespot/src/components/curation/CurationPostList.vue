@@ -1,22 +1,10 @@
 <template>
   <div>
     <!-- 최신피드 -->
-    <v-list v-if="this.type == 'latest'">
-      <post-card
-        class="post-card"
-        v-for="(post, i) in posts"
-        :key="i"
-        :detailPost="post"
-      ></post-card>
-    </v-list>
-    <infinite-loading v-if="this.type == 'latest'" @infinite="infiniteHandler" spinner="wavedots">
-      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
-        게시글을 다 봤어요 :)
-      </div>
-    </infinite-loading>
+    <latest-post-list v-if="this.type == 'latest'"></latest-post-list>
 
     <!-- 큐레이션 상세검색 피드 -->
-    <v-list v-else-if="this.type == 'curation'">
+    <v-list v-if="this.type == 'curation'">
       <post-card
         class="post-card"
         v-for="(post, i) in curationPosts"
@@ -24,12 +12,11 @@
         :detailPost="post"
       ></post-card>
     </v-list>
-    <infinite-loading v-if="this.type == 'curation'" @infinite="addTag" spinner="wavedots">
+    <infinite-loading v-if="this.type == 'curation'" @infinite="infiniteHandler" spinner="wavedots">
       <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
-    
 
     <!-- 상세 태그 검색 플로팅 버튼 -->
     <v-btn
@@ -161,18 +148,19 @@ import InfiniteLoading from "vue-infinite-loading";
 import tag from "@/assets/json/tag.json";
 
 import PostCard from "../post/PostCard.vue";
+import LatestPostList from "./LatestPostList.vue";
 
 const userStore = "userStore";
 
 export default {
-  components: { PostCard, InfiniteLoading },
+  components: { PostCard, InfiniteLoading, LatestPostList },
   name: "S07P12A505CurationPostList",
 
   data() {
     return {
       posts: [],
       loadNum: 0,
-      curationLoadNum:0,
+      curationLoadNum: 0,
       curationPosts: [],
 
       dialog: false,
@@ -233,26 +221,32 @@ export default {
   async created() {},
   methods: {
     async infiniteHandler($state) {
-      // 최신피드 (무한스크롤) 조회
+      // this.curationPosts = [];
+
+      // 선택된 값을 보내줘서 해당 태그에 맞는 게시물들을 보여줌
       await http
-        .get(`/main/search/posts/new`, {
+        .get(`search/posts/category/${this.tag_big}/{small}`, {
           params: {
-            page: this.loadNum,
+            small: this.tag_small.join(","),
+            who: this.tag_who.join(","),
+            where: this.tag_where.join(","),
+            page: this.curationLoadNum,
             size: 5,
           },
         })
         .then((res) => {
-          if (res.data.totalPages == this.loadNum) {
+          if (res.data.totalPages == this.curationLoadNum) {
             $state.complete();
           } else {
             setTimeout(() => {
-              this.loadNum++;
+              this.curationLoadNum++;
 
+              console.log(res.data.content);
               const items = res.data.content;
               for (const i of items) {
-                const data = {
+                const datas = {
                   postId: i.postId,
-                  userId: this.userInfo.user_id,
+                  userId: i.userId,
                   userImage: i.userImage,
                   postLat: i.postLat,
                   postLng: i.postLng,
@@ -268,10 +262,15 @@ export default {
                   classWho: i.classWho,
                   content: i.content,
                 };
-                this.posts.push(data);
+                this.curationPosts.push(datas);
               }
 
               $state.loaded();
+            }, 1000);
+          }
+          if (res.data.last) {
+            setTimeout(() => {
+              $state.complete();
             }, 1000);
           }
         })
@@ -290,9 +289,9 @@ export default {
     clear() {
       // 초기화 버튼
     },
-    async addTag($state) {
+    addTag() {
       this.dialog = false;
-      this.type = "curation";
+      // this.type = "curation";
 
       // console.log(this.selected_1);
       // console.log(this.selected_2);
@@ -320,76 +319,18 @@ export default {
         this.tag_where.push(this.wheres[this.selected_4[i]]);
       }
 
-      // console.log(this.tag_big);
-      // console.log(this.tag_small);
-      // console.log(this.tag_who);
-      // console.log(this.tag_where);
+      this.type = "curation";
+
+      console.log(this.tag_big);
+      console.log(this.tag_small);
+      console.log(this.tag_who);
+      console.log(this.tag_where);
 
       this.curationPosts = [];
 
-      console.log(this.tag_small);
-      console.log(this.tag_small.join(","));
-
-      // 선택된 값을 보내줘서 해당 태그에 맞는 게시물들을 보여줌
-      await http.get(`search/posts/category/${this.tag_big}/{small}`, {
-        params: {
-          small: this.tag_small.join(","),
-          who: this.tag_who.join(","),
-          where: this.tag_where.join(","),
-          page: this.curationLoadNum,
-          size: 5,
-        },
-        
-      }).then((res) => {
-          if (res.data.totalPages == this.curationLoadNum) {
-            $state.complete();
-          } else {
-            setTimeout(() => {
-              this.curationLoadNum++;
-
-
-              console.log(res.data.content);
-              const items = res.data.content;
-              for (const i of items) {
-                const datas = {
-                  postId: i.postId,
-                  userId: this.userInfo.user_id,
-                  userImage: i.userImage,
-                  postLat: i.postLat,
-                  postLng: i.postLng,
-                  nickname: i.nickname,
-                  uploadTime: i.uploadTime,
-                  postGpsName: i.postGpsName,
-                  image: i.image,
-                  likeCnt: i.likeCnt,
-                  commentCnt: i.commentCnt,
-                  classBig: i.classBig,
-                  classSmall: i.classSmall,
-                  classWhere: i.classWhere,
-                  classWho: i.classWho,
-                  content: i.content,
-                };
-                this.curationPosts.push(datas);
-              }
-
-              $state.loaded();
-            }, 1000);
-          }
-          if(res.data.last){
-            setTimeout(()=>{
-              $state.complete();
-            },1000);
-            
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      // for (var i = 0; i < getCurationList.data.content.length; i++) {
-      //   this.curationPosts.push(getCurationList.data.content[i]);
-      // }
-      // console.log(this.curationPosts);
+      this.curationLoadNum = 0;
+      console.log("큐레이션로드넘이야~~~");
+      console.log(this.curationLoadNum);
     },
     //거리조절 아이콘
     season(val) {

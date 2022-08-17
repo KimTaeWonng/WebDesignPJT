@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <back-menu title="설정"></back-menu>
-    <v-list>
+    <!-- <v-list>
       <template v-for="(item, index) in accountitems">
         <v-subheader
           v-if="item.header"
@@ -19,23 +19,49 @@
             </v-icon>
           </v-list-item-avatar>
 
-          <v-list-item-content>
+          <v-list-item-content @click="goRoute(item.route)">
             <v-list-item-title v-text="item.title"></v-list-item-title>
             <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-list> -->
+
+    <v-list>
+      <v-subheader>Account Settings</v-subheader>
+      <template>
+        <v-list-item>
+          <v-list-item-avatar color="blue lighten-3">
+            <v-icon color="white"> mdi-account-outline </v-icon>
+          </v-list-item-avatar>
+
+          <v-list-item-content @click="goRoute('/settings/info')">
+            <v-list-item-title>프로필 변경</v-list-item-title>
+            <v-list-item-subtitle>개인 정보 변경</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+        <v-list-item>
+          <v-list-item-avatar color="green lighten-2">
+            <v-icon color="white"> mdi-lock-outline </v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content @click="goRoute('/users/resetpass')">
+            <v-list-item-title>비밀번호 재설정</v-list-item-title>
+            <v-list-item-subtitle>비밀변호 변경</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
     </v-list>
 
     <v-list>
-      <v-subheader>Notifications settings</v-subheader>
+      <v-subheader>Notifications Settings</v-subheader>
       <template>
         <v-list-item>
           <v-list-item-avatar color="pink lighten-3">
             <v-icon color="white"> mdi-bell-outline </v-icon>
           </v-list-item-avatar>
 
-          <v-list-item-content href="">
+          <v-list-item-content @click="goRoute('/settings/notice')">
             <v-list-item-title>알림 관리</v-list-item-title>
             <v-list-item-subtitle>알림 설정 </v-list-item-subtitle>
           </v-list-item-content>
@@ -52,7 +78,7 @@
             <v-icon color="white"> mdi-alert-circle-outline </v-icon>
           </v-list-item-avatar>
 
-          <v-list-item-content>
+          <v-list-item-content @click="goRoute('/settings/service')">
             <v-list-item-title>정보</v-list-item-title>
             <v-list-item-subtitle>도움말, 이용약관</v-list-item-subtitle>
           </v-list-item-content>
@@ -90,6 +116,7 @@ export default {
         color: "white",
         title: "프로필 변경",
         subtitle: "개인 정보 변경",
+        route: '/settings/info',
       },
       { divider: true },
       {
@@ -98,6 +125,7 @@ export default {
         color: "white",
         title: "비밀번호 재설정",
         subtitle: "비밀번호 변경",
+        route: '/users/resetpass',
       },
       { divider: true },
     ],
@@ -123,6 +151,10 @@ export default {
         this.$router.push({ name: "login" });
       }
       console.log(this.userInfo);
+    },
+    goRoute(pageURL){
+      console.log("yeeeeeeeeeeeeeeeeeeeeeeeeee");
+      this.$router.push({ path: pageURL});
     },
   },
 };

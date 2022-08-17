@@ -76,7 +76,10 @@
       </template>
 
       <!-- 사진 -->
-      <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img>
+      <v-carousel height="290px" width="290px" hide-delimiter-background>
+        <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
+      </v-carousel>
+      <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->
 
       <v-row no-gutters>
         <v-col cols="8">
@@ -174,6 +177,8 @@ export default {
       cntComment: null,
 
       post: {},
+
+      carouselImages: [],
     };
   },
   computed: {
@@ -189,6 +194,12 @@ export default {
     } catch (error) {
       alert("게시글 상세조회 실패");
     }
+
+    const getImages = await http.get(`/file/post/${this.post.postId}`);
+    for (let i = 0; i < getImages.data.length; i++) {
+      this.carouselImages.push(getImages.data[i].filePath);
+    }
+    console.log(this.carouselImages);
 
     this.cntLike = this.post.likeCnt;
 

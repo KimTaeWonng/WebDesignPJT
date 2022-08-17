@@ -184,7 +184,7 @@ public class PostController {
 	
 	@GetMapping("/posts/follow/{userId}")
 	@ApiOperation(value = "팔로잉한 유저들의 게시글", notes = "userId가 팔로잉한 유저들이 쓴 게시글들만 조회")
-	public ResponseEntity<Page<Post>> followList(@PathVariable int userId, @RequestParam int page, @RequestParam int size){
+	public ResponseEntity<Page<Post>> followList(@PathVariable int userId, @RequestParam("page") int page, @RequestParam("size") int size){
 		
 		List<Follow> followingList = followRepository.findByFollowerId(userId);
 		List<Post> savedPost = new ArrayList<>();

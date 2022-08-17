@@ -31,7 +31,9 @@ import com.sharespot.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/search")
@@ -50,13 +52,14 @@ public class CurationController {
 	
 	@GetMapping("/posts/category/{big}/{small}")
 	@ApiOperation(value = "큐레이션 탐색", notes = "대분류와 소분류는 무조건 넣어야함(소분류부터 복수 선택 가능)")
-	public ResponseEntity<Page<Post>> curationList(@RequestParam int page, @RequestParam int size, @PathVariable String big, @RequestParam String[] small, @RequestParam(name = "who", required = false, defaultValue = "혼자, 친구, 가족, 연인") String[] who, @RequestParam (name = "where", required = false, defaultValue = "서울, 경기, 인천, 강원, 제주, 대전, 충북, 충남/세종, 부산, 울산, 경남, 대구, 경북, 광주, 전남, 전주/전북" )String[] where){
+	public ResponseEntity<Page<Post>> curationList(@RequestParam("page") int page, @RequestParam("size") int size, @PathVariable String big, @RequestParam String[] small, @RequestParam(name = "who", required = false, defaultValue = "혼자, 친구, 가족, 연인") String[] who, @RequestParam (name = "where", required = false, defaultValue = "서울, 경기, 인천, 강원, 제주, 대전, 충북, 충남/세종, 부산, 울산, 경남, 대구, 경북, 광주, 전남, 전주/전북" )String[] where){
 		
 		List<Post> curationResult = postService.CurationList(big, small, who, where);
 		
 		Pageable pageable = PageRequest.of(page, size,Sort.Direction.DESC,"postId");
 		final int start = (int)pageable.getOffset();
 		final int end = Math.min((start+pageable.getPageSize()), curationResult.size());
+		log.info(start+" "+end);
 		final Page<Post> pagedPost = new PageImpl<Post>(curationResult.subList(start, end), pageable, curationResult.size());
 		
 		return new ResponseEntity<Page<Post>>(pagedPost,HttpStatus.OK);

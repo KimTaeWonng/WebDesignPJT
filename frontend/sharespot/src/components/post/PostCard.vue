@@ -203,9 +203,7 @@ export default {
     const getImages = await http.get(`/file/post/${this.post.postId}`);
     console.log("게시판 이미지들 조회야~~~");
     for (let i = 0; i < getImages.data.length; i++) {
-      this.carouselImages.push(
-        "https://i7a505.p.ssafy.io/api/file?imagePath=" + getImages.data[i].filePath
-      );
+      this.carouselImages.push(getImages.data[i].filePath);
     }
     console.log(this.carouselImages);
 

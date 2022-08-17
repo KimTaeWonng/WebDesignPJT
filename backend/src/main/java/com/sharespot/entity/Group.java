@@ -17,18 +17,18 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT UNSIGNED")
-    private Integer groupId;
+    private Integer group_id;
 
-    private Integer groupManager;
+    private Integer group_manager;
 
-    private String groupName;
-    private String groupContent;
-    private Integer groupLimit;
-    private Integer groupGender;
-    private Integer groupAgeMin;
-    private Integer groupAgeMax;
-    private String  groupImage;
-    private String  groupNick;
+    private String group_name;
+    private String group_content;
+    private Integer group_limit;
+    private Integer group_gender;
+    private Integer group_age_min;
+    private Integer group_age_max;
+    private String  group_image;
+    private String  group_nick;
 
 
 }

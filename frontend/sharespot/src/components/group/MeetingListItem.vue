@@ -115,6 +115,9 @@
             <v-btn v-if="this.ismember == false" color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false, join()" > 
               가입
             </v-btn>
+            <v-btn v-else-if="this.manager == this.userInfo.user_id" color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false, del()" > 
+              삭제
+            </v-btn>
             <v-btn v-else color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false, quit()"> 
               탈퇴
             </v-btn>
@@ -229,20 +232,20 @@ export default {
         http.get(`/group/meetings/members/${this.meeting.meetingId}`)
         .then(res => {
           // console.log(res)
-          console.log(res.data)
+          // console.log(res.data)
           this.members = res.data
-          console.log('모임멤버', this.members)
+          // console.log('모임멤버', this.members)
           this.manager = res.data[0].userId
-          console.log('모임장', this.manager)
+          // console.log('모임장', this.manager)
           for(let i=0; i<res.data.length; i++) {
-            console.log('모임데이터', res.data[i])
-            console.log(res.data[i].userId)
+            // console.log('모임데이터', res.data[i])
+            // console.log(res.data[i].userId)
             this.membersid.push(res.data[i].userId)
 
             const set = new Set(this.membersid)
             const newArr = [...set]
             this.membersid = newArr
-            console.log('멤버들', this.membersid)
+            // console.log('멤버들', this.membersid)
           }
           
         })   
@@ -255,7 +258,7 @@ export default {
             break
           }
         };
-        console.log(this.ismember)
+        console.log('모임가입여부', this.ismember)
       },
 
       async join() {
@@ -272,6 +275,10 @@ export default {
           console.log('정모 참가 실패')
         })
       },
+
+      async del() {
+        await http.delete(`/group/${this.$route.params.groupno}/meetings/${this.meeting.meetingId}`)
+      },  
 
       async quit() {
         for(let i = 0; i < this.membersid.length; i++) {
@@ -302,15 +309,16 @@ export default {
       this.meeting = this.detailMeeting
       this.me = this.userInfo.user_id
       console.log('나', this.me)
-      console.log(this.userInfo.nickname)
+      // console.log(this.userInfo.nickname)
 
       this.getmembers()
-      console.log('멤버', this.members)
+      // console.log('멤버', this.members)
       
     },
 
     props: {
       detailMeeting: Object,
+      
     },
 
 

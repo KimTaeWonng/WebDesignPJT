@@ -17,7 +17,7 @@
           <div style="font-weight:bold; margin-top:3%; margin-left:3%; font-size:5vw;" class="d-flex justify-content-between">
             <!-- 그룹 이름으로 대체 -->
             <p style="float:left;">{{ detailGroup.group_name }}</p>
-            <v-btn v-if="this.ismember == false" @click="join" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+            <v-btn v-if="this.isGmember == false" @click="join" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
               가입
             </v-btn>
             <v-btn v-else-if="this.userInfo.user_id == this.manager" @click="modify" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
@@ -44,7 +44,7 @@
         <div>
           <p style="text-align: left; margin-left:3%; margin-top:3%; font-weight:bold; font-size:5vw;">
             모임 일정
-            <span v-if="this.ismember == true" class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;" @click.stop="dialog = true">
+            <span v-if="this.isGmember == true" class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;" @click.stop="dialog = true">
               add_circle_outline
             </span>
           
@@ -214,6 +214,7 @@ import { http } from "@/js/http.js";
 // import MeetingListItem from '@/components/group/MeetingListItem.vue';
 import { mapState } from "vuex";
 
+
 const userStore = "userStore";
 
 extend("required", {
@@ -228,15 +229,14 @@ export default {
   props: {
     detailGroup: Object
   },
-
-
+  
     data() {
         return {
           dialog: false,
           group: {},
           membersid: [],
           manager: 0,
-          ismember: false,
+          isGmember: false,
 
           meeting: {
             meetingTitle: '',
@@ -262,13 +262,13 @@ export default {
 
     async created() {
       this.group = this.detailGroup
-      console.log('나', this.userInfo.user_id)
+      // console.log('나', this.userInfo.user_id)
       const members = await http.get(`/group/members/${this.$route.params.groupno}`)
     
       for(let i=0; i<members.data.length; i++) {
         this.membersid.push(members.data[i].userId)
       }
-      console.log('그룹가입자', this.membersid)
+      // console.log('그룹가입자', this.membersid)
 
       const res = await http.get(`group/${this.$route.params.groupno}`)
       this.manager = res.data.group_manager
@@ -276,11 +276,13 @@ export default {
 
       for (var i = 0; i < this.membersid.length; i++) {
         if (this.membersid[i] == this.userInfo.user_id) {
-          this.ismember = true
+          this.isGmember = true
           break
       }
       };
-      console.log('그룹가입여부', this.ismember)
+      console.log('그룹가입여부', this.isGmember)
+      
+      this.GMdata()
     },
 
     mounted() {
@@ -292,14 +294,18 @@ export default {
       this.$refs.observer.validate();
     },
 
+    GMdata() {
+      this.$emit('getGMdata', this.isGmember)
+    },
+
     async join() {
       this.membersid.push(this.userInfo.userId)
       await http.post(`/group/${this.$route.params.groupno}/${this.userInfo.user_id}`)
       .then((res) => {
         console.log(res)
         console.log('그룹 참가')
-        this.ismember = true
-        console.log(this.membersid)
+        this.isGmember = true
+        // console.log(this.membersid)
       })
       .catch((err) => {
         console.log(err)
@@ -325,13 +331,13 @@ export default {
       const response = await http.delete(`/group/${this.$route.params.groupno}/${this.userInfo.user_id}`)
         if (response.data == 1) {
           console.log('그룹 탈퇴')
-          this.ismember == false
-          console.log(this.membersid)
-          // this.$router.go();
+          this.isGmember == false
+          // console.log(this.membersid)
+          this.$router.go();
         } else {
           console.log('그룹 탈퇴 실패')
         }
-      this.$router.go();
+      // this.$router.go();
     },
 
     async registMeeting() {
@@ -348,10 +354,10 @@ export default {
       const getmeeting = await http.get(`/group/${this.$route.params.groupno}/meetings`)
 
       const newmeeting = getmeeting.data.at(-1);
-      console.log(newmeeting)
+      // console.log(newmeeting)
 
       const mid = newmeeting.meetingId
-      console.log(mid)
+      // console.log(mid)
 
       await http.post(`/group/meetings/members/${mid}/${this.userInfo.user_id}`)
 

@@ -1,11 +1,11 @@
 <template>
     <v-container>
-      <back-menu :title="this.group.group_name" :isRight="true" type="groupDetail" class="mb-1"></back-menu>
+      <back-menu :detailGroup="group" :title="this.group.group_name" :isRight="true" type="groupDetail" class="mb-1"></back-menu>
       <v-row class="text-center">
         <v-col cols="12">
-          <group-info :detailGroup="group">
+          <group-info :detailGroup="group" @getGMdata="getGM">
           </group-info>
-          <meeting-list-item v-for="(meeting,i) in meetings" :key="i" :detailMeeting="meeting"></meeting-list-item>
+          <meeting-list-item v-show="isGM == true" v-for="(meeting,i) in meetings" :key="i" :detailMeeting="meeting"></meeting-list-item>
         </v-col>
       </v-row>
     </v-container>
@@ -28,6 +28,7 @@ export default {
             group: {},
             meetings: {},
             no: 0,
+            isGM: false,
         };
     },
 
@@ -36,6 +37,11 @@ export default {
     },
 
     methods: {
+      getGM(isGmember) {
+        this.isGM = isGmember
+        console.log('GM', this.isGM)
+      },
+
       async getGroup() {
         const response = await http.get(`/group/${this.no}`);
         this.group = response.data
@@ -50,6 +56,7 @@ export default {
         this.meetings = response.data
         // console.log(this.meetings)
       },
+
     },
 
     created() {

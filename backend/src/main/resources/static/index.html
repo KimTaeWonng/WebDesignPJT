@@ -6,18 +6,17 @@
 </head>
 <body>
 
-<h1>file upload + text input</h1>
-<form method="post" action="/api/file" enctype="multipart/form-data">
-    <input type="file" name="files" multiple="multiple">
-    <input type="text">
-    <input type="submit">
-</form>
-
 <h1>file upload</h1>
 <form method="post" action="/api/file" enctype="multipart/form-data">
     <input type="file" name="files" multiple="multiple">
     <input type="submit">
 </form>
+
+<!--<h1>file upload (post)</h1>-->
+<!--<form method="post" action="/api/file/post" enctype="multipart/form-data">-->
+<!--    <input type="file" name="files" multiple="multiple">-->
+<!--    <input type="submit">-->
+<!--</form>-->
 
 <h1>file 조회</h1>
 <form method="get" action="/api/file">

@@ -3,8 +3,6 @@ package com.sharespot.controller;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.sharespot.service.PostLikeService;
 import com.sharespot.service.ScrapService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
 
@@ -87,7 +86,46 @@ public class PostController {
 		List<Object[]> post = postRepository.findByUserId2(userId);
 		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
-	
+
+//	@PostMapping("/posts/image")
+//	@ApiOperation(value = "게시글 +이미지 작성", notes = "<b>게시글을 이미지와 함께 작성</b>한다.")
+//	public ResponseEntity<Integer> createPost(@RequestBody Post post, @RequestParam MultipartFile[] files) throws IOException {
+//
+//		User user = userRepository.findById(post.getUserId()).get();
+//
+//		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		log.info(sdf.format(timestamp));
+//
+//		String paths = fileService.uploadImage(files).toString();
+//
+//		Post postEntity = Post.builder()
+//				.userId(post.getUserId())
+//				.nickname(user.getNickname())
+//				.userImage(user.getProfileImage())
+//				.content(post.getContent())
+//				.postLat(post.getPostLat())
+//				.postLng(post.getPostLng())
+//				.image(paths)
+//				.postGpsName(post.getPostGpsName())
+//				.classBig(post.getClassBig())
+//				.classSmall(post.getClassSmall())
+//				.classWho(post.getClassWho())
+//				.classWhere(post.getClassWhere())
+//				.uploadTime(sdf.format(timestamp))
+//				.likeCnt(post.getLikeCnt())
+//				.commentCnt(post.getCommentCnt())
+//				.build();
+//		int result = 1;
+//		try {
+//			postRepository.save(postEntity);
+//		} catch (Exception e) {
+//			result = 0;
+//		}
+//
+//		return new ResponseEntity<>(result, HttpStatus.OK);
+//	}
+
 	@PostMapping("/posts")
 	@ApiOperation(value = "게시글 작성", notes = "<b>게시글을 작성</b>한다.")
 	public ResponseEntity<Integer> createPost(@RequestBody Post post){

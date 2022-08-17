@@ -26,7 +26,8 @@ public class GroupUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT UNSIGNED")
     private Integer idx;
-	
+
+
 	private Integer groupId;	
 	private Integer userId;
 	private String userNick;

@@ -5,6 +5,7 @@ const userLogStore = {
     // state: data. 수정은 store에서만 하는게 좋다.
     state: {
         searchWordList: [], //최근 검색 단어
+
         searchWord: "",
         scrapPostList: [], //스크랩한 게시글 아이디
         likePostList: [], //좋아요한 게시글 아이디
@@ -12,17 +13,12 @@ const userLogStore = {
         followUserList: [], //나를 팔로우하는 유저 정보들,
         myGroupList: [],  //내가 가입한 그룹 리스트
         myMeetingList: [], //내가 참여중인 모임 리스트
+
     },
     // getters: vue의 computed와 같은 역할. State를 기반으로 계산
     getters: {
         getSearchWordList(state) { 
             return state.searchWordList;
-        },
-        getscrapPostList(state) { 
-            return state.scrapPostList;
-        },
-        getlikePostLis(state) { 
-            return state.likePostList;
         },
         getfollowingUserList(state) { 
             return state.followingUserList;
@@ -55,6 +51,7 @@ const userLogStore = {
             console.log("userLogStore: " + state.searchWordList);
         }
         ,
+
         SAVE_SEARCH_WORD(state,searchWord ) { 
             state.searchWord = searchWord;
             console.log("userLogStore: " + state.searchWord);
@@ -154,6 +151,7 @@ const userLogStore = {
             commit('RESET_SEARCH_WORD_LIST');
             console.log("userLogStore: action: resetsearchwordlist");
         }
+
         ,
         // 게시글 스크랩
         scrapPostList({ commit }, postId) { 
@@ -187,7 +185,6 @@ const userLogStore = {
         // 팔로우 버튼을 눌렀을 때
         async follow(store, followInfo){
             try { 
-
                 const response = await http.post(`/users/${followInfo.res.followerId}/follow`, followInfo.res);
 
                 if (response.data === 1) {
@@ -200,6 +197,7 @@ const userLogStore = {
             } catch (error) {
                 alert("팔로우에 실패했습니다.");
             }
+
             // commit('FOLLOW', user);
 
             // console.log("userLogStore: action" );

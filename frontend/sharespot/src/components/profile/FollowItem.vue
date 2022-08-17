@@ -59,8 +59,6 @@ const userStore = "userStore";
   async created() {
     this.userItem = this.userDetail;
     // console.log("===========팔로우 아이템==================")
-    // console.log(this.userItem)
-    // console.log(this.userItem.user_id)
 
     if (this.followingUserList.length != 0 ){
     for (var i = 0; i < this.followingUserList.length; i++) {
@@ -76,7 +74,7 @@ const userStore = "userStore";
         
       }
     }
-    // console.log('팔로잉유저리스트',this.followingUserList[0].user_id)
+
   },
 
   computed: {
@@ -117,10 +115,6 @@ const userStore = "userStore";
       
       this.isfollowed=true
 
-      // const temp = await http.get(`users/info/otherUser/${this.$route.params.userid}`);
-      // console.log(temp)
-      // console.log('팔로잉유저리스트', this.followingUserList[0])
-      // console.log(this.followingUserList)
     },
 
   async clickUnFollow() {

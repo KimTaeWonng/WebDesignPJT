@@ -114,6 +114,14 @@
         </v-btn>
       </v-row>
     </div>
+<!-- 
+              <div id="app" class="kakaoMap">
+              <div>
+                <div id="map"></div>
+                <div id="clickLatlng"></div>
+                <div id="gpsName"></div>
+              </div>
+          </div> -->
 
     <!-- <v-row class="text-center" style="margin-bottom:12%; margin-right:12%;" align="center">
             <v-col>
@@ -298,7 +306,7 @@
 import tag from "@/assets/json/tag.json";
 import { mapState } from "vuex";
 import { http } from "@/js/http.js";
-import EXIF from "exif-js";
+import exifr from 'exifr';
 
 const userStore = "userStore";
 
@@ -314,7 +322,7 @@ const userStore = "userStore";
 
 export default {
   name: "PostInputItem",
-  components: {},
+  components: { },
   props: {
     type: String,
   },
@@ -336,6 +344,16 @@ export default {
       dialogm1: "",
       dialog: false,
       successDialog: false,
+      isSave: false,
+
+      dialogMap: false,
+      userLat: 0,
+      userLng: 0,
+      userPlaceName: "",
+
+      tempLat: 0,
+      tempLng: 0,
+      // infowindow: null,
 
       // componentKey: 0, // 소분류 key changing 이용하기 위한 key
 
@@ -428,7 +446,90 @@ export default {
       },
     };
   },
+  //   mounted() {
+  //   if (window.kakao && window.kakao.maps) {
+  //     this.initMap();
+  //   } else {
+  //     const script = document.createElement("script");
+  //     /* global kakao */
+  //     script.onload = () => kakao.maps.load(this.initMap);
+  //     script.src =
+  //       "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey="+ process.env.VUE_APP_KAKAOMAP_KEY + "&libraries=services";
+  //     document.head.appendChild(script);
+  //   }
+  //   this.changeSize(0);
+  // },
   methods: {
+
+    // 지도 스크립트 start
+
+    // async initMap() {
+    //   const container = document.getElementById("map");
+    //   const options = {
+    //     center: new kakao.maps.LatLng(this.userLat, this.userLng),
+    //     level: 3,
+    //   };
+
+    //   //지도 객체를 등록합니다.
+    //   //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
+    //   this.map = new kakao.maps.Map(container, options);
+
+    //   // 지도를 클릭한 위치에 표출할 마커입니다
+    //     var marker = new kakao.maps.Marker({
+    //         // 지도 중심좌표에 마커를 생성합니다
+    //         position: this.map.getCenter()
+    //     }); 
+    //     // 지도에 마커를 표시합니다
+    //     marker.setMap(this.map);
+
+    //     // 지도에 클릭 이벤트를 등록합니다
+    //     // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+    //     await kakao.maps.event.addListener(this.map, 'click', (mouseEvent) => {
+    
+    // // 클릭한 위도, 경도 정보를 가져옵니다 
+    // var latlng = mouseEvent.latLng; 
+
+
+    // var geocoder = new kakao.maps.services.Geocoder();
+    // var callback = (result, status) => {
+    //         if (status === kakao.maps.services.Status.OK) {
+
+    //     // console.log('지역 명칭 : ' + result[0].address_name);
+    //     // console.log('행정구역 코드 : ' + result[0].code);
+
+    //     console.log(result[0].address.address_name);
+    //     // this.userPlaceName = result[0].address.address_name;
+    // }
+
+    //   }
+    // console.log(latlng);
+    
+    // // geocoder.coord2RegionCode(latlng.La, latlng.Ma, callback);
+    // geocoder.coord2Address(latlng.La, latlng.Ma, callback);
+    
+    // // 마커 위치를 클릭한 위치로 옮깁니다
+    // marker.setPosition(latlng);
+    
+    // // var message = '위도: ' + latlng.getLat() + ', ';
+    // // message += '경도: ' + latlng.getLng();
+
+    //   // this.tempLat = latlng.getLat;
+    //   // this.tempLng = latlng.Ma;
+      
+    
+    // // var resultDiv = document.getElementById('clickLatlng'); 
+    // // resultDiv.innerHTML = message;
+    //     });
+    // },
+    
+    // changeSize(size) {
+    //   const container = document.getElementById("map");
+    //   container.style.width = `${size}px`;
+    //   container.style.height = `${size}px`;
+    // },
+
+    // 지도 스크립트 end
+
     async upload() {
       const formData = new FormData();
       const file = this.$refs["image"].files[0];
@@ -460,32 +561,34 @@ export default {
         });
     },
 
+    // getGpsName(lat, lng){
+    //   let geocoder = new kakao.maps.services.Geocoder();
+
+    //   let coord = new kakao.maps.LatLng(lat, lng);
+    //   let callback = function(result, status) {
+    //       if (status === kakao.maps.services.Status.OK) {
+    //           // console.log(result[0].address.address_name);
+    //           // this.userPlaceName = result[0].address.address_name;
+    //           var message = result[0].address.address_name;
+    //           var resultDiv = document.getElementById('gpsName'); 
+    //           resultDiv.innerHTML = message;
+    //       }
+    //   }
+    //   geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+    //   // console.log(document.getElementById('gpsName').innerHTML);
+    // },
+
     async getMeta() {
       const metaImg = this.$refs["image"].files[0];
-      EXIF.getData(metaImg, function () {
-        var exifLong = EXIF.getTag(this, "GPSLongitude");
-        var exifLat = EXIF.getTag(this, "GPSLatitude");
-        var exifLongRef = EXIF.getTag(this, "GPSLongitudeRef");
-        var exifLatRef = EXIF.getTag(this, "GPSLatitudeRef");
 
-        var latitude = 0;
-        var longitude = 0;
-
-        if (exifLatRef == "S") {
-          latitude = exifLat[0] * -1 + (exifLat[1] * -60 + exifLat[2] * -1) / 3600;
-        } else {
-          latitude = exifLat[0] + (exifLat[1] * 60 + exifLat[2]) / 3600;
-        }
-
-        if (exifLongRef == "W") {
-          longitude = exifLong[0] * -1 + (exifLong[1] * -60 + exifLong[2] * -1) / 3600;
-        } else {
-          longitude = exifLong[0] + (exifLong[1] * 60 + exifLong[2]) / 3600;
-        }
-
-        console.log(latitude); // 위도
-        console.log(longitude); // 경도
-      });
+      let {latitude, longitude} = await exifr.gps(metaImg);
+      // console.log(latitude);
+      // console.log(longitude);
+      this.userLat = latitude;
+      this.userLng = longitude
+      // this.changeSize(0);
+      // this.initMap();
+      // this.map.relayout;
     },
 
     test() {
@@ -545,8 +648,8 @@ export default {
           likeCnt: 0,
           nickname: this.userInfo.nickname,
           postGpsName: "해안이네", // 메타데이터 구현 후 변경 필요
-          postLat: 30, // 메타데이터 구현 후 변경 필요
-          postLng: 120, // 메타데이터 구현 후 변경 필요
+          postLat: this.userLat, // 메타데이터 구현 후 변경 필요
+          postLng: this.userLng, // 메타데이터 구현 후 변경 필요
           uploadTime: "",
           userId: this.userInfo.user_id,
           userImage: this.userInfo.profileImage,
@@ -722,4 +825,9 @@ export default {
 #v-chip {
   color: #289672;
 }
+/* .kakaoMap{
+  width: 100% !important;
+  height: 90% !important;
+  text-align: center !important;
+} */
 </style>

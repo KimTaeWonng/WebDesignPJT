@@ -164,14 +164,12 @@ Chart.register(...registerables);
 
 const MAP_API_KEY = process.env.VUE_APP_KAKAOMAP_KEY;
 
-
 export default {
   components: { BackMenu },
   name: "ProfileTaste",
 
   data() {
     return {
-
       page: "map",
       tabs: null,
 
@@ -206,8 +204,6 @@ export default {
     this.currentUser.registTime = parseInt(
       (today.getTime() - this.currentUser.registTime.getTime()) / (1000 * 3600)
     );
-
-
     this.currentUser.nickname = response1.data[0][1];
 
     // 현재 유저의 게시글을 가져온다.
@@ -215,7 +211,7 @@ export default {
       `/main/posts/user/${this.currentUser.userid}`
     );
     this.posts = response2.data;
-
+    console.log(this.posts);
     for (var i = 0; i < response2.data.length; i++) {
       let type = response2.data[i][1];
 
@@ -228,7 +224,6 @@ export default {
       } else if (type == "카페") {
         this.postType.cafeCnt++;
       } else if (type == "문화") {
-
         this.postType.cultureCnt++;
       }
     }

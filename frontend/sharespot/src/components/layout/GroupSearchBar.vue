@@ -8,12 +8,12 @@
           prepend-inner-icon="mdi-magnify"
           placeholder="검색어를 입력하세요"
           clearable
-          color="black"
+          color="#289672"
           @keyup.enter="search(searchContent)"
           @click="searchModal = true"
         ></v-text-field>
 
-<v-dialog v-model="searchModal" fullscreen hide-overlay transition="dialog-bottom-transition">
+<v-dialog v-model="searchModal" fullscreen transition="dialog-bottom-transition">
       <v-list-group
         v-for="group in searchResultList"
         :key="group.group_id"
@@ -115,6 +115,12 @@ export default {
       };
       groupList.push(temp);
     }
+    await this.setGroupList(this.userInfo.user_id);
+    console.log('내 그룹',this.myGroupList)
+      
+
+
+    this.getGroup()
 
     console.log(groupList)
 
@@ -123,8 +129,15 @@ export default {
   mounted() {},
   computed: {
     ...mapState(userLogStore, ["myGroupList"]),
+    ...mapState(userStore, ["userInfo"]),
   },
   methods: {
+    ...mapActions(userLogStore, ["setGroupList"]),
+      async getGroup() {
+        const response = await http.get("/group");
+        console.log('그룹가져오기', response)
+        this.groups = response.data.reverse()
+      },
     goBack() {
       this.$router.go(-1);
     },

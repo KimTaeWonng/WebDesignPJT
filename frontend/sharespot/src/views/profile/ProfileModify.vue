@@ -192,7 +192,7 @@
           <div style="font-weight: bold; font-size: 6vw">
             {{ userInfo.nickname }} 님의
           </div>
-          <div style="font-size: 5vw">프로필 수정이 실패되었습니다!</div>
+          <div style="font-size: 5vw">프로필 수정에 실패하였습니다!</div>
         </div>
 
         <div class="text-center mt-10">

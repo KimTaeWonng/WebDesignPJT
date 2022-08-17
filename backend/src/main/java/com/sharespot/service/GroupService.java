@@ -41,14 +41,14 @@ public class GroupService {
         if(mGroup.isPresent()){
             Group group = mGroup.get();
 
-            group.setGroupManager(value.getGroupManager());
-            group.setGroupName(value.getGroupName());
-            group.setGroupContent(value.getGroupContent());
-            group.setGroupLimit(value.getGroupLimit());
-            group.setGroupGender(value.getGroupGender());
-            group.setGroupAgeMin(value.getGroupAgeMin());
-            group.setGroupAgeMax(value.getGroupAgeMax());
-            group.setGroupImage(value.getGroupImage());
+            group.setGroup_manager(value.getGroup_manager());
+            group.setGroup_name(value.getGroup_name());
+            group.setGroup_content(value.getGroup_content());
+            group.setGroup_limit(value.getGroup_limit());
+            group.setGroup_gender(value.getGroup_gender());
+            group.setGroup_age_min(value.getGroup_age_min());
+            group.setGroup_age_max(value.getGroup_age_max());
+            group.setGroup_image(value.getGroup_image());
             groupRepository.save(group);
 
             return 1;

@@ -443,7 +443,7 @@ export default {
           // console.log(res.data[0])
 
           const imagePath = res.data[0];
-          this.image = `${imagePath}`;
+          this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`;
           console.log(this.image);
           this.post.image.push(this.image);
           // console.log(this.user.img)

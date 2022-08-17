@@ -197,9 +197,7 @@ export default {
 
     const getImages = await http.get(`/file/post/${this.post.postId}`);
     for (let i = 0; i < getImages.data.length; i++) {
-      this.carouselImages.push(
-        "https://i7a505.p.ssafy.io/api/file?imagePath=" + getImages.data[i].filePath
-      );
+      this.carouselImages.push(getImages.data[i].filePath);
     }
     console.log(this.carouselImages);
 

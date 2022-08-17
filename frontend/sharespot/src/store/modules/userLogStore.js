@@ -9,7 +9,9 @@ const userLogStore = {
         scrapPostList: [], //스크랩한 게시글 아이디
         likePostList: [], //좋아요한 게시글 아이디
         followingUserList: [], // 내가 팔로우하는 유저 정보들
-        followUserList: [], //나를 팔로우하는 유저 정보들
+        followUserList: [], //나를 팔로우하는 유저 정보들,
+        myGroupList: [],  //내가 가입한 그룹 리스트
+        myMeetingList: [], //내가 참여중인 모임 리스트
     },
     // getters: vue의 computed와 같은 역할. State를 기반으로 계산
     getters: {
@@ -27,6 +29,12 @@ const userLogStore = {
         },
         getfollowUserList(state) { 
             return state.followUserListt;
+        },
+        getmyMeetingList(state) { 
+            return state.myMeetingList;
+        },
+        getmyGroupList(state) { 
+            return state.myGroupList;
         },
 
     },
@@ -111,6 +119,16 @@ const userLogStore = {
             state.followingUserList = users;
             //console.log(state.followingUserList);
         },
+        // 내가 참여중인 모임 리스트
+        SET_MEETING_LIST(state, users) { 
+            state.myMeetingList = users;
+            //console.log(state.followingUserList);
+        },
+        // 내가 참여중인 그룹 리스트
+        SET_GROUP_LIST(state, users) { 
+            state.myGroupList = users;
+            //console.log(state.followingUserList);
+        },
     },
     
     // actions: 상태를 변이시키는 대신 액션으로 변이에 대한 커밋 처리(비동기 methods)
@@ -120,15 +138,25 @@ const userLogStore = {
             commit('SET_SEARCH_WORD_LIST', searchWord)
             console.log("userLogStore: action" + searchWord);
         },
+        // 미팅 리스트 불러오기
+        // setMeetingList({ commit }, searchWord) { 
+        //     commit('SET_SEARCH_WORD_LIST', searchWord)
+        //     console.log("userLogStore: action" + searchWord);
+        // },
+        // 그룹 리스트 불러오기
+        // setGroupList({ commit }, searchWord) { 
+        //     commit('SET_SEARCH_WORD_LIST', searchWord)
+        //     console.log("userLogStore: action" + searchWord);
+        // },
 
         // 유저 정보 검색 초기화
-        resetSearchWordList({ commit}) { 
+        resetSearchWordList({ commit }) { 
             commit('RESET_SEARCH_WORD_LIST');
             console.log("userLogStore: action: resetsearchwordlist");
         }
         ,
         // 게시글 스크랩
-        scrapPostList({commit}, postId) { 
+        scrapPostList({ commit }, postId) { 
             commit('SCRAP_POST_LIST', postId);
             console.log("userLogStore: action" +postId);
         },
@@ -213,6 +241,78 @@ const userLogStore = {
                 alert("팔로잉 유저리스트 조회를 실패하였습니다.");
              }
         },
+
+        // 그룹 리스트
+        async setGroupList(store, userid) { 
+            try { 
+                const groups = await http.get(`/group/userGroup/${userid}`);
+                console.log('그룹.data', groups.data);
+                console.log(store)
+                store.commit("SET_GROUP_LIST", groups.data);
+
+                
+            } catch (error) {
+                alert("당신의 모임리스트 조회를 실패하였습니다.");
+             }
+        },
+        
+        // async follow(store, followInfo){
+        //     try { 
+
+        //         const response = await http.post(`/users/${followInfo.res.followerId}/follow`, followInfo.res);
+
+        //         if (response.data === 1) {
+        //             console.log('팔로우 성공')
+        //         }
+                
+
+        //         store.commit("FOLLOW", followInfo.user);
+
+        //     } catch (error) {
+        //         alert("팔로우에 실패했습니다.");
+        //     }
+            // commit('FOLLOW', user);
+
+            // console.log("userLogStore: action" );
+        // },
+
+        // // 그룹 참가 버튼을 눌렀을 때
+        // async joinGroup(store, followInfo){
+        //     try { 
+
+        //         const response = await http.delete(`/users/${followInfo.userId}/${followInfo.followerId}/`);
+
+        //         if (response.data == 1) {
+        //             console.log('언팔로우 성공')
+        //         }
+
+        //         store.commit("UNFOLLOW", followInfo.userId);
+
+        //     } catch (error) {
+        //         alert("언팔로우에 실패했습니다.");
+        //     }
+        //     // commit('FOLLOW', user);
+        //     //         http.delete(`/users/${this.$route.params.userid}/${this.userInfo.user_id}`);
+        //     //         console.log('팔로우취소')
+        //     //       }
+
+        //     // console.log("userLogStore: action" );
+        // },
+
+
+
+        // // 그룹 그룹 탈퇴 버튼을 눌렀을 때
+        // async exitGroup(store, userid) { 
+        //     try { 
+        //         const response = await http.get(`/users/${userid}/following`);
+        //         console.log('리스폰스.data', response.data);
+        //         store.commit("SET_GROUP_LIST", response.data);
+
+                
+        //     } catch (error) {
+        //         alert("팔로잉 유저리스트 조회를 실패하였습니다.");
+        //      }
+        // },
     },
 };
 

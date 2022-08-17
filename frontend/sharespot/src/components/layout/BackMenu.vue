@@ -234,7 +234,10 @@ export default {
       }
       };
 
-      this.getmembers()
+      console.log(this.$router.history.current.name)
+      if (this.$router.name == 'groupDetail') {
+        this.getmembers()
+      }
       // console.log('백가입여부', this.isGmember)
   },
 

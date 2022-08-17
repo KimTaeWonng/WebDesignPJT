@@ -55,7 +55,7 @@ public class CommentController {
 		System.out.println(sdf.format(timestamp));
 		
 		Comment commentEntity = Comment.builder()
-				.postId(comment.getPostId())
+				.postId(postNo)
 				.userId(comment.getUserId())
 				.comment(comment.getComment())
 				.userImage(user.getProfileImage())

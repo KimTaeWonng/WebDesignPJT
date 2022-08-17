@@ -70,6 +70,18 @@
             <v-col>
               <span>공유하기</span>
             </v-col>
+
+            <v-divider v-if="this.post.userId == this.userInfo.user_id"></v-divider>
+
+            <v-col>
+              <span
+                v-if="this.post.userId == this.userInfo.user_id"
+                style="color: red"
+                @click="deletePost()"
+              >
+                게시글 삭제</span
+              >
+            </v-col>
           </div>
         </v-card>
       </v-dialog>
@@ -154,6 +166,34 @@
       <v-card-text class="mt-2" style="padding: 0%">{{ post.content }}</v-card-text>
     </div>
     <post-comment></post-comment>
+
+    <!-- 게시 완료 dialog -->
+    <v-dialog v-model="deleteDialog" max-width="290">
+      <v-card>
+        <div>
+          <br />
+          <br />
+        </div>
+
+        <div class="text-center" style="color: rgb(40, 150, 114)">
+          <span class="material-icons" style="font-size: 80px"> task_alt </span>
+        </div>
+
+        <div class="text-center">
+          <div style="font-weight: bold"></div>
+          게시글이 삭제되었습니다.
+        </div>
+
+        <div class="text-center" style="margin-top: 10%">
+          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark> 확인 </v-btn>
+        </div>
+
+        <div>
+          <br />
+          <br />
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -182,6 +222,8 @@ export default {
       post: {},
 
       carouselImages: [],
+
+      deleteDialog: false,
     };
   },
   computed: {
@@ -320,6 +362,19 @@ export default {
         } else {
           console.log("스크랩 취소 실패");
         }
+      }
+    },
+    async deletePost() {
+      const response = await http.delete(`/main/posts/${this.post.postId}`);
+      console.log(response.data);
+      this.deleteDialog = true;
+    },
+    goProfile(pageName) {
+      if (this.$route.path != pageName) {
+        this.$router.push({
+          name: "profile",
+          params: { userid: this.userInfo.user_id },
+        });
       }
     },
   },

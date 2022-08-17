@@ -1,21 +1,12 @@
 <template>
-<div @click="deleteInfo">
-    <v-alert
-      dense
-      type="info"
-      v-if="isFollowEmpty"
-    >
+  <div @click="deleteInfo">
+    <v-alert dense type="info" v-if="isFollowEmpty">
       팔로우한 유저의 게시글이 없어서 모든 게시물이 표시됩니다.
     </v-alert>
-  <v-list>
-    <post-card
-      v-for="(post, i) in posts"
-      :key="i"
-      v-bind="post"
-      :detailPost="post"
-    ></post-card>
-  </v-list>
-  <infinite-loading  @infinite="infiniteHandler" spinner="wavedots">
+    <v-list>
+      <post-card v-for="(post, i) in posts" :key="i" v-bind="post" :detailPost="post"></post-card>
+    </v-list>
+    <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
       <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
@@ -71,7 +62,7 @@ export default {
   mounted() {},
 
   methods: {
-    deleteInfo(){
+    deleteInfo() {
       this.isFollowEmpty = false;
     },
 
@@ -85,7 +76,6 @@ export default {
           },
         })
         .then((res) => {
-          
           if (res.data.totalPages == this.loadNum) {
             $state.complete();
           } else {
@@ -94,12 +84,12 @@ export default {
 
               const items = res.data.content;
               console.log(items.length);
-              console.log("data "+ res.data.totalPages);
-              
+              console.log("data " + res.data.totalPages);
+
               for (const i of items) {
                 const data = {
                   postId: i.postId,
-                  userId: this.userInfo.user_id,
+                  userId: i.userId,
                   userImage: i.userImage,
                   postLat: i.postLat,
                   postLng: i.postLng,
@@ -121,11 +111,10 @@ export default {
               $state.loaded();
             }, 1000);
           }
-          if(res.data.last){
-            setTimeout(()=>{
+          if (res.data.last) {
+            setTimeout(() => {
               $state.complete();
-            },1000);
-            
+            }, 1000);
           }
         })
         .catch((err) => {

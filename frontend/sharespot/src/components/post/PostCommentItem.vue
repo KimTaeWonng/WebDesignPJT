@@ -53,7 +53,7 @@ export default {
   },
   name: "PostCommentItem",
   props: {
-    comment: Array,
+    comment: Object,
   },
 
   methods: {},

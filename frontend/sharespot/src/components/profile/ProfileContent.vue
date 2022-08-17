@@ -83,6 +83,7 @@
                 :lazy-src="s.postImage"
                 aspect-ratio="1"
                 class="grey lighten-2"
+                @click="movePost(s.postId)"
               >
                 <template v-slot:placeholder>
                   <v-row class="fill-height ma-0" align="center" justify="center">
@@ -166,7 +167,6 @@ export default {
 
       // console.log(this.badgeList);
     }
-
 
     // 유저의 스크랩게시글 불러오기
     const getScrapPost = await http.get(`/LikeScrap/listS/${this.$route.params.userid}`);

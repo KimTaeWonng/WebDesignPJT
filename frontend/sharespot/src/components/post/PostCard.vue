@@ -95,7 +95,10 @@
     </template>
 
     <!-- 사진 -->
-    <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img>
+    <v-carousel height="290px" width="290px" hide-delimiter-background>
+      <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
+    </v-carousel>
+    <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->
 
     <v-row no-gutters>
       <v-col cols="8">
@@ -197,6 +200,15 @@ export default {
     // console.log(this.detailPost);
     // console.log(this.post);
 
+    const getImages = await http.get(`/file/post/${this.post.postId}`);
+    console.log("게시판 이미지들 조회야~~~");
+    for (let i = 0; i < getImages.data.length; i++) {
+      this.carouselImages.push(
+        "https://i7a505.p.ssafy.io/api/file?imagePath=" + getImages.data[i].filePath
+      );
+    }
+    console.log(this.carouselImages);
+
     this.cntLike = this.post.likeCnt;
 
     // 좋아요를 이미 한 게시글에 좋아요 유지
@@ -234,6 +246,8 @@ export default {
       cntComment: null,
 
       post: {},
+
+      carouselImages: [],
     };
   },
   methods: {

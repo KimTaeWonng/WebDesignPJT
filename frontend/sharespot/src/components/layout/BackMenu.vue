@@ -8,12 +8,15 @@
         {{ title }}
       </v-col>
       <v-col cols="3" v-if="isRight">
+        <!-- type: groupDetail -->
         <v-row v-if="type == 'groupDetail'">
           <v-col cols="6">
             <v-icon>mdi-share-variant-outline</v-icon>
           </v-col>
           <v-col cols="6" style="padding: 12px 0px">
-            <v-icon class="mr-4" @click.stop="dialog = true">mdi-dots-horizontal</v-icon>
+            <v-icon class="mr-4" @click.stop="dialog = true"
+              >mdi-dots-horizontal</v-icon
+            >
           </v-col>
 
           <v-dialog
@@ -48,13 +51,9 @@
                     취소 
                   </v-btn>
                 </v-col>
-
-                <v-col cols="6">
-                  <div>
-                    <v-btn color="#289672" dark width="50%" style="font-size:3.3vw;">
-                      확인
-                    </v-btn>
-                  </div>
+                <v-divider></v-divider>
+                <v-col>
+                  <span>가입한 멤버 보기</span>
                 </v-col>
               </v-row>
             </v-col>
@@ -107,6 +106,7 @@
 
 
         </v-row>
+        <!-- type: modify -->
         <div v-if="type == 'modify'" style="color: #289672; font-weight: bold">
           완료
         </div>
@@ -178,8 +178,7 @@ export default {
     },
 
     event1() {
-      this.dialog = !this.dialog,
-      this.dialog2 = !this.dialog2
+      (this.dialog = !this.dialog), (this.dialog2 = !this.dialog2);
     },
 
     async delGroup() {
@@ -245,7 +244,7 @@ export default {
 </script>
 
 <style scoped>
-  v-textarea {
-        font-size: 3.3vw;
-      }
+v-textarea {
+  font-size: 3.3vw;
+}
 </style>

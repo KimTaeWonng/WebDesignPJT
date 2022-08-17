@@ -26,17 +26,22 @@
           ></v-text-field> -->
           <v-text-field
             v-model="commentContent"
-            label="댓글 작성"
+            placeholder="댓글 작성"
             outlined
             rounded
             dense
-            @keyup.enter="search(searchContent)"
+            color="#289672"
+            @keyup.enter="submitComment()"
           ></v-text-field>
           <!-- </div> -->
           <!-- keyup 바꿔줘야됨 -->
         </v-col>
-        <!-- MY 버튼-->
-        <v-col cols="2" allign="center" @click="submitComment()" style="padding: 0%">
+        <v-col
+          cols="2"
+          allign="center"
+          @click="submitComment()"
+          style="padding: 0%"
+        >
           <v-btn icon>
             <span style="color: #289672; font-weight: 700">등록</span>
           </v-btn>
@@ -66,7 +71,9 @@ export default {
   },
   async created() {
     // console.log(this.$route.params.postno)
-    const comment = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
+    const comment = await http.get(
+      `/main/posts/main/posts/${this.$route.params.postno}`
+    );
     console.log("하는중");
     console.log(comment);
     this.comments = comment.data;

@@ -22,16 +22,23 @@
             comment.comment
           }}</v-list-item-subtitle>
           <v-row style="padding: 13px">
-            <v-col style="padding: 0%; font-size: 11px; font-weight: 400" cols="3">
+            <v-col
+              style="padding: 0%; font-size: 11px; font-weight: 400"
+              cols="3"
+            >
               <!-- 시간 데이터 추후에 해야됨 -->
               {{ comment.uploadTime | moment("from", "now") }}
             </v-col>
             <v-col
-              style="padding: 0%; font-size: 11px; font-weight: 400; align-items: center"
+              style="
+                padding: 0%;
+                font-size: 11px;
+                font-weight: 400;
+                align-items: center;
+              "
               cols="4"
             >
-              좋아요 1개
-              <!-- 좋아요 {{likecount}} 개 -->
+              좋아요 {{ number }}개
             </v-col>
           </v-row>
         </v-list-item-content>
@@ -52,6 +59,7 @@ export default {
   data() {
     return {
       commentItem: [],
+      number: 0,
     };
   },
   name: "PostCommentItem",
@@ -60,6 +68,10 @@ export default {
   },
 
   methods: {},
+
+  created() {
+    this.number = Math.floor(Math.random() * 6);
+  },
 };
 </script>
 

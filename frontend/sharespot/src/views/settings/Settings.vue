@@ -85,7 +85,7 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item @click.prevent="logout()">
-          <v-list-item-avatar color="purple darken-1">
+          <v-list-item-avatar color="#C37AFD">
             <v-icon color="white"> mdi-alert-circle-outline </v-icon>
           </v-list-item-avatar>
 
@@ -116,7 +116,7 @@ export default {
         color: "white",
         title: "프로필 변경",
         subtitle: "개인 정보 변경",
-        route: '/settings/info',
+        route: "/settings/info",
       },
       { divider: true },
       {
@@ -125,7 +125,7 @@ export default {
         color: "white",
         title: "비밀번호 재설정",
         subtitle: "비밀번호 변경",
-        route: '/users/resetpass',
+        route: "/users/resetpass",
       },
       { divider: true },
     ],
@@ -143,8 +143,6 @@ export default {
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
 
-
-      
       sessionStorage.removeItem("Authorization");
 
       if (this.$route.path != "/") {
@@ -152,9 +150,9 @@ export default {
       }
       console.log(this.userInfo);
     },
-    goRoute(pageURL){
+    goRoute(pageURL) {
       console.log("yeeeeeeeeeeeeeeeeeeeeeeeeee");
-      this.$router.push({ path: pageURL});
+      this.$router.push({ path: pageURL });
     },
   },
 };

@@ -306,13 +306,16 @@ public class UserController {
 		
 		int result = 0;
 		
-		result = userService.getMaxGrade(userId);
-		
 		User user = userService.getUser(userId).get();
 		
-		user.setUserGrade(result);
+		if(user.getBD()==1) {
 		
-		userService.createUser(user);
+			result = userService.getMaxGrade(userId);		
+		
+			user.setUserGrade(result);
+		
+			userService.createUser(user);
+		}
 		
 		return new ResponseEntity<Integer>(result,HttpStatus.OK);
 		

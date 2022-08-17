@@ -92,9 +92,12 @@ public class CommentController {
 	
 	@DeleteMapping("/{postNo}/comments/{commentNo}")
 	@ApiOperation(value = "댓글삭제", notes = "<b>댓글</b>을 삭제한다.")
-	public ResponseEntity<Integer> deleteComment(@PathVariable int postNo, int commentNo){
+	public ResponseEntity<Integer> deleteComment(@PathVariable int postNo, @PathVariable int commentNo){
 		int result = 0;
 		if(commentRepository.findById(commentNo).isPresent()) {
+			
+			
+			
 			commentRepository.deleteById(commentNo);
 			result = 1;
 		}

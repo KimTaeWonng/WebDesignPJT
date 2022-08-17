@@ -31,5 +31,6 @@ public class GroupUser {
 	private Integer groupId;	
 	private Integer userId;
 	private String userNick;
+	private String userImage;
 
 }

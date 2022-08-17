@@ -20,4 +20,10 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Integer>{
 
 	public List<GroupUser> findByUserId(int userId);
 
+	@Transactional
+	void deleteAllByGroupId(int gid);
+
+	@Transactional
+	void deleteAllByUserId(Integer user_id);
+
 }

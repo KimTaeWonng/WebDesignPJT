@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +29,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sharespot.entity.Mail;
 import com.sharespot.entity.User;
+import com.sharespot.repo.BadgeRepository;
+import com.sharespot.repo.CommentRepository;
+import com.sharespot.repo.FollowRepository;
+import com.sharespot.repo.GroupRepository;
+import com.sharespot.repo.GroupUserRepository;
+import com.sharespot.repo.MPRepository;
+import com.sharespot.repo.MeetingRepository;
+import com.sharespot.repo.PostLikeRepository;
+import com.sharespot.repo.PostRepository;
+import com.sharespot.repo.ScrapRepository;
 import com.sharespot.repo.UserRepository;
 import com.sharespot.service.JwtService;
 import com.sharespot.service.JwtServiceImpl;
 import com.sharespot.service.MailService;
 import com.sharespot.service.UserService;
+
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -53,6 +65,30 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	private final UserRepository userRepository;
+	
+	//회원 탈퇴를 위한 repo, service 호출
+	@Autowired
+	private MPRepository mpRepository;   				//d
+	@Autowired
+	private PostRepository postRepository;
+	@Autowired
+	private GroupRepository groupRepository; 			//d
+	@Autowired
+	private FollowRepository followRepository;			//d
+	@Autowired
+	private CommentRepository commentRepository;		//d
+	@Autowired
+	private ScrapRepository scrapRepository;			//d
+	@Autowired
+	private PostLikeRepository postLikeRepository;		//d
+	@Autowired
+	private BadgeRepository badgeRepository;			//d
+	@Autowired
+	private GroupUserRepository groupUserRepository;  	//d
+	@Autowired
+	private MeetingRepository meetingRepository; 		//d
+	///////////////////////////////////////////////
+	
 
 	@Autowired
 	private MailService mailService;
@@ -99,6 +135,7 @@ public class UserController {
 
 	}
 
+	@Transactional
 	@DeleteMapping("{id}")
 	@ApiOperation(value = "회원 탈퇴")
 	public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable int id, HttpServletRequest request) {
@@ -112,6 +149,32 @@ public class UserController {
 				System.out.println(id);
 				try {
 					// 로그인 사용자 정보.
+					
+					//유저가 했던 모든 정보가 삭제되어야함
+					
+					User user = userService.getUser(id).get();
+					mpRepository.deleteAllByUserId(user.getUser_id());
+					
+					List<Integer> gid = groupRepository.findAllGroupIdByGroupManager(user.getUser_id());
+					
+					for(Integer g : gid) {
+						meetingRepository.deleteAllByGroupId(g);
+					}
+					groupUserRepository.deleteAllByUserId(user.getUser_id());
+					groupRepository.deleteAllByGroupManager(user.getUser_id());
+					
+					commentRepository.deleteAllByUserId(user.getUser_id());
+					scrapRepository.deleteAllByUserId(user.getUser_id());
+					
+					postLikeRepository.deleteAllByUserId(user.getUser_id());
+					
+					badgeRepository.deleteAllByUserId(user.getUser_id());
+					
+					followRepository.deleteAllByUserId(user.getUser_id());
+					followRepository.deleteAllByFollowerId(user.getUser_id());
+					
+					postRepository.deleteAllByUserId(user.getUser_id());							
+					//그 후에 유저 정보 삭제
 					userService.deleteUser(id);
 					result.put("message", SUCCESS);
 					result.put("Authorization", null);

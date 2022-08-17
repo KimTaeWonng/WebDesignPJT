@@ -77,7 +77,8 @@
         <v-card>
           <div style="font-weight:bold; align-items:center;">
             <v-col>
-              <div>
+              <div style="margin-left:3%; font-weight:bold; font-size:5vw;">
+                <p>참가자</p>
                 <div v-for="(member,i) in this.members" :key=i>
                   <v-img :src=member.profileImage contain width="10%" height="10%" style="float:left;"/>
                   <p style="font-size:4vw;">
@@ -151,7 +152,7 @@ export default {
     },
 
     async getmembers() {
-        http.get(`/group/meetings/members/${this.meeting.meetingId}`)
+        http.get(`/group/members/${this.$route.params.groupno}`)
         .then(res => {
           // console.log(res)
           // console.log(res.data)

@@ -5,7 +5,7 @@
         <v-col cols="12">
           <group-info :detailGroup="group" @getGMdata="getGM">
           </group-info>
-          <meeting-list-item v-show="isGM == true" v-for="(meeting,i) in meetings" :key="i" :detailMeeting="meeting"></meeting-list-item>
+          <meeting-list-item v-show="isGM == true" :detailGroup="group" v-for="(meeting,i) in meetings" :key="i" :detailMeeting="meeting"></meeting-list-item>
         </v-col>
       </v-row>
     </v-container>

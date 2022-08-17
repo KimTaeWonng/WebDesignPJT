@@ -19,9 +19,9 @@
             <p>참가자</p>
 
             <div v-for="(member,i) in this.members" :key=i>
-              <v-img :src=member.profileImage contain width="10%" height="10%" style="float:left;"/>
+              <v-img :src=member.userImage contain width="6%" height="10%" style="float:left;"/>
               <p style="font-size:4vw;">
-                {{ member.userNick }} 
+                <span style="">{{ member.userNick }} </span>
                 <span v-if="i==0" style="color: #289672;">운영진</span>
               </p>
             </div>
@@ -57,9 +57,9 @@
                 placeholder="오후 07:00"
                 prepend-icon="schedule"
               ></v-text-field> -->
-              <div>
+              <!-- <div>
                 <v-icon>schedule</v-icon> {{ this.meeting.meetingDay }}
-              </div>
+              </div> -->
 <!-- 
                 <v-text-field
               
@@ -115,7 +115,7 @@
             <v-btn v-if="this.ismember == false" color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false, join()" > 
               가입
             </v-btn>
-            <v-btn v-else-if="this.manager == this.userInfo.user_id" color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false, del()" > 
+            <v-btn v-else-if="this.manager == this.userInfo.user_id" color="rgb(40,150,114)" dark width="35%" @click.stop="del(), dialog = false" > 
               삭제
             </v-btn>
             <v-btn v-else color="rgb(40,150,114)" dark width="35%" @click.stop="dialog = false, quit()"> 
@@ -217,6 +217,7 @@ export default {
           ismember: false,
           date: '',
           time: '',
+          group: {},
         };
     },
     mounted() {
@@ -229,14 +230,14 @@ export default {
 
     methods: {
       async getmembers() {
-        http.get(`/group/meetings/members/${this.meeting.meetingId}`)
+        await http.get(`/group/meetings/members/${this.meeting.meetingId}`)
         .then(res => {
-          // console.log(res)
-          // console.log(res.data)
+          console.log(res)
+          // console.log(res.data[0].userId)
           this.members = res.data
           // console.log('모임멤버', this.members)
           this.manager = res.data[0].userId
-          // console.log('모임장', this.manager)
+          console.log('모임장', this.manager)
           for(let i=0; i<res.data.length; i++) {
             // console.log('모임데이터', res.data[i])
             // console.log(res.data[i].userId)
@@ -274,10 +275,12 @@ export default {
           console.log(err)
           console.log('정모 참가 실패')
         })
+        this.$router.go()
       },
 
-      async del() {
-        await http.delete(`/group/${this.$route.params.groupno}/meetings/${this.meeting.meetingId}`)
+      async del() {        
+        await http.delete(`/group/${this.group.group_id}/meetings/{mid}?mid=${this.meeting.meetingId}`)
+        this.$router.go()
       },  
 
       async quit() {
@@ -299,6 +302,7 @@ export default {
           console.log(err)
           console.log('정모 탈퇴 실패')
         })
+        this.$router.go()
       },
 
 
@@ -307,6 +311,7 @@ export default {
 
     async created() {
       this.meeting = this.detailMeeting
+      this.group = this.detailGroup
       this.me = this.userInfo.user_id
       console.log('나', this.me)
       // console.log(this.userInfo.nickname)
@@ -318,6 +323,7 @@ export default {
 
     props: {
       detailMeeting: Object,
+      detailGroup: Object
       
     },
 

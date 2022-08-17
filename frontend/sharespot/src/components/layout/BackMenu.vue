@@ -80,7 +80,7 @@
               <div style="margin-left:3%; font-weight:bold; font-size:5vw;">
                 <p>참가자</p>
                 <div v-for="(member,i) in this.members" :key=i>
-                  <v-img :src=member.profileImage contain width="10%" height="10%" style="float:left;"/>
+                  <v-img :src=member.userImage contain width="10%" height="10%" style="float:left;"/>
                   <p style="font-size:4vw;">
                     {{ member.userNick }} 
                     <span v-if="i==0" style="color: #289672;">운영진</span>
@@ -236,6 +236,14 @@ export default {
 
       console.log(this.$router.history.current.name)
       if (this.$router.name == 'groupDetail') {
+        this.getmembers()
+      }
+
+      else if (this.$router.name == 'groupRegister') {
+        this.getmembers()
+      }
+
+      else if (this.$router.name == 'groupModify') {
         this.getmembers()
       }
       // console.log('백가입여부', this.isGmember)

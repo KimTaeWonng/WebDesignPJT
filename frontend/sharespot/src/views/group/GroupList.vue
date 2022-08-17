@@ -1,6 +1,6 @@
 <template>
   <v-container>
-      <div>
+  <div>
     <v-row class="text-center d-flex" align="center" style="margin: 3px">
       <!-- 검색창 -->
       <v-col cols="1"></v-col>
@@ -56,7 +56,7 @@
           <div>
             <v-row class="text-center d-flex" align="center" style="margin: 3px">
               <!-- 버튼 -->
-              <v-col cols="2" @click="dialog = false">
+              <v-col cols="2" @click="searchModal = false">
                 <v-icon>mdi-chevron-left</v-icon>
               </v-col>
               <!--검색창-->  
@@ -75,17 +75,37 @@
               </v-col>
             </v-row>
           </div>
-              <v-list
-                v-for="group in searchResultList"
-                :key="group.group_id"
-              >
-                  <v-list-item-content style="font-weight:bold; font-size:4vw;" @click="goGroup(group.group_id)">
-                    <v-list-item-title v-text="group.group_name"></v-list-item-title>
-                  </v-list-item-content>
-              </v-list>
-        </v-card>
-        </v-dialog>  
+       <v-row class="text-center">
+      <v-col cols="12">
+        <group-item v-for="result in searchResultList" :key="result.group_id" :detailGroup="result"></group-item>
+      </v-col>
       </v-row>
+        <!-- <v-list
+          v-for="group in searchResultList"
+          :key="group[0]"
+        >
+        <v-card class="my-2 mx-4">
+          <v-list-item three-line>
+            <v-list-item-content style="font-weight:bold; font-size:4vw;" @click="goGroup(group[0])">
+            <v-list-item-title style="font-weight:bold; font-size:5vw; margin-left: 5%;" v-text="group[1]"></v-list-item-title>
+                <v-row style="margin-top: 3%; margin-left: 1%;">
+                <v-chip
+                    style="
+                      margin-left: 3%;
+                      font-weight: bold;
+                      font-size: 3vw;
+                      height: 5vw;
+                    "
+                    >{{ group[4]}}년생부터 {{ group[3] }}년생까지</v-chip>
+            </v-row>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+          </v-list> -->
+        </v-card>
+
+        </v-dialog>
+    </v-row>
 
 
 

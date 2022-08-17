@@ -45,8 +45,16 @@
       <v-dialog v-model="dialog" max-width="200">
         <v-card>
           <div class="text-center" style="font-size: 4vw; align-items: center">
-            <v-col @click.stop="dialog = false()">
-              <span style="color: #ff0000">신고</span>
+            <v-col>
+              <span v-if="this.post.userId == this.userInfo.user_id"
+                ><router-link
+                  class="link"
+                  :to="{ name: 'postModify', params: { postno: this.post.postId } }"
+                >
+                  게시글 수정</router-link
+                ></span
+              >
+              <span v-else style="color: #ff0000">신고</span>
             </v-col>
 
             <v-divider></v-divider>
@@ -68,7 +76,10 @@
       </template>
 
       <!-- 사진 -->
-      <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img>
+      <v-carousel height="290px" width="290px" hide-delimiter-background>
+        <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
+      </v-carousel>
+      <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->
 
       <v-row no-gutters>
         <v-col cols="8">
@@ -166,6 +177,8 @@ export default {
       cntComment: null,
 
       post: {},
+
+      carouselImages: [],
     };
   },
   computed: {
@@ -181,6 +194,14 @@ export default {
     } catch (error) {
       alert("게시글 상세조회 실패");
     }
+
+    const getImages = await http.get(`/file/post/${this.post.postId}`);
+    for (let i = 0; i < getImages.data.length; i++) {
+      this.carouselImages.push(
+        "https://i7a505.p.ssafy.io/api/file?imagePath=" + getImages.data[i].filePath
+      );
+    }
+    console.log(this.carouselImages);
 
     this.cntLike = this.post.likeCnt;
 
@@ -205,7 +226,7 @@ export default {
     }
 
     // 댓글 갯수 받아오기
-    const commentTemp = await http.get(`/main/posts/main/posts/${this.post.postId}`);
+    const commentTemp = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
     // console.log(commentTemp.data.length);
     this.cntComment = commentTemp.data.length;
   },

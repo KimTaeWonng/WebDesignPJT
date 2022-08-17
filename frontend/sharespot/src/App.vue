@@ -8,7 +8,6 @@
 </template>
 
 <script>
-
 import NavBar from "./components/layout/NavBar.vue";
 export default {
   name: "App",
@@ -35,8 +34,9 @@ export default {
   created() {
     if (this.isLogin) {
       this.show = true;
-      this.id = JSON.parse(sessionStorage.getItem("vuex")).userStore.userInfo.user_id;
-      console.log(this.id)
+      this.id = JSON.parse(
+        sessionStorage.getItem("vuex")
+      ).userStore.userInfo.user_id;
     }
   },
 

@@ -5,9 +5,9 @@
         <v-row>
           <!-- 그룹 대표 이미지로 대체 -->
           <v-img
-              :src="require('/src/assets/groupinfo.png')"
+              :src="detailGroup.group_image"
               class="mt-3"
-              contain          
+              contain        
             />
         </v-row>
         <br>
@@ -16,9 +16,15 @@
         <div style="text-align:left; vertical-align:middle;">
           <div style="font-weight:bold; margin-top:3%; margin-left:3%; font-size:5vw;" class="d-flex justify-content-between">
             <!-- 그룹 이름으로 대체 -->
-            <p style="float:left;">{{ group.group_name }}</p>
-            <v-btn color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
-              가입  
+            <p style="float:left;">{{ detailGroup.group_name }}</p>
+            <v-btn v-if="this.ismember == false" @click="join" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+              가입
+            </v-btn>
+            <v-btn v-else-if="this.userInfo.user_id == this.manager" @click="modify" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+              수정
+            </v-btn>
+            <v-btn v-else @click="quit" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+              탈퇴
             </v-btn>
           </div>
         </div>
@@ -26,7 +32,7 @@
         
         <div style="margin-left:3%; text-align:left; font-size:3.3vw; font-weight:bold;">
           <!-- 그룹 설명으로 대체 -->
-					{{ group.group_content }}
+					{{ detailGroup.group_content }}
 				</div>
         
         <br>
@@ -39,7 +45,7 @@
           <p style="text-align: left; margin-left:3%; margin-top:3%; font-weight:bold; font-size:5vw;">
             모임 일정
             <span class="material-icons" style="vertical-align:middle; color:rgb(40,150,114); font-size:5vw;" @click.stop="dialog = true">add_circle_outline</span>
-
+          
             <v-dialog
         v-model="dialog"
         width="90%"
@@ -191,7 +197,6 @@
       </v-dialog>
 
 
-            <MeetingListItem></MeetingListItem>
           </p>
         </div>
 
@@ -202,13 +207,13 @@
 
 
 <script>
-import MeetingListItem from '@/components/group/MeetingListItem.vue';
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules"
 import { http } from "@/js/http.js";
-// import { mapState } from "vuex";
+// import MeetingListItem from '@/components/group/MeetingListItem.vue';
+import { mapState } from "vuex";
 
-// const userStore = "userStore";
+const userStore = "userStore";
 
 extend("required", {
   ...required,
@@ -217,13 +222,20 @@ extend("required", {
 
 
 export default {
-  components: { MeetingListItem, ValidationProvider, ValidationObserver },
-    name: "GroupInfo",
+  components: { ValidationProvider, ValidationObserver },
+  name: "GroupInfo",
+  props: {
+    detailGroup: Object
+  },
+
 
     data() {
         return {
           dialog: false,
           group: {},
+          membersid: [],
+          manager: 0,
+          ismember: false,
 
           meeting: {
             meetingTitle: '',
@@ -238,46 +250,106 @@ export default {
             groupId: 1,
           },
 
-          // async created() {
-          //   this.group.group_manager = this.userInfo.user_id;
-          //   this.group.group_nick = this.userInfo.nickname;
-          // },
+        
         };
     },
 
-    // computed: {
-    // ...mapState(userStore, ["userInfo"]),
-    // },
+    computed: {
+    ...mapState(userStore, ["userInfo"]),
+    },
+
+
+    async created() {
+      this.group = this.detailGroup
+      console.log(this.userInfo.user_id)
+      const members = await http.get(`/group/members/${this.$route.params.groupno}`)
+    
+      for(let i=0; i<members.data.length; i++) {
+        this.membersid.push(members.data[i].userId)
+      }
+      console.log(this.membersid)
+
+      const res = await http.get(`group/${this.$route.params.groupno}`)
+      this.manager = res.data.group_manager
+      console.log(this.manager)
+
+      for (var i = 0; i < this.membersid.length; i++) {
+        if (this.membersid[i] == this.userInfo.user_id) {
+          this.ismember = true
+          break
+      }
+      };
+      console.log(this.ismember)
+    },
 
     mounted() {
+    
     },
+
     methods: {
       submit() {
       this.$refs.observer.validate();
     },
 
+    async join() {
+      this.membersid.push(this.userInfo.userId)
+      await http.post(`/group/${this.$route.params.groupno}/${this.userInfo.user_id}`)
+      .then((res) => {
+        console.log(res)
+        console.log('그룹 참가')
+        this.ismember = true
+        console.log(this.membersid)
+      })
+      .catch((err) => {
+        console.log(err)
+        console.log('그룹 참가 실패')
+      })
+
+      this.$router.go();
+      },
+  
+    modify() {
+      this.$router.push({ name: "groupModify" })
+    },
+
+    async quit() {
+      for(let i = 0; i < this.membersid.length; i++) {
+        if(this.membersid[i] == this.userInfo.userId)  {
+          this.membersid.splice(i, 1);
+          i--;
+          break
+        }
+      }
+
+      const response = await http.delete(`/group/${this.$route.params.groupno}/${this.userInfo.user_id}`)
+        if (response.data == 1) {
+          console.log('그룹 탈퇴')
+          this.ismember == false
+          console.log(this.membersid)
+          // this.$router.go();
+        } else {
+          console.log('그룹 탈퇴 실패')
+        }
+      this.$router.go();
+    },
+
     async registMeeting() {
-      console.log(this.meeting);
-      const response = await http.post(`/group/${this.group.group_id}/meetings`, this.meeting);
+      // console.log(this.meeting);
+      this.meeting.groupId = this.$route.params.groupno
+      const response = await http.post(`/group/${this.$route.params.groupno}/meetings`, this.meeting);
       if (response.data == 1) {
         alert("모임 생성이 완료되었습니다.");
-        this.$router.push({ name: "groupList" });
+        this.$router.go();
       } else {
         alert("모임 생성에 실패하였습니다.");
       }
     },
 
+    },
+
     
-    },
-    async created() {
-      this.group = this.detailGroup
-      this.meeting.groupId = this.group.group_id
 
-    },
 
-    props: {
-      detailGroup: Object,
-    },
 };
 </script>
 

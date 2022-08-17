@@ -49,8 +49,16 @@
     <v-dialog v-model="dialog" max-width="200">
       <v-card>
         <div class="text-center" style="font-size: 4vw; align-items: center">
-          <v-col @click.stop="dialog = false()">
-            <span style="color: #ff0000">신고</span>
+          <v-col>
+            <span v-if="this.post.userId == this.userInfo.user_id"
+              ><router-link
+                class="link"
+                :to="{ name: 'postModify', params: { postno: this.post.postId } }"
+              >
+                게시글 수정</router-link
+              ></span
+            >
+            <span v-else style="color: #ff0000">신고</span>
           </v-col>
 
           <v-divider></v-divider>
@@ -87,7 +95,10 @@
     </template>
 
     <!-- 사진 -->
-    <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img>
+    <v-carousel height="290px" width="290px" hide-delimiter-background>
+      <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
+    </v-carousel>
+    <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->
 
     <v-row no-gutters>
       <v-col cols="8">
@@ -117,7 +128,7 @@
           <v-icon> {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }} </v-icon>
         </v-btn>
         <!-- 지도 버튼 -->
-        <v-btn icon>
+        <v-btn icon v-if="this.post.postLat != null" @click="clickMap()">
           <v-icon> mdi-map-outline </v-icon>
         </v-btn>
       </v-col>
@@ -189,6 +200,15 @@ export default {
     // console.log(this.detailPost);
     // console.log(this.post);
 
+    const getImages = await http.get(`/file/post/${this.post.postId}`);
+    console.log("게시판 이미지들 조회야~~~");
+    for (let i = 0; i < getImages.data.length; i++) {
+      this.carouselImages.push(
+        "https://i7a505.p.ssafy.io/api/file?imagePath=" + getImages.data[i].filePath
+      );
+    }
+    console.log(this.carouselImages);
+
     this.cntLike = this.post.likeCnt;
 
     // 좋아요를 이미 한 게시글에 좋아요 유지
@@ -226,6 +246,8 @@ export default {
       cntComment: null,
 
       post: {},
+
+      carouselImages: [],
     };
   },
   methods: {
@@ -318,6 +340,21 @@ export default {
           console.log("스크랩 취소 실패");
         }
       }
+    },
+    async clickMap() {
+      let gpsName = this.post.postGpsName;
+      // console.log(gpsName);
+      if (gpsName == null) {
+        gpsName = this.post.postLat;
+      }
+      let link =
+        "https://map.kakao.com/link/to/" +
+        gpsName +
+        "," +
+        this.post.postLat +
+        "," +
+        this.post.postLng;
+      window.open(link);
     },
   },
 };

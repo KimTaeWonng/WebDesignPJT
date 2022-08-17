@@ -95,8 +95,8 @@ export default {
           name: "profile",
           params: { userid: this.userInfo.user_id },
         });
+        this.$router.go();
       }
-      this.$router.go();
     },
   },
 };

@@ -3,6 +3,10 @@
     <back-menu title="팔로워" class="mb-1"></back-menu>
     <v-list>
       <v-list-item-group>
+       <follow-item v-for="user in followerUsers" :key="`${user.user_id}`" :userDetail="user"></follow-item>
+      </v-list-item-group>
+    
+      <!-- <v-list-item-group>
         <v-list-item v-for="(user, i) in followerUsers" :key="i">
           <v-list-item-avatar @click="moveProfile(user.user_id)">
             <v-img :src="user.profileImage"></v-img>
@@ -15,8 +19,8 @@
             ></v-list-item-subtitle>
           </v-list-item-content>
 
-          <!-- 변경: 팔로잉 안한 상태일 때, 버튼 변경 필요 -->
-          <!-- 이미 팔로잉되어있는 상태 버튼 -->
+          변경: 팔로잉 안한 상태일 때, 버튼 변경 필요
+          이미 팔로잉되어있는 상태 버튼
           <v-btn
 
             class="following-btn"
@@ -26,7 +30,7 @@
             >팔로잉</v-btn
           >
         </v-list-item>
-      </v-list-item-group>
+      </v-list-item-group> -->
     </v-list>
   </v-container>
 </template>
@@ -34,9 +38,10 @@
 <script>
 import { http } from "@/js/http.js";
 import BackMenu from "@/components/layout/BackMenu.vue";
+import FollowItem from "../../components/profile/FollowItem.vue";
 
 export default {
-  components: { BackMenu }, 
+  components: { BackMenu, FollowItem }, 
   name: "S07P12A505ProfileFollower",
 
   data() {
@@ -53,20 +58,21 @@ export default {
     // const following = await http.get(`/users/${this.$route.params.userid}/following`);
     const follower = await http.get(`/users/${this.$route.params.userid}/follower`);
     
-    console.log(follower.data)
+
     this.followerUsers = follower.data
+    console.log('followerUsers', this.followerUsers)
   },
   methods: {
-    moveProfile(user_id){
-        this.$router.push({
-          name: "profile",
-          params: {userid: user_id}
+    // moveProfile(user_id){
+    //     this.$router.push({
+    //       name: "profile",
+    //       params: {userid: user_id}
         
-      })
-    },
-    cancelFollowing(){
-      console.log("팔로우 취소")
-    }
+    //   })
+    // },
+    // cancelFollowing(){
+    //   console.log("팔로우 취소")
+    // }
   },
 };
 </script>

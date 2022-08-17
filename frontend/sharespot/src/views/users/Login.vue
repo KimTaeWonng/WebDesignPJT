@@ -67,12 +67,13 @@ export default {
   data() {
     return {
       user: {
-        email: null,
-        password: null,
+        email: "twvirus@naver.com",
+        password: "12341234",
       },
       isPwdShow: false,
     };
   },
+
   computed: {
     ...mapState(userStore, ["isLogin", "isLoginError", "kakaoUserInfo"]),
   },
@@ -91,13 +92,19 @@ export default {
       }
     },
     async kakaoLogin() {
-      const token = `${process.env.VUE_APP_KAKAO_ACCESS_TOKEN}`;
+      // const token = `${process.env.VUE_APP_KAKAO_ACCESS_TOKEN}`;
+
+      window.location.replace(
+        "https://kauth.kakao.com/oauth/authorize?client_id=75a6c91b7b162696354ad4fc2e5b4a7d&redirect_uri=https://localhost:8080/users/signup&response_type=code"
+      );
 
       const response = await http.post(`/oauth/login`, null, {
         params: {
-          token: token,
+          token: "IHPbZkwYFcYHvTCz_MIoTB456hTiDkzrdAxSh7klCilwFAAAAYKSgRPF",
         },
       });
+
+      // console.log(response);
       if (response.status == 200) {
         // console.log(response.data);
         this.setKakaoUserInfo(response.data);

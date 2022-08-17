@@ -1,15 +1,18 @@
 <template>
   <div>
-    <v-list>
+    <!-- 최신피드 -->
+    <latest-post-list v-if="this.type == 'latest'"></latest-post-list>
+
+    <!-- 큐레이션 상세검색 피드 -->
+    <v-list v-if="this.type == 'curation'">
       <post-card
         class="post-card"
-        v-for="(post, i) in posts"
+        v-for="(post, i) in curationPosts"
         :key="i"
-        v-bind="post"
         :detailPost="post"
       ></post-card>
     </v-list>
-    <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
+    <infinite-loading v-if="this.type == 'curation'" @infinite="infiniteHandler" spinner="wavedots">
       <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
@@ -35,9 +38,23 @@
           >태그 상세 검색</v-card-title
         >
 
+        <!-- 거리조절 -->
+        <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
+        <v-row class="distance-bar">
+          <v-col cols="12">
+            <v-slider
+              v-model="slider"
+              :max="max"
+              :min="min"
+              :thumb-size="24"
+              thumb-label="always"
+            ></v-slider>
+          </v-col>
+        </v-row>
+
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
-        <v-item-group mandatory align="center">
+        <v-item-group mandatory align="center" v-model="selected_1">
           <v-subheader>대분류</v-subheader>
           <v-item v-for="n in 5" :key="n" v-slot="{ active, toggle }">
             <v-btn
@@ -55,7 +72,7 @@
         </v-item-group>
 
         <!-- 소분류 -->
-        <v-item-group multiple align="center">
+        <v-item-group multiple align="center" v-model="selected_2">
           <v-subheader>소분류</v-subheader>
           <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -74,7 +91,7 @@
         </v-item-group>
 
         <!-- 누구랑 -->
-        <v-item-group multiple align="center">
+        <v-item-group multiple align="center" v-model="selected_3">
           <v-subheader>누구랑</v-subheader>
           <v-item v-for="(who, i) in whos" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -92,7 +109,7 @@
         </v-item-group>
 
         <!-- 어디서 -->
-        <v-item-group multiple align="center">
+        <v-item-group multiple align="center" v-model="selected_4">
           <v-subheader>어디서</v-subheader>
           <v-item v-for="(where, i) in wheres" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -131,19 +148,25 @@ import InfiniteLoading from "vue-infinite-loading";
 import tag from "@/assets/json/tag.json";
 
 import PostCard from "../post/PostCard.vue";
+import LatestPostList from "./LatestPostList.vue";
 
 const userStore = "userStore";
 
 export default {
-  components: { PostCard, InfiniteLoading },
+  components: { PostCard, InfiniteLoading, LatestPostList },
   name: "S07P12A505CurationPostList",
 
   data() {
     return {
       posts: [],
       loadNum: 0,
+      curationLoadNum: 0,
+      curationPosts: [],
 
       dialog: false,
+      slider: 10,
+      min: 0,
+      max: 30,
 
       categorys: tag, // 대분류,소분류 태그 json
       small: [
@@ -175,11 +198,20 @@ export default {
         "전주/전북",
       ],
 
-      // // 선택한 태그 값들 (1, 2, ...)
-      // selected_1: "",
-      // selected_2: [],
-      // selected_3: [],
-      // selected_4: [],
+      // 선택한 태그 값들 (1, 2, ...)
+      selected_1: "",
+      selected_2: [],
+      selected_3: [],
+      selected_4: [],
+
+      // 선택한 태그 항목들 (맛집, 가족 ...)
+      tag_big: "",
+      tag_small: [],
+      tag_who: [],
+      tag_where: [],
+
+      // 타입을 latest와 curation으로 구분
+      type: "latest",
     };
   },
   computed: {
@@ -189,26 +221,32 @@ export default {
   async created() {},
   methods: {
     async infiniteHandler($state) {
-      // 최신피드 (무한스크롤) 조회
+      // this.curationPosts = [];
+
+      // 선택된 값을 보내줘서 해당 태그에 맞는 게시물들을 보여줌
       await http
-        .get(`/main/search/posts/new`, {
+        .get(`search/posts/category/${this.tag_big}/{small}`, {
           params: {
-            page: this.loadNum,
+            small: this.tag_small.join(","),
+            who: this.tag_who.join(","),
+            where: this.tag_where.join(","),
+            page: this.curationLoadNum,
             size: 5,
           },
         })
         .then((res) => {
-          if (res.data.totalPages == this.loadNum) {
+          if (res.data.totalPages == this.curationLoadNum) {
             $state.complete();
           } else {
             setTimeout(() => {
-              this.loadNum++;
+              this.curationLoadNum++;
 
+              console.log(res.data.content);
               const items = res.data.content;
               for (const i of items) {
-                const data = {
+                const datas = {
                   postId: i.postId,
-                  userId: this.userInfo.user_id,
+                  userId: i.userId,
                   userImage: i.userImage,
                   postLat: i.postLat,
                   postLng: i.postLng,
@@ -224,10 +262,15 @@ export default {
                   classWho: i.classWho,
                   content: i.content,
                 };
-                this.posts.push(data);
+                this.curationPosts.push(datas);
               }
 
               $state.loaded();
+            }, 1000);
+          }
+          if (res.data.last) {
+            setTimeout(() => {
+              $state.complete();
             }, 1000);
           }
         })
@@ -248,11 +291,57 @@ export default {
     },
     addTag() {
       this.dialog = false;
+      // this.type = "curation";
 
-      // 선택된 값을 보내줘서 해당 태그에 맞는 게시물들을 보여줌
+      // console.log(this.selected_1);
+      // console.log(this.selected_2);
+      // console.log(this.selected_3);
+      // console.log(this.selected_4);
+
+      // 선택항목 초기화
+      this.tag_big = "";
+      this.tag_small = [];
+      this.tag_who = [];
+      this.tag_where = [];
+
+      this.tag_big = this.categorys.tag[this.selected_1].big_name;
+      for (let i = 0; i < this.selected_2.length; i++) {
+        this.tag_small.push(
+          this.categorys.tag[this.selected_1].category[this.selected_2[i]].small_name
+        );
+      }
+
+      for (let i = 0; i < this.selected_3.length; i++) {
+        this.tag_who.push(this.whos[this.selected_3[i]]);
+      }
+
+      for (let i = 0; i < this.selected_4.length; i++) {
+        this.tag_where.push(this.wheres[this.selected_4[i]]);
+      }
+
+      this.type = "curation";
+
+      console.log(this.tag_big);
+      console.log(this.tag_small);
+      console.log(this.tag_who);
+      console.log(this.tag_where);
+
+      this.curationPosts = [];
+
+      this.curationLoadNum = 0;
+      console.log("큐레이션로드넘이야~~~");
+      console.log(this.curationLoadNum);
+    },
+    //거리조절 아이콘
+    season(val) {
+      return this.icons[val];
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.distance-bar {
+  max-width: 95%;
+}
+</style>

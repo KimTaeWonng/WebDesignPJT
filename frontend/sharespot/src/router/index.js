@@ -189,14 +189,14 @@ const routes = [
   },
   {
     // /:groupno 추가해야 함!
-    path: "/group/detail",
+    path: "/group/detail/:groupno",
     name: "groupDetail",
     // beforeEnter: onlyAuthUser,
     component: GroupDetail,
   },
   {
     // /:groupno 추가해야 함!
-    path: "/group/modify",
+    path: "/group/modify/:groupno",
     name: "groupModify",
     // beforeEnter: onlyAuthUser,
     component: GroupModify,
@@ -251,6 +251,7 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+  mode: 'history',
 });
 
 export default router;

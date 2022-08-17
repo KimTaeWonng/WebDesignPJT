@@ -4,14 +4,8 @@
       <v-col cols="12">
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form @submit.prevent="submit" class="mr-6 ml-6">
-            <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">
-              그룹 이름
-            </p>
-            <validation-provider
-              v-slot="{ errors }"
-              name="그룹 이름"
-              rules="name_required"
-            >
+            <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">그룹 이름</p>
+            <validation-provider v-slot="{ errors }" name="그룹 이름" rules="name_required">
               <v-text-field
                 class="mt-3"
                 v-model="group.group_name"
@@ -21,14 +15,8 @@
               ></v-text-field>
             </validation-provider>
 
-            <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">
-              그룹 내용
-            </p>
-            <validation-provider
-              v-slot="{ errors }"
-              name="그룹 내용"
-              rules="content_required"
-            >
+            <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">그룹 내용</p>
+            <validation-provider v-slot="{ errors }" name="그룹 내용" rules="content_required">
               <v-textarea
                 v-model="group.group_content"
                 label=""
@@ -45,44 +33,33 @@
               <label for="chooseFile"
                 ><span
                   class="material-icons"
-                  style="
-                    vertical-align: middle;
-                    color: rgb(40, 150, 114);
-                    font-size: 5vw;
-                  "
+                  style="vertical-align: middle; color: rgb(40, 150, 114); font-size: 5vw"
                   >add_circle_outline</span
                 ></label
               >
               <div>
                 <form method="post" enctype="multipart/form-data">
                   <input
-                    style="display: none"
+                    @change="upload"
                     ref="image"
-                    @change="uploadImg()"
+                    style="display: none"
                     type="file"
                     id="chooseFile"
                     name="chooseFile"
                     accept="image/*"
                   />
                 </form>
-                <!-- <v-file-input v-model="group.image" accept="image/*"></v-file-input> -->
               </div>
             </div>
 
             <div style="margin-left: 5%; margin-right: 5%">
-              <v-img
-                v-if="image != ''"
-                :src="image"
-                style="width: 100%; height: 30%"
-              ></v-img>
+              <v-img v-if="image != ''" :src="image" style="width: 100%; height: 30%"></v-img>
             </div>
 
             <br />
 
             <div>
-              <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">
-                연령대
-              </p>
+              <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">연령대</p>
               <v-row style="margin-left: 5%; margin-right: 5%; font-size: 5vw">
                 <!-- 정규 표현식 필요 -->
                 <v-col cols="3">
@@ -104,9 +81,7 @@
                   </validation-provider>
                 </v-col>
 
-                <v-col cols="3" style="font-size: 3.3vw; margin-top: 10%">
-                  년생~
-                </v-col>
+                <v-col cols="3" style="font-size: 3.3vw; margin-top: 10%"> 년생~ </v-col>
 
                 <v-col cols="3">
                   <validation-provider
@@ -127,9 +102,7 @@
                   </validation-provider>
                 </v-col>
 
-                <v-col cols="3" style="font-size: 3.3vw; margin-top: 10%">
-                  년생
-                </v-col>
+                <v-col cols="3" style="font-size: 3.3vw; margin-top: 10%"> 년생 </v-col>
               </v-row>
 
               <!-- <v-radio-group v-model="row" row>
@@ -138,50 +111,21 @@
             </div>
 
             <div>
-              <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">
-                성별
-              </p>
+              <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">성별</p>
               <div style="margin-left: 5%">
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="성별제한"
-                  rules="required"
-                >
-                  <v-radio-group
-                    v-model="group.group_gender"
-                    :error-messages="errors"
-                    required
-                    row
-                  >
-                    <v-radio
-                      label="남"
-                      value="1"
-                      color="rgb(40,150,114)"
-                    ></v-radio>
-                    <v-radio
-                      label="여"
-                      value="2"
-                      color="rgb(40,150,114)"
-                    ></v-radio>
-                    <v-radio
-                      label="모두"
-                      value="0"
-                      color="rgb(40,150,114)"
-                    ></v-radio>
+                <validation-provider v-slot="{ errors }" name="성별제한" rules="required">
+                  <v-radio-group v-model="group.group_gender" :error-messages="errors" required row>
+                    <v-radio label="남" value="1" color="rgb(40,150,114)"></v-radio>
+                    <v-radio label="여" value="2" color="rgb(40,150,114)"></v-radio>
+                    <v-radio label="모두" value="0" color="rgb(40,150,114)"></v-radio>
                   </v-radio-group>
                 </validation-provider>
               </div>
             </div>
 
             <div>
-              <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">
-                정원
-              </p>
-              <validation-provider
-                v-slot="{ errors }"
-                name="정원"
-                rules="required"
-              >
+              <p style="text-align: left; margin-left: 3%; font-size: 4.5vw">정원</p>
+              <validation-provider v-slot="{ errors }" name="정원" rules="required">
                 <v-select
                   :items="items"
                   required
@@ -274,6 +218,7 @@ export default {
       },
     };
   },
+
   async created() {
     this.group.group_manager = this.userInfo.user_id;
     this.group.group_nick = this.userInfo.nickname;
@@ -285,54 +230,81 @@ export default {
   },
 
   methods: {
-    uploadImg() {
-      var image = this.$refs["image"].files[0];
-      const url = URL.createObjectURL(image);
-      this.image = url;
-      this.group.group_image = this.image;
+    async upload() {
+      const formData = new FormData();
+      const file = this.$refs["image"].files[0];
+      console.log(file);
+
+      formData.append("files", file);
+      console.log(formData);
+
+      await http
+        .post("/file", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          // console.log(res)
+          // console.log(res.data[0])
+
+          const imagePath = res.data[0];
+          this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`;
+          // console.log(this.image)
+          this.group.group_image = this.image;
+          // console.log(this.group.group_image)
+          // http2.get(`/file?imagePath=${imagePath}`)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     submit() {
       this.$refs.observer.validate();
     },
+
     // 그룹 생성 함수
     async registGroup() {
-      console.log(this.group)
-      console.log(this.groupType)
-      
       const response = await http.post("/group", this.group);
-      // console.log(response.data);
+      console.log(response);
+
       if (response.data == 1) {
         alert("그룹 생성이 완료되었습니다.");
         this.$router.push({ name: "groupList" });
       } else {
         alert("그룹 생성에 실패하였습니다.");
       }
+
+      const getgroup = await http.get('/group')
+      
+      const newgroup = getgroup.data.at(-1);
+
+      const gid = newgroup.group_id;
+
+      await http.post(`/group/${gid}/${this.group.group_manager}`, {
+        gid: gid,
+        userId: this.group.group_manager,
+      });
     },
-    // async registGroup() {
-    //   console.log(this.group)
-    //   console.log(this.groupType)
-    
-    //   if (this.groupType == "register") {
-    //     const response = await http.post("/group", this.group);
-    //     // console.log(response.data);
-    //     if (response.data == 1) {
-    //       alert("그룹 생성이 완료되었습니다.");
-    //       this.$router.push({ name: "groupList" });
-    //     } else {
-    //       alert("그룹 생성에 실패하였습니다.");
-    //     }
-    //   } else {
-    //       const response = await http.put("/group/{gid}", this.group);
-    //       // console.log(response.data);
-    //       if (response.data == 1) {
-    //         alert("그룹 수정이 완료되었습니다.");
-    //         this.$router.push({ name: "groupList" });
-    //       } else {
-    //         alert("그룹 수정에 실패하였습니다.");
-    //       }
-    //   }
-    // },
+
+    async modifyGroup() {
+      const getgroup = await http.get('/group')
+      
+      const newgroup = getgroup.data.at(-1);
+
+      const gid = newgroup.group_id
+      
+      const response = await http.put(`/group/${gid}`, this.group)
+      console.log(response);
+
+      if (response.data == 1) {
+        alert("그룹 수정이 완료되었습니다.");
+        this.$router.push({ name: "groupList" });
+      } else {
+        alert("그룹 수정에 실패하였습니다.");
+      }
+    }
   },
 };
 </script>

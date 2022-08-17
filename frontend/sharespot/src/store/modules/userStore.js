@@ -1,6 +1,7 @@
 import jwt_decode from "jwt-decode";
 import { login, findById } from "@/js/user.js";
 
+
 const userStore = {
     namespaced: true,
     state: {

@@ -34,22 +34,22 @@
     <v-list>
       <v-list-group
         v-for="item in items"
-        :key="item.title"
+        :key="item.group_id"
       >
         <template v-slot:activator>
-          <v-list-item-content style="font-weight:bold; font-size:4vw;">
-            <v-list-item-title v-text="item.title"></v-list-item-title>
+          <v-list-item-content style="font-weight:bold; font-size:4vw;" @click="goGroup(item.group_id)">
+            <v-list-item-title v-text="item.group_nick"></v-list-item-title>
           </v-list-item-content>
         </template>
 
-        <v-list-item
+        <!-- <v-list-item
           v-for="child in item.items"
           :key="child.title"
-        >
-          <v-list-item-content style="font-weight:bold; font-size:3vw;">
+        > -->
+          <!-- <v-list-item-content style="font-weight:bold; font-size:3vw;">
             <v-list-item-title v-text="child.title"></v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
       </v-list-group>
     </v-list>
   </v-card>
@@ -65,6 +65,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+const userLogStore = "userLogStore";
+
 export default {
   name: "SearchBar",
 
@@ -73,40 +76,56 @@ export default {
       searchContent: "",
       dialog: false,
       items: [
-        {
-          action: 'mdi-ticket',
-          items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
-          ],
-          title: '[보드게임] 강남보드모임 GB',
-        },
-        {
-          action: 'mdi-silverware-fork-knife',
-          active: true,
-          items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
-          ],
-          title: '[보드게임] 강남보드모임 GB',
-        },
-        {
-          action: 'mdi-school',
-          items: [
-            { title: '7월 27일 강남 보드게임 정모~~' },
-            { title: '7월 28일 역삼 보드게임 정모해용'},
-            { title: '7월 29일 사당 보드게임 정모~~' }
-          ],
-          title: '[보드게임] 강남보드모임 GB',
-        },
+        // {
+        //   action: 'mdi-ticket',
+        //   items: [
+        //     { title: '7월 27일 강남 보드게임 정모~~' },
+        //     { title: '7월 28일 역삼 보드게임 정모해용'},
+        //     { title: '7월 29일 사당 보드게임 정모~~' }
+        //   ],
+        //   title: '[보드게임] 강남보드모임 GB',
+        // },
+        // {
+        //   action: 'mdi-silverware-fork-knife',
+        //   active: true,
+        //   items: [
+        //     { title: '7월 27일 강남 보드게임 정모~~' },
+        //     { title: '7월 28일 역삼 보드게임 정모해용'},
+        //     { title: '7월 29일 사당 보드게임 정모~~' }
+        //   ],
+        //   title: '[보드게임] 강남보드모임 GB',
+        // },
+        // {
+        //   action: 'mdi-school',
+        //   items: [
+        //     { title: '7월 27일 강남 보드게임 정모~~' },
+        //     { title: '7월 28일 역삼 보드게임 정모해용'},
+        //     { title: '7월 29일 사당 보드게임 정모~~' }
+        //   ],
+        //   title: '[보드게임] 강남보드모임 GB',
+        // },
       ],
     };
   },
+  async created() {
+    
+    const groupList = [];
+    for (var i = 0; i < this.myGroupList.length; i++) {
+      const temp = {
+        group_nick: this.myGroupList[i].group_nick,
+        group_id: this.myGroupList[i].group_id
+      };
+      groupList.push(temp);
+    }
 
+    console.log(groupList)
+
+    this.items = groupList
+  },
   mounted() {},
-
+  computed: {
+    ...mapState(userLogStore, ["myGroupList"]),
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -120,6 +139,12 @@ export default {
     // 내가 가입한 그룹 리스트를 보여주는 함수
     showMyGroup() {
       console.log("click");
+    },
+    goGroup(group_id) {
+      this.$router.push({
+        name: "groupDetail",
+        params: { groupno: group_id},
+      });
     },
   },
 };

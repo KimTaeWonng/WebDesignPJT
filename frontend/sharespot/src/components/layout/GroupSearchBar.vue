@@ -9,9 +9,31 @@
           placeholder="검색어를 입력하세요"
           clearable
           color="black"
-          v-model="searchContent"
           @keyup.enter="search(searchContent)"
+          @click="searchModal = true"
         ></v-text-field>
+
+<v-dialog v-model="searchModal" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-list-group
+        v-for="group in searchResultList"
+        :key="group.group_id"
+      >
+          <v-list-item-content style="font-weight:bold; font-size:4vw;" @click="goGroup(group.group_id)">
+            <v-list-item-title v-text="group.group_name"></v-list-item-title>
+          </v-list-item-content>
+
+
+        <!-- <v-list-item
+          v-for="child in item.items"
+          :key="child.title"
+        > -->
+          <!-- <v-list-item-content style="font-weight:bold; font-size:3vw;">
+            <v-list-item-title v-text="child.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item> -->
+      </v-list-group>
+</v-dialog>  
+
       </v-col>
       <!-- MY 버튼-->
       <v-col cols="2" align="center" @click="showMyGroup()">
@@ -65,8 +87,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 const userLogStore = "userLogStore";
+
+import { mapState } from "vuex";
+import { http } from "@/js/http.js";
+
 
 export default {
   name: "SearchBar",
@@ -75,36 +100,9 @@ export default {
     return {
       searchContent: "",
       dialog: false,
-      items: [
-        // {
-        //   action: 'mdi-ticket',
-        //   items: [
-        //     { title: '7월 27일 강남 보드게임 정모~~' },
-        //     { title: '7월 28일 역삼 보드게임 정모해용'},
-        //     { title: '7월 29일 사당 보드게임 정모~~' }
-        //   ],
-        //   title: '[보드게임] 강남보드모임 GB',
-        // },
-        // {
-        //   action: 'mdi-silverware-fork-knife',
-        //   active: true,
-        //   items: [
-        //     { title: '7월 27일 강남 보드게임 정모~~' },
-        //     { title: '7월 28일 역삼 보드게임 정모해용'},
-        //     { title: '7월 29일 사당 보드게임 정모~~' }
-        //   ],
-        //   title: '[보드게임] 강남보드모임 GB',
-        // },
-        // {
-        //   action: 'mdi-school',
-        //   items: [
-        //     { title: '7월 27일 강남 보드게임 정모~~' },
-        //     { title: '7월 28일 역삼 보드게임 정모해용'},
-        //     { title: '7월 29일 사당 보드게임 정모~~' }
-        //   ],
-        //   title: '[보드게임] 강남보드모임 GB',
-        // },
-      ],
+      searchModal: false,
+      items: [],
+      searchResultList: [],
     };
   },
   async created() {
@@ -132,8 +130,11 @@ export default {
     },
 
     // searchContent로 검색하는 함수
-    search(searchContent) {
+    async search(searchContent) {
       console.log(searchContent);
+      const result = await http.get(`/group/search/${searchContent}`);
+      console.log('검색결과', result.data)
+      this.searchResultList = result.data
     },
 
     // 내가 가입한 그룹 리스트를 보여주는 함수

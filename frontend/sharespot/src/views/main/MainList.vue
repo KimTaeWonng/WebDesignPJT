@@ -27,6 +27,7 @@ export default {
       "likePostList",
       "followingUserList",
       "followUserList",
+      "myGroupList",
     ]),
     ...mapState(userStore, ["userInfo"]),
   },

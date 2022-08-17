@@ -350,6 +350,7 @@ export default {
         gd: 1, // 성별공개여부
         bd: 0, // 뱃지보유여부
         pb: 0, // 비공개계정
+        registerTime: "",
       },
       confirmPwd: "",
 

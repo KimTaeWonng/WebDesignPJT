@@ -38,7 +38,7 @@
       >
         <template v-slot:activator>
           <v-list-item-content style="font-weight:bold; font-size:4vw;" @click="goGroup(item.group_id)">
-            <v-list-item-title v-text="item.group_nick"></v-list-item-title>
+            <v-list-item-title v-text="item.group_name"></v-list-item-title>
           </v-list-item-content>
         </template>
 
@@ -112,7 +112,7 @@ export default {
     const groupList = [];
     for (var i = 0; i < this.myGroupList.length; i++) {
       const temp = {
-        group_nick: this.myGroupList[i].group_nick,
+        group_name: this.myGroupList[i].group_name,
         group_id: this.myGroupList[i].group_id
       };
       groupList.push(temp);

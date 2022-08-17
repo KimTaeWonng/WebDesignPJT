@@ -1,10 +1,17 @@
 package com.sharespot.entity;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @AllArgsConstructor
@@ -13,22 +20,16 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Entity
 @Table(name="group_table")
-public class Group {
-    @Id
+public class GroupLite {
+	
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT UNSIGNED")
     private Integer groupId;
-
-    private Integer groupManager;
-
-    private String groupName;
-    private String groupContent;
-    private Integer groupLimit;
+	
+	private String groupName;
     private Integer groupGender;
     private Integer groupAgeMin;
     private Integer groupAgeMax;
-    private String  groupImage;
-    private String  groupNick;
-
 
 }

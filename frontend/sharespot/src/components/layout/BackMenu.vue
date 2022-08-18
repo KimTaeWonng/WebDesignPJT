@@ -184,6 +184,7 @@ export default {
 
     async delGroup() {
       await http.delete(`/group/${this.$route.params.groupno}`)  
+      this.$router.push({ name: "groupList" });
     },
 
     async quitGroup() {

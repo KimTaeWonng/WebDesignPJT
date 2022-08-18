@@ -158,7 +158,7 @@
     </v-carousel>
     <!-- </v-parallax> -->
 
-    <div class="ml-9 mr-9">
+    <div class="ml-9 mr-9 mt-8">
       <v-row align="center">
         <span>장소 이름</span>
       </v-row>

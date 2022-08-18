@@ -27,7 +27,8 @@
       <v-list-item-avatar
         tile
         size="90">
-        <img v-if="this.group.group_image.length" :src='`${ this.group.group_image }`' style='width:95%; height:95%;' />
+        <img v-if="this.group.group_image" :src='`${ this.group.group_image }`' style='width:95%; height:95%;' />
+        <img v-else src="@/assets/groupinfo.png" style='width:95%; height:95%;' />
       </v-list-item-avatar>
     </v-list-item>
 

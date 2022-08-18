@@ -12,7 +12,10 @@
           }"
         >
           <v-list-item-avatar>
-            <v-img :src="this.post.userImage"></v-img>
+            <v-img v-if="this.post.userImage == null">
+              <v-icon size="50">mdi-account-circle</v-icon></v-img
+            >
+            <v-img v-else :src="this.post.userImage"></v-img>
           </v-list-item-avatar>
         </router-link>
       </v-col>
@@ -53,7 +56,10 @@
             <span v-if="this.post.userId == this.userInfo.user_id"
               ><router-link
                 class="link"
-                :to="{ name: 'postModify', params: { postno: this.post.postId } }"
+                :to="{
+                  name: 'postModify',
+                  params: { postno: this.post.postId },
+                }"
               >
                 게시글 수정</router-link
               ></span
@@ -78,6 +84,7 @@
             <span
               ><router-link
                 class="link"
+                style="color: black"
                 :to="{
                   name: 'postDetail',
                   params: { postno: this.post.postId },
@@ -86,17 +93,42 @@
               </router-link></span
             >
           </v-col>
+
+          <v-divider
+            v-if="this.post.userId == this.userInfo.user_id"
+          ></v-divider>
+
+          <v-col>
+            <span
+              v-if="this.post.userId == this.userInfo.user_id"
+              style="color: red"
+              @click="deletePost()"
+            >
+              게시글 삭제</span
+            >
+          </v-col>
         </div>
       </v-card>
     </v-dialog>
 
     <template slot="progress">
-      <v-progress-linear color="deep-purple" height="10" indeterminate></v-progress-linear>
+      <v-progress-linear
+        color="deep-purple"
+        height="10"
+        indeterminate
+      ></v-progress-linear>
     </template>
 
     <!-- 사진 -->
-    <v-carousel height="290px" width="290px" hide-delimiter-background>
-      <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
+    <v-carousel
+      height="290px"
+      width="290px"
+      hide-delimiter-background
+      hide-delimiters
+      show-arrows-on-hover
+    >
+      <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img">
+      </v-carousel-item>
     </v-carousel>
     <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->
 
@@ -104,9 +136,13 @@
       <v-col cols="8">
         <!-- 좋아요 버튼 -->
         <v-btn icon @click="(like = !like), clickLike()">
-          <v-icon color="red"> {{ like ? "mdi-heart" : "mdi-heart-outline" }} </v-icon>
+          <v-icon color="red">
+            {{ like ? "mdi-heart" : "mdi-heart-outline" }}
+          </v-icon>
         </v-btn>
-        <span style="font-size: 12px; font-weight: lighter">{{ cntLike }}개 </span>
+        <span style="font-size: 12px; font-weight: lighter"
+          >{{ cntLike }}개
+        </span>
 
         <!-- 댓글 버튼 -->
         <router-link
@@ -120,15 +156,19 @@
             <v-icon> mdi-comment-processing-outline </v-icon>
           </v-btn>
         </router-link>
-        <span style="font-size: 12px; font-weight: lighter">{{ cntComment }}개 </span>
+        <span style="font-size: 12px; font-weight: lighter"
+          >{{ cntComment }}개
+        </span>
       </v-col>
       <v-col cols="4" align="right">
         <!-- 스크랩 버튼 -->
         <v-btn icon @click="(bookmark = !bookmark), clickBookmark()">
-          <v-icon> {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }} </v-icon>
+          <v-icon>
+            {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }}
+          </v-icon>
         </v-btn>
         <!-- 지도 버튼 -->
-        <v-btn icon v-if="this.post.postLat != null" @click="clickMap()">
+        <v-btn icon @click="clickMap()">
           <v-icon> mdi-map-outline </v-icon>
         </v-btn>
       </v-col>
@@ -167,7 +207,9 @@
     </v-chip>
 
     <!-- {{ article.content }}  -->
-    <v-card-text class="mt-2" style="padding: 0%">{{ post.content }}</v-card-text>
+    <v-card-text class="mt-2" style="padding: 0%">{{
+      post.content
+    }}</v-card-text>
     <router-link
       class="link"
       :to="{
@@ -177,6 +219,36 @@
     >
       <v-btn style="padding: 0%; font-size: 12px" plain small>자세히보기</v-btn>
     </router-link>
+
+    <!-- 게시 완료 dialog -->
+    <v-dialog v-model="deleteDialog" max-width="290">
+      <v-card>
+        <div>
+          <br />
+          <br />
+        </div>
+
+        <div class="text-center" style="color: rgb(40, 150, 114)">
+          <span class="material-icons" style="font-size: 80px"> task_alt </span>
+        </div>
+
+        <div class="text-center">
+          <div style="font-weight: bold"></div>
+          게시글이 삭제되었습니다.
+        </div>
+
+        <div class="text-center" style="margin-top: 10%">
+          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark>
+            확인
+          </v-btn>
+        </div>
+
+        <div>
+          <br />
+          <br />
+        </div>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -200,19 +272,19 @@ export default {
     // console.log(this.detailPost);
     // console.log(this.post);
 
+    // 게시글의 다중 이미지들 조회
     const getImages = await http.get(`/file/post/${this.post.postId}`);
-    console.log("게시판 이미지들 조회야~~~");
     for (let i = 0; i < getImages.data.length; i++) {
-      this.carouselImages.push(
-        "https://i7a505.p.ssafy.io/api/file?imagePath=" + getImages.data[i].filePath
-      );
+      this.carouselImages.push(getImages.data[i].filePath);
     }
-    console.log(this.carouselImages);
+    // console.log(this.carouselImages);
 
     this.cntLike = this.post.likeCnt;
 
     // 좋아요를 이미 한 게시글에 좋아요 유지
-    const likeTemp = await http.get(`/LikeScrap/listL/${this.userInfo.user_id}`);
+    const likeTemp = await http.get(
+      `/LikeScrap/listL/${this.userInfo.user_id}`
+    );
     // console.log(likeTemp);
 
     for (const likeList of likeTemp.data) {
@@ -222,7 +294,9 @@ export default {
     }
 
     // 스크랩을 이미 한 게시글에 스크랩 유지
-    const scrapTemp = await http.get(`/LikeScrap/listS/${this.userInfo.user_id}`);
+    const scrapTemp = await http.get(
+      `/LikeScrap/listS/${this.userInfo.user_id}`
+    );
     // console.log(scrapTemp);
 
     for (const ScrapList of scrapTemp.data) {
@@ -232,7 +306,9 @@ export default {
     }
 
     // 댓글 갯수 받아오기
-    const commentTemp = await http.get(`/main/posts/main/posts/${this.post.postId}`);
+    const commentTemp = await http.get(
+      `/main/posts/main/posts/${this.post.postId}`
+    );
     // console.log(commentTemp.data.length);
     this.cntComment = commentTemp.data.length;
   },
@@ -248,6 +324,8 @@ export default {
       post: {},
 
       carouselImages: [],
+
+      deleteDialog: false,
     };
   },
   methods: {
@@ -278,7 +356,10 @@ export default {
         // console.log(this.cntLike);
         // console.log(this.post);
 
-        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
+        const response2 = await http.put(
+          `/main/posts/${this.post.postId}`,
+          this.post
+        );
         if (response2.data == 1) {
           console.log("조아요 증가 성공");
         } else {
@@ -306,7 +387,10 @@ export default {
         this.post.likeCnt -= 1;
         this.cntLike = this.post.likeCnt;
 
-        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
+        const response2 = await http.put(
+          `/main/posts/${this.post.postId}`,
+          this.post
+        );
         if (response2.data == 1) {
           console.log("조아요 감소 성공");
         } else {
@@ -355,6 +439,19 @@ export default {
         "," +
         this.post.postLng;
       window.open(link);
+    },
+    async deletePost() {
+      const response = await http.delete(`/main/posts/${this.post.postId}`);
+      console.log(response.data);
+      this.deleteDialog = true;
+    },
+    goProfile(pageName) {
+      if (this.$route.path != pageName) {
+        this.$router.push({
+          name: "profile",
+          params: { userid: this.userInfo.user_id },
+        });
+      }
     },
   },
 };

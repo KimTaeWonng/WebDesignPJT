@@ -20,8 +20,8 @@
               cols="4"
             >
               <v-img
-                :src="p[4]"
-                :lazy-src="p[4]"
+                :src="p[7]"
+                :lazy-src="p[7]"
                 aspect-ratio="1"
                 class="grey lighten-2"
                 @click="movePost(p[0])"
@@ -101,6 +101,11 @@
 
 <script>
 import { http } from "@/js/http.js";
+import { mapState } from "vuex";
+
+const userStore = "userStore";
+const userLogStore = "userLogStore";
+
 import {
   getBadgeFood,
   getBadgeCafe,
@@ -125,14 +130,61 @@ export default {
       scrapList: [],
 
       bd: false,
+
+      badges: {
+        badgeCafe: 0,
+        badgeComment: 0,
+        badgeCulture: 0,
+        badgeFeed: 0,
+        badgeFollow: 0,
+        badgeFollower: 0,
+        badgeFood: 0,
+        badgeGroup: 0,
+        badgeLife: 0,
+        badgeMeet: 0,
+        badgeTrip: 0,
+        mainCafe: 0,
+        mainComment: 0,
+        mainCulture: 0,
+        mainFeed: 0,
+        mainFollow: 0,
+        mainFollower: 0,
+        mainFood: 0,
+        mainGroup: 0,
+        mainLife: 0,
+        mainMeet: 0,
+        mainTrip: 0,
+        userId: "",
+      },
     };
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+    ...mapState(userLogStore, ["followingUserList", "followUserList"]),
+  },
   async created() {
+    // 유저의 뱃지 정보 불러오기
+    const getBadgeList = await http.get(`/users/badge/${this.userInfo.user_id}`);
+    this.badges = getBadgeList.data;
+
     // 유저의 게시글 불러오기
     const getPost = await http.get(`/main/posts/user/${this.$route.params.userid}`);
 
     this.postList = getPost.data;
     // console.log(this.postList);
+
+    // 팔로잉 수가 1이면 최초 팔로잉 뱃지 생성
+    if (this.followingUserList.length === 1) {
+      this.badges.badgeFollow = 1;
+      const modifybadge = await http.put(`/users/badge`, this.badges);
+      console.log(modifybadge);
+    }
+    // 팔로워 수가 1이면 최초 팔로워 뱃지 생성
+    if (this.followingUserList.length === 1) {
+      this.badges.badgeFollower = 1;
+      const modifybadge = await http.put(`/users/badge`, this.badges);
+      console.log(modifybadge);
+    }
 
     // 유저의 뱃지 컬렉션 불러오기
     // 유저의 뱃지 보유여부 받아오기

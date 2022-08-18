@@ -33,28 +33,34 @@
     </v-btn>
 
     <v-dialog v-model="dialog" max-width="600px">
-      <v-card>
+      <v-card style="background-color: white" max-height="500px">
         <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
           >태그 상세 검색</v-card-title
         >
 
         <!-- 거리조절 -->
-        <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
-        <v-row class="distance-bar">
-          <v-col cols="12">
-            <v-slider
-              v-model="slider"
-              :max="max"
-              :min="min"
-              :thumb-size="24"
-              thumb-label="always"
-            ></v-slider>
-          </v-col>
-        </v-row>
+
+        <!-- <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
+          <v-row class="distance-bar">
+            <v-col cols="12">
+              <v-slider
+                v-model="slider"
+                :max="max"
+                :min="min"
+                :thumb-size="24"
+                thumb-label="always"
+              ></v-slider>
+            </v-col>
+          </v-row> -->
 
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
-        <v-item-group mandatory align="center" v-model="selected_1">
+        <v-item-group
+          mandatory
+          align="center"
+          v-model="selected_1"
+          style="background-color: #ffffff"
+        >
           <v-subheader>대분류</v-subheader>
           <v-item v-for="n in 5" :key="n" v-slot="{ active, toggle }">
             <v-btn
@@ -72,7 +78,12 @@
         </v-item-group>
 
         <!-- 소분류 -->
-        <v-item-group multiple align="center" v-model="selected_2">
+        <v-item-group
+          multiple
+          align="center"
+          v-model="selected_2"
+          style="background-color: #ffffff"
+        >
           <v-subheader>소분류</v-subheader>
           <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -91,7 +102,12 @@
         </v-item-group>
 
         <!-- 누구랑 -->
-        <v-item-group multiple align="center" v-model="selected_3">
+        <v-item-group
+          multiple
+          align="center"
+          v-model="selected_3"
+          style="background-color: #ffffff"
+        >
           <v-subheader>누구랑</v-subheader>
           <v-item v-for="(who, i) in whos" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -109,7 +125,12 @@
         </v-item-group>
 
         <!-- 어디서 -->
-        <v-item-group multiple align="center" v-model="selected_4">
+        <v-item-group
+          multiple
+          align="center"
+          v-model="selected_4"
+          style="background-color: #ffffff"
+        >
           <v-subheader>어디서</v-subheader>
           <v-item v-for="(where, i) in wheres" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -128,12 +149,16 @@
         </v-item-group>
 
         <!-- 분류 제목 + 버튼 여기까지  -->
-        <v-divider class="mt-4"></v-divider>
-        <v-card-actions class="mt-2 d-flex justify-end" style="background-color: #ffffff">
+
+        <v-card-actions class="d-flex justify-end" style="background-color: #ffffff">
           <!-- 초기화 버튼 회색 배경 넣어주기  -->
           <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
-          <v-btn style="background-color: #f3f3f3" text @click="clear()"> 초기화 </v-btn>
-          <v-btn style="background-color: #289672" text dark @click="addTag()"> 확인 </v-btn>
+          <v-btn class="mt-2" style="background-color: #f3f3f3" text @click="clear()">
+            초기화
+          </v-btn>
+          <v-btn class="mt-2" style="background-color: #289672" text dark @click="addTag()">
+            확인
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -149,8 +174,12 @@ import tag from "@/assets/json/tag.json";
 
 import PostCard from "../post/PostCard.vue";
 import LatestPostList from "./LatestPostList.vue";
+// import Vue from "vue";
+// import VueGeolocationApi from "vue-geolocation-api";
+// import haversine from 'haversine'
 
 const userStore = "userStore";
+// Vue.use(VueGeolocationApi);
 
 export default {
   components: { PostCard, InfiniteLoading, LatestPostList },
@@ -162,11 +191,13 @@ export default {
       loadNum: 0,
       curationLoadNum: 0,
       curationPosts: [],
+      // latitude: '',
+      // longitude: '',
 
       dialog: false,
       slider: 10,
       min: 0,
-      max: 30,
+      max: 200,
 
       categorys: tag, // 대분류,소분류 태그 json
       small: [
@@ -217,9 +248,28 @@ export default {
   computed: {
     ...mapState(userStore, ["userInfo"]),
   },
+
   mounted() {},
-  async created() {},
+
+  // async created() {
+  //   this.getMylocation();
+  // },
+
   methods: {
+    // getDistance(lat1, lng1, lat2, lng2) {
+    //   function deg2rad(deg) {
+    //     return deg * (Math.PI/180)
+    //   }
+
+    //   var R = 6371;
+    //   var dLat = deg2rad(lat2-lat1)
+    //   var dLng = deg2rad(lng2-lng1)
+    //  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLng/2) * Math.sin(dLng/2);
+    // var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    // var d = R * c;
+    // this.distance2 = d
+    // },
+
     async infiniteHandler($state) {
       // this.curationPosts = [];
 
@@ -241,7 +291,33 @@ export default {
             setTimeout(() => {
               this.curationLoadNum++;
 
-              console.log(res.data.content);
+              // console.log('전', res.data.content);
+
+              // for(let i = 0; i < res.data.content.length; i++) {
+              //   if(this.getDistance(this.latitude, this.longitude, res.data.content[i].postLat, res.data.content[i].postLng) > this.distance) {
+              //       console.log(this.distance2)
+              //       res.data.content.splice(i, 1);
+              //       i--;
+              //     }
+              //   else{
+              //     console.log(this.distance2)
+              //   }
+              //   }
+              // console.log('반경',this.slider)
+              // for(let i = 0; i < res.data.content.length; i++) {
+              //   const a = { latitude: this.latitude, longitude: this.longitude}
+              //   const b = { latitude: res.data.content[i].postLat, longitude: res.data.content[i].postLng}
+              //   const d = haversine(a,b, {unit:'kilometer'})
+              //   console.log(a)
+              //   console.log(b)
+              //   console.log(d)
+              //   if(d <= this.slider) {
+              //       res.data.content.splice(i, 1);
+              //       i--;
+              //     }
+              //   }
+              // console.log('후', res.data.content)
+
               const items = res.data.content;
               for (const i of items) {
                 const datas = {
@@ -262,6 +338,7 @@ export default {
                   classWho: i.classWho,
                   content: i.content,
                 };
+
                 this.curationPosts.push(datas);
               }
 
@@ -279,16 +356,25 @@ export default {
         });
     },
 
+    // getMylocation() {
+    //   navigator.geolocation.getCurrentPosition((pos) => {
+    //     // console.log(pos)
+    //     this.latitude = pos.coords.latitude;
+    //     this.longitude = pos.coords.longitude;
+    //   });
+    // },
+
     detailSearch() {
       this.dialog = true;
     },
     selectBig(n) {
-      console.log(n);
+      // console.log(n);
       this.small = this.categorys.tag[n - 1].category;
     },
     clear() {
       // 초기화 버튼
     },
+
     addTag() {
       this.dialog = false;
       // this.type = "curation";
@@ -321,16 +407,9 @@ export default {
 
       this.type = "curation";
 
-      console.log(this.tag_big);
-      console.log(this.tag_small);
-      console.log(this.tag_who);
-      console.log(this.tag_where);
-
       this.curationPosts = [];
 
       this.curationLoadNum = 0;
-      console.log("큐레이션로드넘이야~~~");
-      console.log(this.curationLoadNum);
     },
     //거리조절 아이콘
     season(val) {

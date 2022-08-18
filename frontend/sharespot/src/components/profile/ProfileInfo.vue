@@ -16,7 +16,9 @@
       <v-row align="center">
         <v-col cols="4" align="center">
           <v-avatar size="80px">
-            <v-img v-if="user.image == null"> <v-icon size="50">mdi-account-circle</v-icon></v-img>
+            <v-img v-if="user.image == null">
+              <v-icon size="50">mdi-account-circle</v-icon></v-img
+            >
             <v-img v-else :src="user.image"></v-img>
           </v-avatar>
         </v-col>
@@ -24,7 +26,7 @@
           <v-row>
             <v-col cols="4" align="center">
               <!-- {{ user.postCnt }} -->
-              <div style="font-weight: 800">3</div>
+              <div style="font-weight: 800">{{ this.postCnt }}</div>
               <div style="font-size: 13px">게시글</div>
             </v-col>
             <v-col cols="4" align="center" @click="moveFollower()">
@@ -109,20 +111,27 @@ export default {
         nickname: "",
         image: "",
         postCnt: "",
-        introduce:
-          "서울프로맛집러에요~~~ 분식, 일식 위주로 글 올립니다!! 가끔 카페도 추천해드려요 >_<",
+        introduce: "",
       },
       isfollow: false,
       followerCnt: "",
       followingCnt: "",
-
+      postCnt: "",
       levelImg: "",
     };
   },
   async created() {
+    // 개시물 수 받아오기
+    const postList = await http.get(
+      `/main/posts/user/${this.$route.params.userid}`
+    );
+    this.postCnt = postList.data.length;
+
     // 유저 등급 받아오기
-    const getUserLevel = await http.get(`/users/grade/${this.$route.params.userid}`);
-    console.log(getUserLevel.data);
+    const getUserLevel = await http.get(
+      `/users/grade/${this.$route.params.userid}`
+    );
+    // console.log(getUserLevel.data);
 
     if (getUserLevel.data == 1) {
       this.levelImg = require("@/assets/level/level_red.png");
@@ -143,7 +152,10 @@ export default {
       this.userInfo.userGrade != getUserLevel.data
     ) {
       this.userInfo.userGrade = getUserLevel.data;
-      const modifyUserLevel = await http.put(`/users/${this.userInfo.user_id}`, this.userInfo);
+      const modifyUserLevel = await http.put(
+        `/users/${this.userInfo.user_id}`,
+        this.userInfo
+      );
       if (modifyUserLevel.data.message == "success") {
         console.log("유저 등급 승급 성공");
       }
@@ -151,20 +163,26 @@ export default {
 
     // 방문중이었던 유저의 id를 내 로그에 저장하기
 
-    const profileUser = await http.get(`users/info/user/${this.$route.params.userid}`);
-    console.log("프로필유저", profileUser);
-    console.log("profileUser.data[0]", profileUser.data);
-    const followerList = await http.get(`users/${this.$route.params.userid}/follower`);
+    const profileUser = await http.get(
+      `users/info/user/${this.$route.params.userid}`
+    );
+    // console.log("프로필유저", profileUser);
+    // console.log("profileUser.data[0]", profileUser.data);
+    const followerList = await http.get(
+      `users/${this.$route.params.userid}/follower`
+    );
 
     // 만약 내 페이지면 팔로잉리스트를 겟할 필요가 없음
     if (this.userInfo.user_id == this.$route.params.userid) {
       this.followingCnt = this.followingUserList.length;
     } else {
-      const followingList = await http.get(`users/${this.$route.params.userid}/following`);
+      const followingList = await http.get(
+        `users/${this.$route.params.userid}/following`
+      );
       this.followingCnt = followingList.data.length;
     }
 
-    console.log(this.userInfo.user_id);
+    // console.log(this.userInfo.user_id);
     if (followerList.data.length !== 0) {
       for (var i = 0; i < followerList.data.length; i++) {
         if (followerList.data[i].user_id == this.userInfo.user_id) {
@@ -175,13 +193,13 @@ export default {
     }
 
     this.user.nickname = profileUser.data[0][1];
-    console.log("profileUser.data[0]", profileUser.data);
+    // console.log("profileUser.data[0]", profileUser.data);
     this.user.introduce = profileUser.data[0][2];
     this.user.image = profileUser.data[0][3];
     this.followerCnt = followerList.data.length;
   },
   updated() {
-    console.log("updated");
+    // console.log("updated");
     this.$nextTick(function () {
       // 모든 화면이 렌더링된 후 실행합니다.
     });
@@ -201,7 +219,7 @@ export default {
     },
     moveProfileTaste() {
       const profileid = this.$route.params.userid;
-      console.log(profileid);
+      // console.log(profileid);
       this.$router.push({
         path: `/profile/taste/${profileid}`,
       });
@@ -271,11 +289,11 @@ export default {
         userId: this.$route.params.userid,
       };
 
-      console.log("팔로팔로");
-      console.log(followInfo);
+      // console.log("팔로팔로");
+      // console.log(followInfo);
       this.unfollow(followInfo);
 
-      console.log("팔로잉유저리스트", this.followingUserList);
+      // console.log("팔로잉유저리스트", this.followingUserList);
       this.isfollow = false;
       this.followerCnt--;
     },

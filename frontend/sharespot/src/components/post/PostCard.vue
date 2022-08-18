@@ -168,7 +168,7 @@
           </v-icon>
         </v-btn>
         <!-- 지도 버튼 -->
-        <v-btn icon v-if="this.post.postLat != null" @click="clickMap()">
+        <v-btn icon @click="clickMap()">
           <v-icon> mdi-map-outline </v-icon>
         </v-btn>
       </v-col>

@@ -149,7 +149,7 @@
             </v-icon>
           </v-btn>
           <!-- 지도 버튼 -->
-          <v-btn icon>
+          <v-btn icon @click="clickMap()">
             <v-icon> mdi-map-outline </v-icon>
           </v-btn>
         </v-col>
@@ -310,6 +310,21 @@ export default {
   mounted() {},
 
   methods: {
+    async clickMap() {
+      let gpsName = this.post.postGpsName;
+      // console.log(gpsName);
+      if (gpsName == null) {
+        gpsName = this.post.postLat;
+      }
+      let link =
+        "https://map.kakao.com/link/to/" +
+        gpsName +
+        "," +
+        this.post.postLat +
+        "," +
+        this.post.postLng;
+      window.open(link);
+    },
     async clickLike() {
       // 좋아요가 안눌러진 상태에서 좋아요를 누를 때
       if (this.like) {

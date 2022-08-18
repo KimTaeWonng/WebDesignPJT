@@ -103,6 +103,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  z-index: 1000;
+}
+
 #navBtn {
   background-color: #ffffff !important;
   height: 56px !important;

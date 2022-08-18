@@ -187,8 +187,9 @@ export default {
       this.$refs.observer.validate();
     },
     goSetting() {
+      this.dialogSuccess = false;
       this.$router.push({
-        name: "settings",
+        name: "settings"
       });
     },
   },

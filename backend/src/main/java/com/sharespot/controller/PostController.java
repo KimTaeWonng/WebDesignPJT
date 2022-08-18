@@ -2,8 +2,10 @@ package com.sharespot.controller;
 
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -333,6 +335,37 @@ public class PostController {
 		}
 		
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/posts/recent")
+	@ApiOperation(value = "7일간의 포스트들", notes = "오늘 기준 7일 전까지의 게시글만 가져옴" )
+	public ResponseEntity<List<Post>> recentPost() throws ParseException{
+		
+		List<Post> posts = postRepository.findAll();
+		
+		List<Post> temp = new ArrayList<>();
+		
+		Date date = new Date(System.currentTimeMillis());
+		
+		int year = date.getYear();
+		int month = date.getMonth();
+		int day = date.getDate();
+		
+		date.setDate(day-7); // 7일전 날짜 구하기
+		
+		for(Post p :posts) {
+			
+			
+			
+			SimpleDateFormat dataParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			Date ts = dataParser.parse(p.getUploadTime());
+			if(ts.after(date)) {
+				temp.add(p);
+			}
+		}
+		
+		return new ResponseEntity<>(temp,HttpStatus.OK);
 	}
 
 }

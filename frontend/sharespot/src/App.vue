@@ -1,9 +1,7 @@
 <template>
   <v-app>
     <router-view />
-    <!-- <div v-if="this.show"> -->
-    <nav-bar></nav-bar>
-    <!-- </div> -->
+    <nav-bar v-if="this.show"></nav-bar>
   </v-app>
 </template>
 
@@ -22,9 +20,6 @@ export default {
   computed: {
     isLogin() {
       if (sessionStorage.length != 0) {
-        // console.log(JSON.parse(sessionStorage.getItem("vuex")).userStore.userInfo)
-        // this.id = JSON.parse(sessionStorage.getItem("vuex")).userStore.userInfo.user_id;
-
         return JSON.parse(sessionStorage.getItem("vuex")).userStore.isLogin;
       }
       return false;
@@ -41,20 +36,20 @@ export default {
   },
 
   watch: {
-    // $route(to) {
-    //   if (
-    //     !(
-    //       to.name == "login" ||
-    //       to.name == "signUp" ||
-    //       to.name == "findPass" ||
-    //       to.name == "resetPass"
-    //     )
-    //   ) {
-    //     this.show = true;
-    //   } else {
-    //     this.show = false;
-    //   }
-    // },
+    $route(to) {
+      if (
+        !(
+          to.name == "login" ||
+          to.name == "signUp" ||
+          to.name == "findPass" ||
+          to.name == "resetPass"
+        )
+      ) {
+        this.show = true;
+      } else {
+        this.show = false;
+      }
+    },
   },
 };
 </script>

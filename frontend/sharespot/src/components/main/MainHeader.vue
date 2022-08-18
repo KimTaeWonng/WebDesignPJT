@@ -30,7 +30,7 @@
           <div>
             <v-row class="text-center d-flex" align="center" style="margin: 3px">
               <!-- < 버튼 -->
-              <v-col cols="2" @click="this.$router.push('/main/mainlist')">
+              <v-col cols="2" @click="dialog = false">
                 <v-icon>mdi-chevron-left</v-icon>
               </v-col>
               <!-- 검색창 -->
@@ -52,7 +52,7 @@
           <v-row
             ><!-- 변경: 최근 검색 v-if 걸어서 최근 검색 있는 경우 보여주기 -->
             <v-list three-line subheader>
-              <v-row v-if="searchContent == null">
+              <v-row v-if='searchContent == ""'>
               <v-subheader  class="ml-4">최근 검색</v-subheader>
               <search-item style="margin-left: 10px;" v-for="user1 in this.searchWordList" :key="`${user1.user_id}`" :userDetail="user1"></search-item>
               <!-- 유저 프로필 + 닉네임 + 소개 -->
@@ -110,9 +110,7 @@ export default {
   mounted() {},
   async created() {
     this.userItem = this.userDetail;
-    console.log('최근검색',this.searchWordList)
-    
-
+    console.log('최근검색', this.searchWordList)
   },
   computed: {
     

@@ -38,7 +38,9 @@
         <!-- 메뉴옵션 버튼 -->
         <v-col style="padding: 0px 0px 0px 0px" align="right">
           <v-btn @click.stop="dialog = true" id="dotBtn" icon>
-            <v-icon style="padding: 0%" align="right">mdi-dots-horizontal</v-icon>
+            <v-icon style="padding: 0%" align="right"
+              >mdi-dots-horizontal</v-icon
+            >
           </v-btn>
         </v-col>
       </v-list-item>
@@ -52,7 +54,10 @@
               <span v-if="this.post.userId == this.userInfo.user_id"
                 ><router-link
                   class="link"
-                  :to="{ name: 'postModify', params: { postno: this.post.postId } }"
+                  :to="{
+                    name: 'postModify',
+                    params: { postno: this.post.postId },
+                  }"
                 >
                   게시글 수정</router-link
                 ></span
@@ -71,7 +76,9 @@
               <span>공유하기</span>
             </v-col>
 
-            <v-divider v-if="this.post.userId == this.userInfo.user_id"></v-divider>
+            <v-divider
+              v-if="this.post.userId == this.userInfo.user_id"
+            ></v-divider>
 
             <v-col>
               <span
@@ -87,12 +94,22 @@
       </v-dialog>
 
       <template slot="progress">
-        <v-progress-linear color="deep-purple" height="10" indeterminate></v-progress-linear>
+        <v-progress-linear
+          color="deep-purple"
+          height="10"
+          indeterminate
+        ></v-progress-linear>
       </template>
 
       <!-- 사진 -->
-      <v-carousel height="290px" width="290px" hide-delimiter-background show-arrows-on-hover>
-        <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
+      <v-carousel
+        height="290px"
+        width="290px"
+        hide-delimiter-background
+        show-arrows-on-hover
+      >
+        <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img">
+        </v-carousel-item>
       </v-carousel>
       <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->
 
@@ -100,9 +117,13 @@
         <v-col cols="8">
           <!-- 좋아요 버튼 -->
           <v-btn icon @click="(like = !like), clickLike()">
-            <v-icon color="red"> {{ like ? "mdi-heart" : "mdi-heart-outline" }} </v-icon>
+            <v-icon color="red">
+              {{ like ? "mdi-heart" : "mdi-heart-outline" }}
+            </v-icon>
           </v-btn>
-          <span style="font-size: 12px; font-weight: lighter">{{ cntLike }}개 </span>
+          <span style="font-size: 12px; font-weight: lighter"
+            >{{ cntLike }}개
+          </span>
 
           <!-- 댓글 버튼 -->
           <router-link
@@ -116,12 +137,16 @@
               <v-icon> mdi-comment-processing-outline </v-icon>
             </v-btn>
           </router-link>
-          <span style="font-size: 12px; font-weight: lighter">{{ cntComment }}개 </span>
+          <span style="font-size: 12px; font-weight: lighter"
+            >{{ cntComment }}개
+          </span>
         </v-col>
         <v-col cols="4" align="right">
           <!-- 스크랩 버튼 -->
           <v-btn icon @click="(bookmark = !bookmark), clickBookmark()">
-            <v-icon> {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }} </v-icon>
+            <v-icon>
+              {{ bookmark ? "mdi-bookmark" : "mdi-bookmark-outline" }}
+            </v-icon>
           </v-btn>
           <!-- 지도 버튼 -->
           <v-btn icon>
@@ -163,7 +188,9 @@
       </v-chip>
 
       <!-- {{ article.content }}  -->
-      <v-card-text class="mt-2" style="padding: 0%">{{ post.content }}</v-card-text>
+      <v-card-text class="mt-2" style="padding: 0%">{{
+        post.content
+      }}</v-card-text>
     </div>
     <post-comment></post-comment>
 
@@ -185,7 +212,9 @@
         </div>
 
         <div class="text-center" style="margin-top: 10%">
-          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark> 확인 </v-btn>
+          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark>
+            확인
+          </v-btn>
         </div>
 
         <div>
@@ -230,11 +259,13 @@ export default {
     ...mapState(userStore, ["userInfo"]),
   },
   async created() {
-    console.log(this.$route.params.postno);
+    // console.log(this.$route.params.postno);
 
     try {
-      const response = await http.get(`/main/posts/${this.$route.params.postno}`);
-      console.log(response.data);
+      const response = await http.get(
+        `/main/posts/${this.$route.params.postno}`
+      );
+      // console.log(response.data);
       this.post = response.data;
     } catch (error) {
       alert("게시글 상세조회 실패");
@@ -244,7 +275,7 @@ export default {
     for (let i = 0; i < getImages.data.length; i++) {
       this.carouselImages.push(getImages.data[i].filePath);
     }
-    console.log(this.carouselImages);
+    // console.log(this.carouselImages);
 
     this.cntLike = this.post.likeCnt;
 
@@ -269,7 +300,9 @@ export default {
     }
 
     // 댓글 갯수 받아오기
-    const commentTemp = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
+    const commentTemp = await http.get(
+      `/main/posts/main/posts/${this.$route.params.postno}`
+    );
     // console.log(commentTemp.data.length);
     this.cntComment = commentTemp.data.length;
   },
@@ -281,9 +314,9 @@ export default {
       // 좋아요가 안눌러진 상태에서 좋아요를 누를 때
       if (this.like) {
         // 유저가 해당 게시글 좋아요 하기 (post)
-        console.log(this.post.postId);
-        console.log(this.userInfo);
-        console.log(this.userInfo.nickname);
+        // console.log(this.post.postId);
+        // console.log(this.userInfo);
+        // console.log(this.userInfo.nickname);
 
         const response = await http.post(
           `/main/posts/like/${this.post.postId}/${this.userInfo.user_id}`,
@@ -301,7 +334,10 @@ export default {
         this.post.likeCnt += 1;
         this.cntLike = this.post.likeCnt;
 
-        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
+        const response2 = await http.put(
+          `/main/posts/${this.post.postId}`,
+          this.post
+        );
         if (response2.data == 1) {
           console.log("조아요 증가 성공");
         } else {
@@ -312,9 +348,9 @@ export default {
       // 좋아요가 눌러진 상태에서 좋아요를 취소할 때
       else {
         // 유저가 해당 게시글 좋아요 취소하기 (delete)
-        console.log(this.post.postId);
-        console.log(this.userInfo);
-        console.log(this.userInfo.nickname);
+        // console.log(this.post.postId);
+        // console.log(this.userInfo);
+        // console.log(this.userInfo.nickname);
 
         const response = await http.delete(
           `/main/posts/like/${this.post.postId}/${this.userInfo.user_id}`
@@ -329,7 +365,10 @@ export default {
         this.post.likeCnt -= 1;
         this.cntLike = this.post.likeCnt;
 
-        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
+        const response2 = await http.put(
+          `/main/posts/${this.post.postId}`,
+          this.post
+        );
         if (response2.data == 1) {
           console.log("조아요 감소 성공");
         } else {

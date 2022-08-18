@@ -1,15 +1,28 @@
 <template>
   <div>
     <v-list>
-      <post-card v-for="(post, i) in posts" :key="i" v-bind="post" :detailPost="post"></post-card>
+      <post-card
+        v-for="(post, i) in posts"
+        :key="i"
+        v-bind="post"
+        :detailPost="post"
+      ></post-card>
     </v-list>
     <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
-      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
+      <div
+        slot="no-more"
+        style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
+      >
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
 
-    <v-snackbar style="margin-bottom: 17%" v-model="snackbar" shaped color="#289672">
+    <v-snackbar
+      style="margin-bottom: 17%"
+      v-model="snackbar"
+      shaped
+      color="#289672"
+    >
       팔로우한 유저의 게시글이 없어서 <br />모든 게시물이 표시됩니다.
 
       <template v-slot:action="{ attrs }">
@@ -46,12 +59,7 @@ export default {
     ...mapState(userStore, ["userInfo"]),
     ...mapState(userLogStore, ["followingUserList"]),
   },
-  async created() {
-    // // 팔로잉 유저가 없는 경우 스낵바 나타남
-    // if (this.followingUserList.length === 0) {
-    //   this.snackbar = true;
-    // }
-  },
+  created() {},
   mounted() {
     // 팔로잉 유저가 없는 경우 스낵바 나타남
     if (this.followingUserList.length === 0) {
@@ -61,8 +69,8 @@ export default {
 
   methods: {
     async infiniteHandler($state) {
-      console.log("팔로워리스트 길이");
-      console.log(this.followingUserList.length);
+      // console.log("팔로워리스트 길이");
+      // console.log(this.followingUserList.length);
       if (this.followingUserList.length === 0) {
         await http
           .get(`/main/search/posts/new`, {
@@ -130,8 +138,8 @@ export default {
                   this.loadNum++;
 
                   const items = res.data.content;
-                  console.log(items.length);
-                  console.log("data " + res.data.totalPages);
+                  // console.log(items.length);
+                  // console.log("data " + res.data.totalPages);
 
                   for (const i of items) {
                     const data = {

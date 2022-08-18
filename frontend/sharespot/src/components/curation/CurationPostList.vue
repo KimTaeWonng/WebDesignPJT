@@ -12,8 +12,15 @@
         :detailPost="post"
       ></post-card>
     </v-list>
-    <infinite-loading v-if="this.type == 'curation'" @infinite="infiniteHandler" spinner="wavedots">
-      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
+    <infinite-loading
+      v-if="this.type == 'curation'"
+      @infinite="infiniteHandler"
+      spinner="wavedots"
+    >
+      <div
+        slot="no-more"
+        style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
+      >
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
@@ -34,14 +41,15 @@
 
     <v-dialog v-model="dialog" max-width="600px">
       <v-card>
-        <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
+        <v-card-title
+          class="justify-center"
+          style="font-weight: bolder; font-size: 5vw"
           >태그 상세 검색</v-card-title
         >
 
-
         <!-- 거리조절 -->
-      
-          <!-- <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
+
+        <!-- <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
           <v-row class="distance-bar">
             <v-col cols="12">
               <v-slider
@@ -53,7 +61,6 @@
               ></v-slider>
             </v-col>
           </v-row> -->
-      
 
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
@@ -77,7 +84,11 @@
         <!-- 소분류 -->
         <v-item-group multiple align="center" v-model="selected_2">
           <v-subheader>소분류</v-subheader>
-          <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
+          <v-item
+            v-for="(item, i) in this.small"
+            :key="i"
+            v-slot="{ active, toggle }"
+          >
             <v-btn
               width="64px"
               height="64px"
@@ -114,7 +125,11 @@
         <!-- 어디서 -->
         <v-item-group multiple align="center" v-model="selected_4">
           <v-subheader>어디서</v-subheader>
-          <v-item v-for="(where, i) in wheres" :key="i" v-slot="{ active, toggle }">
+          <v-item
+            v-for="(where, i) in wheres"
+            :key="i"
+            v-slot="{ active, toggle }"
+          >
             <v-btn
               width="64px"
               height="64px"
@@ -132,11 +147,18 @@
 
         <!-- 분류 제목 + 버튼 여기까지  -->
         <v-divider class="mt-4"></v-divider>
-        <v-card-actions class="mt-2 d-flex justify-end" style="background-color: #ffffff">
+        <v-card-actions
+          class="mt-2 d-flex justify-end"
+          style="background-color: #ffffff"
+        >
           <!-- 초기화 버튼 회색 배경 넣어주기  -->
           <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
-          <v-btn style="background-color: #f3f3f3" text @click="clear()"> 초기화 </v-btn>
-          <v-btn style="background-color: #289672" text dark @click="addTag()"> 확인 </v-btn>
+          <v-btn style="background-color: #f3f3f3" text @click="clear()">
+            초기화
+          </v-btn>
+          <v-btn style="background-color: #289672" text dark @click="addTag()">
+            확인
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -152,12 +174,12 @@ import tag from "@/assets/json/tag.json";
 
 import PostCard from "../post/PostCard.vue";
 import LatestPostList from "./LatestPostList.vue";
-import Vue from 'vue'
-import VueGeolocationApi from 'vue-geolocation-api'
+import Vue from "vue";
+import VueGeolocationApi from "vue-geolocation-api";
 // import haversine from 'haversine'
 
 const userStore = "userStore";
-Vue.use(VueGeolocationApi)
+Vue.use(VueGeolocationApi);
 
 export default {
   components: { PostCard, InfiniteLoading, LatestPostList },
@@ -226,13 +248,11 @@ export default {
   computed: {
     ...mapState(userStore, ["userInfo"]),
   },
-  
-  mounted() {
 
-  },
+  mounted() {},
 
   async created() {
-    this.getMylocation()
+    this.getMylocation();
   },
 
   methods: {
@@ -270,8 +290,8 @@ export default {
           } else {
             setTimeout(() => {
               this.curationLoadNum++;
-              
-              console.log('전', res.data.content);
+
+              // console.log('전', res.data.content);
 
               // for(let i = 0; i < res.data.content.length; i++) {
               //   if(this.getDistance(this.latitude, this.longitude, res.data.content[i].postLat, res.data.content[i].postLng) > this.distance) {
@@ -282,7 +302,7 @@ export default {
               //   else{
               //     console.log(this.distance2)
               //   }
-              //   }  
+              //   }
               // console.log('반경',this.slider)
               // for(let i = 0; i < res.data.content.length; i++) {
               //   const a = { latitude: this.latitude, longitude: this.longitude}
@@ -295,7 +315,7 @@ export default {
               //       res.data.content.splice(i, 1);
               //       i--;
               //     }
-              //   }  
+              //   }
               // console.log('후', res.data.content)
 
               const items = res.data.content;
@@ -320,8 +340,6 @@ export default {
                 };
 
                 this.curationPosts.push(datas);
-
-            
               }
 
               $state.loaded();
@@ -339,21 +357,18 @@ export default {
     },
 
     getMylocation() {
-      navigator.geolocation.getCurrentPosition(pos => {
-          // console.log(pos)
-          this.latitude = pos.coords.latitude;
-          this.longitude = pos.coords.longitude;
-          console.log(this.latitude)
-          console.log(this.longitude)
-      })
-    },  
-
+      navigator.geolocation.getCurrentPosition((pos) => {
+        // console.log(pos)
+        this.latitude = pos.coords.latitude;
+        this.longitude = pos.coords.longitude;
+      });
+    },
 
     detailSearch() {
       this.dialog = true;
     },
     selectBig(n) {
-      console.log(n);
+      // console.log(n);
       this.small = this.categorys.tag[n - 1].category;
     },
     clear() {
@@ -378,7 +393,8 @@ export default {
       this.tag_big = this.categorys.tag[this.selected_1].big_name;
       for (let i = 0; i < this.selected_2.length; i++) {
         this.tag_small.push(
-          this.categorys.tag[this.selected_1].category[this.selected_2[i]].small_name
+          this.categorys.tag[this.selected_1].category[this.selected_2[i]]
+            .small_name
         );
       }
 
@@ -392,22 +408,14 @@ export default {
 
       this.type = "curation";
 
-      console.log(this.tag_big);
-      console.log(this.tag_small);
-      console.log(this.tag_who);
-      console.log(this.tag_where);
-
       this.curationPosts = [];
 
       this.curationLoadNum = 0;
-      console.log("큐레이션로드넘이야~~~");
-      console.log(this.curationLoadNum);
     },
     //거리조절 아이콘
     season(val) {
       return this.icons[val];
     },
-
   },
 };
 </script>

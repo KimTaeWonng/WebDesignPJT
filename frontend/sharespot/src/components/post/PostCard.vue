@@ -94,7 +94,9 @@
             >
           </v-col>
 
-          <v-divider v-if="this.post.userId == this.userInfo.user_id"></v-divider>
+          <v-divider
+            v-if="this.post.userId == this.userInfo.user_id"
+          ></v-divider>
 
           <v-col>
             <span
@@ -236,7 +238,9 @@
         </div>
 
         <div class="text-center" style="margin-top: 10%">
-          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark> 확인 </v-btn>
+          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark>
+            확인
+          </v-btn>
         </div>
 
         <div>

@@ -36,7 +36,7 @@
 
 <script>
 import { http } from "@/js/http.js";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 import PostCard from "../post/PostCard.vue";
 
@@ -59,19 +59,23 @@ export default {
     ...mapState(userStore, ["userInfo"]),
     ...mapState(userLogStore, ["followingUserList"]),
   },
-  created() {},
+  created() {
+    this.setFollowingUserList(this.userInfo.user_id);
+    console.log("팔로잉리스트", this.followingUserList);
+  },
   mounted() {
     // 팔로잉 유저가 없는 경우 스낵바 나타남
-    if (this.followingUserList.length === 0) {
+    if (this.followingCnt == 0) {
       this.snackbar = true;
     }
   },
 
   methods: {
+    ...mapActions(userLogStore, ["setFollowingUserList"]),
     async infiniteHandler($state) {
-      // console.log("팔로워리스트 길이");
-      // console.log(this.followingUserList.length);
-      if (this.followingUserList.length === 0) {
+      console.log("팔로워리스트 길이");
+      console.log(this.followingUserList.length);
+      if (this.followingUserList.length == 0) {
         await http
           .get(`/main/search/posts/new`, {
             params: {

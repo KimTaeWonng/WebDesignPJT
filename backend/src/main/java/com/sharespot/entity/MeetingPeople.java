@@ -33,6 +33,7 @@ public class MeetingPeople {
 	private Integer meetingId;
 	private Integer userId;
 	private String userNick;
+	private String userImage;
 	
 
 }

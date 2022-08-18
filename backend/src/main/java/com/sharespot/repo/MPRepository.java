@@ -17,4 +17,10 @@ public interface MPRepository extends JpaRepository<MeetingPeople, Integer>{
 	
 	public List<MeetingPeople> findByMeetingId(int mid);
 
+	@Transactional
+	public void deleteAllByMeetingId(int mid);
+
+	@Transactional
+	public void deleteAllByUserId(Integer user_id);
+
 }

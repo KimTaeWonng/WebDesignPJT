@@ -19,6 +19,7 @@ public class Group {
     @Column(columnDefinition = "INT UNSIGNED")
     private Integer group_id;
 
+    
     private Integer group_manager;
 
     private String group_name;

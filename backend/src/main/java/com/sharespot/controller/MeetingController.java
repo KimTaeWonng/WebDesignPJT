@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/group")
 public class MeetingController {
@@ -40,11 +42,15 @@ public class MeetingController {
     
     @Autowired
     private UserService userService;
+    @Autowired
+    private MeetingRepository meetingRepository;
 
     @GetMapping("/{groupNo}/meetings")
     @ApiOperation(value = "정모목록", notes = "해당 그룹의 <b>정기모임 전체 목록</b>을 반환한다.")
     public ResponseEntity<List<Meeting>> getAllMeeting(@PathVariable int groupNo){
         List<Meeting> meetings = meetingService.findAllMeetings(groupNo);
+        
+        System.out.println(meetingRepository.findAllMeetingIdByGroupId(groupNo));
         return new ResponseEntity<>(meetings, HttpStatus.OK);
     }
     
@@ -95,9 +101,13 @@ public class MeetingController {
     	return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
     
+    @Transactional
     @DeleteMapping("/{groupNo}/meetings/{mid}")
     @ApiOperation(value = "정모삭제", notes = "해당 <b>정기모임</b>을 삭제한다.")
     public ResponseEntity<Integer> deleteMeeting(@PathVariable int groupNo, int mid){
+    	
+    	mpRepository.deleteAllByMeetingId(mid);
+    	
         return new ResponseEntity<Integer>(meetingService.deleteMeeting(mid), HttpStatus.OK);
     }
     
@@ -120,7 +130,12 @@ public class MeetingController {
     	Optional<User> user = userService.getUser(userId); //Id로 해당 유저 정보 찾아옴
     	User userEntity = user.get(); //Get 함수 사용하기 위해 바꿔주고
     	
-    	MeetingPeople mp = MeetingPeople.builder().meetingId(mid).userId(userEntity.getUser_id()).userNick(userEntity.getNickname()).build();
+    	MeetingPeople mp = MeetingPeople.builder()
+    									.meetingId(mid)
+    									.userId(userEntity.getUser_id())
+    									.userNick(userEntity.getNickname())
+    									.userImage(userEntity.getProfileImage())
+    									.build();
     	
     	MeetingPeople savedMp = mpRepository.save(mp);
     	

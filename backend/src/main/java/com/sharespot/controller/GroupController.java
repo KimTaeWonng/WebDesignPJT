@@ -5,6 +5,8 @@ import com.sharespot.entity.GroupUser;
 import com.sharespot.entity.User;
 import com.sharespot.repo.GroupRepository;
 import com.sharespot.repo.GroupUserRepository;
+import com.sharespot.repo.MPRepository;
+import com.sharespot.repo.MeetingRepository;
 import com.sharespot.service.GUService;
 import com.sharespot.service.GroupService;
 import com.sharespot.service.UserService;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 @RestController
 @RequestMapping("/group")
@@ -35,6 +39,11 @@ public class GroupController {
     private GroupUserRepository guRepository;
     @Autowired
     private GroupRepository groupRepository;
+    
+    @Autowired
+    private MeetingRepository meetingRepository;
+    @Autowired
+    private MPRepository mpRepository;
 
     @Autowired
     private GUService guService;
@@ -70,7 +79,7 @@ public class GroupController {
     @ApiOperation(value = "그룹작성", notes = "<b>그룹</b>을 작성한다.")
     public ResponseEntity<Integer> createGroup(@RequestBody Group group){
         Group groupEntity = Group.builder()
-                .group_manager(group.getGroup_manager())
+        		.group_manager(group.getGroup_manager())
                 .group_name(group.getGroup_name())
                 .group_content(group.getGroup_content())
                 .group_limit(group.getGroup_limit())
@@ -84,9 +93,21 @@ public class GroupController {
         return new ResponseEntity<Integer>(1, HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("{gid}")
     @ApiOperation(value = "그룹삭제", notes = "해당 <b>그룹</b>을 삭제한다.")
     public ResponseEntity<Integer> deleteGroup(@PathVariable int gid){
+    	
+    	List<Integer> mid = meetingRepository.findAllMeetingIdByGroupId(gid);
+    	
+    	for(int m : mid) {
+    		mpRepository.deleteAllByMeetingId(m);
+    	}
+    	
+    	meetingRepository.deleteAllByGroupId(gid);
+    	
+    	guRepository.deleteAllByGroupId(gid);
+    	
         return new ResponseEntity<Integer>(groupService.deleteGroup(gid), HttpStatus.OK);
     }
 
@@ -94,7 +115,7 @@ public class GroupController {
     @ApiOperation(value = "그룹수정", notes = "해당 <b>그룹</b>을 수정한다.")
     public ResponseEntity<Integer> updateGroup(@RequestBody Group group, @PathVariable int gid){
         Group groupEntity = Group.builder()
-                .group_manager(group.getGroup_manager())
+        		.group_manager(group.getGroup_manager())
                 .group_name(group.getGroup_name())
                 .group_content(group.getGroup_content())
                 .group_limit(group.getGroup_limit())
@@ -128,7 +149,12 @@ public class GroupController {
     	Optional<User> user  = userService.getUser(userId);
     	User userEntity = user.get();
     	
-    	GroupUser gu = GroupUser.builder().groupId(gid).userId(userEntity.getUser_id()).userNick(userEntity.getNickname()).build();
+    	GroupUser gu = GroupUser.builder()
+    							.groupId(gid)
+    							.userId(userEntity.getUser_id())
+    							.userNick(userEntity.getNickname())
+    							.userImage(userEntity.getProfileImage())
+    							.build();
     	
     	GroupUser savedGu = guRepository.save(gu);
     	
@@ -150,6 +176,16 @@ public class GroupController {
 		}
     	
     	return new ResponseEntity<Integer>(result,HttpStatus.OK);
+    	
+    }
+    
+    @GetMapping("/search/{word}")
+    @ApiOperation(value = "그룹 검색", notes = "그룹 이름으로 검색")
+    public ResponseEntity<List<Group>> searchGroup(@PathVariable String word){
+    	
+    	List<Group> searchList = groupRepository.findByGroupNameContaining(word);
+    	
+    	return new ResponseEntity<List<Group>>(searchList,HttpStatus.OK);
     	
     }
 

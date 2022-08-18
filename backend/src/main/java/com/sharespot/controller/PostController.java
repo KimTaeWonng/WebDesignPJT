@@ -2,8 +2,10 @@ package com.sharespot.controller;
 
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ import com.sharespot.service.PostLikeService;
 import com.sharespot.service.ScrapService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
 
 @RestController
@@ -51,6 +54,9 @@ public class PostController {
 	private PostLikeRepository postLikeRepository;	
 	@Autowired
 	private PostLikeService postLikeService;
+	
+	@Autowired
+	private CommentRepository commentRepository;
 
 	@Autowired
 	private PostImageRepository postImageRepository;
@@ -194,11 +200,20 @@ public class PostController {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	
+	@Transactional
 	@DeleteMapping("/posts/{postNo}")
 	@ApiOperation(value = "게시글 삭제", notes = "<b>해당 게시글을 삭제</b>한다.")
 	public ResponseEntity<Integer> deletePost(@PathVariable int postNo){
 		int result = 0;
 		if(postRepository.findById(postNo).isPresent()) {
+			
+			Post post = postRepository.findById(postNo).get();
+			
+			//postLikeRepository.deleteAllByUserId(post.getUserId());
+			postLikeRepository.deleteAllByPostId(postNo);
+			
+			commentRepository.deleteAllByPostId(postNo);
+			scrapRepository.deleteAllByPostId(postNo);
 			postRepository.deleteById(postNo);
 			result = 1;
 		}
@@ -320,6 +335,37 @@ public class PostController {
 		}
 		
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/posts/recent/{userId}")
+	@ApiOperation(value = "7일간의 포스트들", notes = "오늘 기준 유저가 작성한 7일 전까지의 게시글만 가져옴" )
+	public ResponseEntity<List<Post>> recentPost(@PathVariable int userId) throws ParseException{
+		
+		List<Post> posts = postRepository.findByUserIdOrderByPostIdDesc(userId);
+		
+		List<Post> temp = new ArrayList<>();
+		
+		Date date = new Date(System.currentTimeMillis());
+		
+		int year = date.getYear();
+		int month = date.getMonth();
+		int day = date.getDate();
+		
+		date.setDate(day-7); // 7일전 날짜 구하기
+		
+		for(Post p :posts) {
+			
+			
+			
+			SimpleDateFormat dataParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			Date ts = dataParser.parse(p.getUploadTime());
+			if(ts.after(date)) {
+				temp.add(p);
+			}
+		}
+		
+		return new ResponseEntity<>(temp,HttpStatus.OK);
 	}
 
 }

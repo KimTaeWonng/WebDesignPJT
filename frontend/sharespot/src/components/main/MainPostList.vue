@@ -1,33 +1,20 @@
 <template>
   <div>
     <v-list>
-      <post-card
-        v-for="(post, i) in posts"
-        :key="i"
-        v-bind="post"
-        :detailPost="post"
-      ></post-card>
+      <post-card v-for="(post, i) in posts" :key="i" v-bind="post" :detailPost="post"></post-card>
     </v-list>
     <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
-      <div
-        slot="no-more"
-        style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
-      >
+      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
 
-    <v-snackbar
-      style="margin-bottom: 17%"
-      v-model="snackbar"
-      shaped
-      color="#289672"
-    >
+    <v-snackbar style="margin-bottom: 17%" v-model="snackbar" shaped color="#289672">
       팔로우한 유저의 게시글이 없어서 <br />모든 게시물이 표시됩니다.
 
       <template v-slot:action="{ attrs }">
-        <v-btn color="#289672" text v-bind="attrs" @click="snackbar = false">
-          Close
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          <v-icon>mdi-window-close</v-icon>
         </v-btn>
       </template>
     </v-snackbar>
@@ -60,12 +47,17 @@ export default {
     ...mapState(userLogStore, ["followingUserList"]),
   },
   async created() {
+    // // 팔로잉 유저가 없는 경우 스낵바 나타남
+    // if (this.followingUserList.length === 0) {
+    //   this.snackbar = true;
+    // }
+  },
+  mounted() {
     // 팔로잉 유저가 없는 경우 스낵바 나타남
     if (this.followingUserList.length === 0) {
       this.snackbar = true;
     }
   },
-  mounted() {},
 
   methods: {
     async infiniteHandler($state) {

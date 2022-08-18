@@ -32,33 +32,13 @@ export default {
     ...mapState(userStore, ["userInfo"]),
   },
   async created() {
-    // console.log("created");
     await this.setFollowingUserList(this.userInfo.user_id);
     await this.setGroupList(this.userInfo.user_id);
-    // console.log("===actions작동=====");
-    // console.log('최근검색',this.searchWordList)
-    const followingUserList = this.followingUserList;
-    console.log(this.followingUserList);
-    console.log(this.followingUserList[0].user_id);
-
-    console.log(followingUserList.length);
   },
   mounted() {},
 
   methods: {
     ...mapActions(userLogStore, ["setFollowingUserList", "setGroupList"]),
-    // clickFollow() {
-    //   this.follow({
-    //     userid: 23,
-    //     nickname: "예원",
-    //   });
-    // },
-    // clickUnfollow() {
-    //   this.unfollow({
-    //     userid: 23,
-    //     nickname: "예원",
-    //   });
-    // },
   },
 };
 </script>

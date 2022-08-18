@@ -1,5 +1,5 @@
 <template>
-<v-list-item @click="moveProfile(userItem.user_id)">
+<v-list-item>
     <v-col cols="2" align="center">
       <v-list-item-avatar @click="moveProfile(userItem.user_id)">
       <v-img v-if="userItem.profileImage == null">
@@ -44,7 +44,7 @@ const userLogStore = "userLogStore";
     ...mapState(userLogStore, ["searchWordList"]),
   },
   methods: {
-    ...mapActions(userLogStore, ["setSearchWordList"]),
+    ...mapActions(userLogStore, ["setSearchWordList", "saveSearchWord"]),
 
     moveProfile(user_id) {
       // 스토어 저장 코드
@@ -59,15 +59,15 @@ const userLogStore = "userLogStore";
       // 중복 제거
       console.log('this.setSearchWordList.length', this.searchWordList)
       if (this.searchWordList.length != 0) {
-
         for (var i = 0; i < this.searchWordList.length; i++) {
           if (this.searchWordList[i].user_id == this.userItem.user_id) {
             break
           }
-          else {
+          if (i == this.searchWordList.length - 1) {
             this.setSearchWordList(data);
           }
         }
+
       }
       else {
         this.setSearchWordList(data);

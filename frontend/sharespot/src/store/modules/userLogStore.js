@@ -38,57 +38,48 @@ const userLogStore = {
     mutations: {
         // 유저 정보 검색기록
         SET_SEARCH_WORD_LIST(state, searchWord) { 
-            if (state.searchWordList.length > 5) {
+            if (state.searchWordList.length > 4) {
                 state.searchWordList.splice(0, 1);
             }
             state.searchWordList.push(searchWord);
-            console.log("userLogStore: " +state.searchWordList);
         },
 
         // 유저 정보 검색 초기화
         RESET_SEARCH_WORD_LIST(state) { 
             state.searchWordList = [];
-            console.log("userLogStore: " + state.searchWordList);
         }
         ,
 
         SAVE_SEARCH_WORD(state,searchWord ) { 
             state.searchWord = searchWord;
-            console.log("userLogStore: " + state.searchWord);
         }
         ,
 
         // 게시글 스크랩
         SCRAP_POST_LIST(state, postId) { 
             state.scrapPostList.push(postId);
-            console.log("userLogStore: " +state.scrapPostList);
         },
 
         // 게시글 스크랩 취소
         UNSCRAP_POST_LIST(state, postId) { 
             const i = state.scrapPostList.indexOf(postId);
             state.scrapPostList.splice(i, 1);
-            console.log("userLogStore: " + state.scrapPostList);
         },
 
         // 게시글 좋아요
         LIKE_POST_LIST(state, postId) {
             state.likePostList.push(postId);
-            console.log("userLogStore: " +state.scrapPostList);
         },
 
         // 게시글 좋아요취소
         UNLIKE_POST_LIST(state, postId) { 
             const i = state.likePostList.indexOf(postId);
             state.likePostList.splice(i, 1);
-            console.log("userLogStore: " + state.likePostList);
         },
         
         // 팔로우 버튼을 눌렀을 때
         FOLLOW(state, user) { 
-        
             state.followingUserList.push(user);
-            console.log("userLogStore: " + state.followingUserList);
         },
 
         // 언팔로우 버튼을 눌렀을 때
@@ -102,13 +93,7 @@ const userLogStore = {
                     break
               }
             }
-        
-            // const i = state.followingUserList.indexOf(user);
-            // console.log(state.followingUserList)
-            console.log('유저', user)
             state.followingUserList.splice(i, 1);
-            console.log('지운 사람의 아이디와 인덱스', user, i)
-            console.log("userLogStore: ", state.followingUserList);
         },
 
         // 나를 팔로우하는 팔로워 유저 리스트
@@ -133,7 +118,6 @@ const userLogStore = {
         // 유저 정보 검색기록
         setSearchWordList({ commit }, searchWord) { 
             commit('SET_SEARCH_WORD_LIST', searchWord)
-            console.log("userLogStore: action" + searchWord);
         },
         // 미팅 리스트 불러오기
         // setMeetingList({ commit }, searchWord) { 
@@ -149,37 +133,31 @@ const userLogStore = {
         // 유저 정보 검색 초기화
         resetSearchWordList({ commit }) { 
             commit('RESET_SEARCH_WORD_LIST');
-            console.log("userLogStore: action: resetsearchwordlist");
         }
 
         ,
         // 게시글 스크랩
         scrapPostList({ commit }, postId) { 
             commit('SCRAP_POST_LIST', postId);
-            console.log("userLogStore: action" +postId);
         },
 
         // 게시글 스크랩 취소
         unscrapPostList({commit}, postId) { 
             commit('UNSCRAP_POST_LIST', postId);
-            console.log("userLogStore: action" + postId);
         },
 
         // 게시글 좋아요
         likePostList({ commit}, postId) {
             commit('LIKE_POST_LIST', postId);
-            console.log("userLogStore: action" +postId);
         },
 
         // 게시글 좋아요취소
         unlikePostList({ commit}, postId) { 
             commit('UNLIKE_POST_LIST', postId);
-            console.log("userLogStore: action" + postId);
         },
 
         saveSearchWord({ commit }, searchWord) {
             commit('SAVE_SEARCH_WORD', searchWord)
-            console.log("userLogStore: action" + searchWord);
         },
         
         // 팔로우 버튼을 눌렀을 때

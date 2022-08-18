@@ -5,7 +5,14 @@
         <v-row>
           <!-- 그룹 대표 이미지로 대체 -->
           <v-img
+              v-if = "detailGroup.group_image"
               :src="detailGroup.group_image"
+              class="mt-3"
+              contain        
+            />
+          <v-img
+              v-else
+              src="@/assets/groupinfo.png"
               class="mt-3"
               contain        
             />
@@ -20,8 +27,17 @@
             <v-btn v-if="this.isGmember == false" @click="join" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
               가입
             </v-btn>
-            <v-btn v-else-if="this.userInfo.user_id == this.manager" @click="modify" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
-              수정
+            <v-btn v-else-if="this.userInfo.user_id == this.manager" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
+              <router-link
+                style="text-decoration:none;"
+                class="link"
+                :to="{
+                  name: 'groupModify',
+                  params: { groupno: this.$route.params.groupno },
+                }"
+              >
+              <span style="color:white;">수정</span></router-link
+              >
             </v-btn>
             <v-btn v-else @click="quit" color="rgb(40,150,114)" dark width="20%" height="7vw" style="margin-left:5%; font-size:3vw;"> 
               탈퇴
@@ -315,9 +331,9 @@ export default {
       this.$router.go();
       },
   
-    modify() {
-      this.$router.push({ name: "groupModify" })
-    },
+    // modify() {
+    //   this.$router.push({ name: "groupModify" })
+    // },
 
     async quit() {
       for(let i = 0; i < this.membersid.length; i++) {

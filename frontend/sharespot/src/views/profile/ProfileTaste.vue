@@ -33,7 +33,7 @@
             <span style="color: #289672; font-size: 20px; font-weight: bold"
               >맛집</span
             >
-            게시글이 아직 없어요.🥲
+            게시글이 아직 없어요.😥
           </div>
           <div v-else>
             <span style="color: #289672; font-size: 20px; font-weight: bold"
@@ -53,7 +53,7 @@
             <span style="color: #289672; font-size: 20px; font-weight: bold"
               >카페</span
             >
-            게시글이 아직 없어요.🥲
+            게시글이 아직 없어요.😥
           </div>
           <div v-else>
             <span style="color: #289672; font-size: 20px; font-weight: bold"
@@ -73,7 +73,7 @@
             <strong style="color: #289672; font-size: 20px; font-weight: bold"
               >생활</strong
             >
-            게시글이 아직 없어요.🥲
+            게시글이 아직 없어요.😥
           </div>
           <div v-else>
             <span style="color: #289672; font-size: 20px; font-weight: bold"
@@ -94,7 +94,7 @@
             <span style="color: #289672; font-size: 20px; font-weight: bold"
               >문화</span
             >
-            게시글이 아직 없어요.🥲
+            게시글이 아직 없어요.😥
           </div>
           <div v-else>
             <span style="color: #289672; font-size: 20px; font-weight: bold"
@@ -114,7 +114,7 @@
             <span style="color: #289672; font-size: 20px; font-weight: bold"
               >여행</span
             >
-            게시글이 아직 없어요.🥲
+            게시글이 아직 없어요.😥
           </div>
           <div v-else>
             <span style="color: #289672; font-size: 20px; font-weight: bold"

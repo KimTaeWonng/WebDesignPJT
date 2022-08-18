@@ -20,8 +20,8 @@
               cols="4"
             >
               <v-img
-                :src="p[4]"
-                :lazy-src="p[4]"
+                :src="p[7]"
+                :lazy-src="p[7]"
                 aspect-ratio="1"
                 class="grey lighten-2"
                 @click="movePost(p[0])"

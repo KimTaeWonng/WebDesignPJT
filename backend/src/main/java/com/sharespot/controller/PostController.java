@@ -337,11 +337,11 @@ public class PostController {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 	
-	@GetMapping("/posts/recent")
-	@ApiOperation(value = "7일간의 포스트들", notes = "오늘 기준 7일 전까지의 게시글만 가져옴" )
-	public ResponseEntity<List<Post>> recentPost() throws ParseException{
+	@GetMapping("/posts/recent/{userId}")
+	@ApiOperation(value = "7일간의 포스트들", notes = "오늘 기준 유저가 작성한 7일 전까지의 게시글만 가져옴" )
+	public ResponseEntity<List<Post>> recentPost(@PathVariable int userId) throws ParseException{
 		
-		List<Post> posts = postRepository.findAll();
+		List<Post> posts = postRepository.findByUserIdOrderByPostIdDesc(userId);
 		
 		List<Post> temp = new ArrayList<>();
 		

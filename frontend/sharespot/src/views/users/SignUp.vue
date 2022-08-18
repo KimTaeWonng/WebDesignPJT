@@ -432,7 +432,7 @@ export default {
       //     code: this.codes,
       //   },
       // });i
-      // console.log(response);
+      console.log(response);
     },
 
     submit() {

@@ -12,15 +12,8 @@
         :detailPost="post"
       ></post-card>
     </v-list>
-    <infinite-loading
-      v-if="this.type == 'curation'"
-      @infinite="infiniteHandler"
-      spinner="wavedots"
-    >
-      <div
-        slot="no-more"
-        style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
-      >
+    <infinite-loading v-if="this.type == 'curation'" @infinite="infiniteHandler" spinner="wavedots">
+      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
@@ -40,10 +33,8 @@
     </v-btn>
 
     <v-dialog v-model="dialog" max-width="600px">
-      <v-card>
-        <v-card-title
-          class="justify-center"
-          style="font-weight: bolder; font-size: 5vw"
+      <v-card style="background-color: white" max-height="500px">
+        <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
           >태그 상세 검색</v-card-title
         >
 
@@ -64,7 +55,12 @@
 
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
-        <v-item-group mandatory align="center" v-model="selected_1">
+        <v-item-group
+          mandatory
+          align="center"
+          v-model="selected_1"
+          style="background-color: #ffffff"
+        >
           <v-subheader>대분류</v-subheader>
           <v-item v-for="n in 5" :key="n" v-slot="{ active, toggle }">
             <v-btn
@@ -82,13 +78,14 @@
         </v-item-group>
 
         <!-- 소분류 -->
-        <v-item-group multiple align="center" v-model="selected_2">
+        <v-item-group
+          multiple
+          align="center"
+          v-model="selected_2"
+          style="background-color: #ffffff"
+        >
           <v-subheader>소분류</v-subheader>
-          <v-item
-            v-for="(item, i) in this.small"
-            :key="i"
-            v-slot="{ active, toggle }"
-          >
+          <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
             <v-btn
               width="64px"
               height="64px"
@@ -105,7 +102,12 @@
         </v-item-group>
 
         <!-- 누구랑 -->
-        <v-item-group multiple align="center" v-model="selected_3">
+        <v-item-group
+          multiple
+          align="center"
+          v-model="selected_3"
+          style="background-color: #ffffff"
+        >
           <v-subheader>누구랑</v-subheader>
           <v-item v-for="(who, i) in whos" :key="i" v-slot="{ active, toggle }">
             <v-btn
@@ -123,13 +125,14 @@
         </v-item-group>
 
         <!-- 어디서 -->
-        <v-item-group multiple align="center" v-model="selected_4">
+        <v-item-group
+          multiple
+          align="center"
+          v-model="selected_4"
+          style="background-color: #ffffff"
+        >
           <v-subheader>어디서</v-subheader>
-          <v-item
-            v-for="(where, i) in wheres"
-            :key="i"
-            v-slot="{ active, toggle }"
-          >
+          <v-item v-for="(where, i) in wheres" :key="i" v-slot="{ active, toggle }">
             <v-btn
               width="64px"
               height="64px"
@@ -146,17 +149,14 @@
         </v-item-group>
 
         <!-- 분류 제목 + 버튼 여기까지  -->
-        <v-divider class="mt-4"></v-divider>
-        <v-card-actions
-          class="mt-2 d-flex justify-end"
-          style="background-color: #ffffff"
-        >
+
+        <v-card-actions class="d-flex justify-end" style="background-color: #ffffff">
           <!-- 초기화 버튼 회색 배경 넣어주기  -->
           <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
-          <v-btn style="background-color: #f3f3f3" text @click="clear()">
+          <v-btn class="mt-2" style="background-color: #f3f3f3" text @click="clear()">
             초기화
           </v-btn>
-          <v-btn style="background-color: #289672" text dark @click="addTag()">
+          <v-btn class="mt-2" style="background-color: #289672" text dark @click="addTag()">
             확인
           </v-btn>
         </v-card-actions>
@@ -393,8 +393,7 @@ export default {
       this.tag_big = this.categorys.tag[this.selected_1].big_name;
       for (let i = 0; i < this.selected_2.length; i++) {
         this.tag_small.push(
-          this.categorys.tag[this.selected_1].category[this.selected_2[i]]
-            .small_name
+          this.categorys.tag[this.selected_1].category[this.selected_2[i]].small_name
         );
       }
 

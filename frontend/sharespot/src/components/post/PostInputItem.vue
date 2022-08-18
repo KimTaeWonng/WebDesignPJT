@@ -1,11 +1,7 @@
 <template>
   <v-container>
     <!-- 상단 네브바 -->
-    <v-row
-      class="text-center d-flex mb-5"
-      align="center"
-      style="margin-top: 3px"
-    >
+    <v-row class="text-center d-flex mb-5" align="center" style="margin-top: 3px">
       <!-- 닫기 버튼 -->
       <v-col cols="2" @click="goMain('')">
         <v-icon>mdi-close</v-icon>
@@ -49,9 +45,7 @@
         </div>
 
         <div class="text-center" style="margin-top: 10%">
-          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark>
-            확인
-          </v-btn>
+          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark> 확인 </v-btn>
         </div>
 
         <div>
@@ -159,14 +153,8 @@
             </v-col>
           </v-row> -->
 
-    <v-carousel
-      height="290px"
-      width="290px"
-      hide-delimiter-background
-      show-arrows-on-hover
-    >
-      <v-carousel-item v-for="(img, i) in post.image" :key="i" :src="img">
-      </v-carousel-item>
+    <v-carousel height="290px" width="290px" hide-delimiter-background show-arrows-on-hover>
+      <v-carousel-item v-for="(img, i) in post.image" :key="i" :src="img"> </v-carousel-item>
     </v-carousel>
     <!-- </v-parallax> -->
 
@@ -196,16 +184,19 @@
             </v-btn>
           </v-row>
         </template>
-        <v-card>
-          <v-card-title
-            class="justify-center"
-            style="font-weight: bolder; font-size: 5vw"
+        <v-card style="background-color: white" max-height="500px">
+          <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
             >태그 추가
           </v-card-title>
 
           <!-- 분류 제목 + 버튼 -->
           <!-- 대분류 -->
-          <v-item-group mandatory align="center" v-model="selected_1">
+          <v-item-group
+            mandatory
+            align="center"
+            v-model="selected_1"
+            style="background-color: #ffffff"
+          >
             <v-subheader>대분류</v-subheader>
             <v-item v-for="n in 5" :key="n" v-slot="{ active, toggle }">
               <v-btn
@@ -223,13 +214,14 @@
           </v-item-group>
 
           <!-- 소분류 -->
-          <v-item-group mandatory align="center" v-model="selected_2">
+          <v-item-group
+            mandatory
+            align="center"
+            v-model="selected_2"
+            style="background-color: #ffffff"
+          >
             <v-subheader>소분류</v-subheader>
-            <v-item
-              v-for="(item, i) in this.small"
-              :key="i"
-              v-slot="{ active, toggle }"
-            >
+            <v-item v-for="(item, i) in this.small" :key="i" v-slot="{ active, toggle }">
               <v-btn
                 width="64px"
                 height="64px"
@@ -246,13 +238,14 @@
           </v-item-group>
 
           <!-- 누구랑 -->
-          <v-item-group mandatory align="center" v-model="selected_3">
+          <v-item-group
+            mandatory
+            align="center"
+            v-model="selected_3"
+            style="background-color: #ffffff"
+          >
             <v-subheader>누구랑</v-subheader>
-            <v-item
-              v-for="(who, i) in whos"
-              :key="i"
-              v-slot="{ active, toggle }"
-            >
+            <v-item v-for="(who, i) in whos" :key="i" v-slot="{ active, toggle }">
               <v-btn
                 height="64px"
                 elevation="0"
@@ -268,13 +261,14 @@
           </v-item-group>
 
           <!-- 어디서 -->
-          <v-item-group mandatory align="center" v-model="selected_4">
+          <v-item-group
+            mandatory
+            align="center"
+            v-model="selected_4"
+            style="background-color: #ffffff"
+          >
             <v-subheader>어디서</v-subheader>
-            <v-item
-              v-for="(where, i) in wheres"
-              :key="i"
-              v-slot="{ active, toggle }"
-            >
+            <v-item v-for="(where, i) in wheres" :key="i" v-slot="{ active, toggle }">
               <v-btn
                 width="64px"
                 height="64px"
@@ -291,22 +285,11 @@
           </v-item-group>
 
           <!-- 분류 제목 + 버튼 여기까지  -->
-          <v-divider class="mt-4"></v-divider>
-          <v-card-actions
-            class="mt-2 d-flex justify-end"
-            style="background-color: #ffffff"
-          >
+          <v-card-actions class="d-flex justify-end" style="background-color: #ffffff">
             <!-- 초기화 버튼 회색 배경 넣어주기  -->
             <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
             <!-- <v-btn style="background-color: #f3f3f3" text @click="test()"> 초기화 </v-btn> -->
-            <v-btn
-              style="background-color: #289672"
-              text
-              dark
-              @click="addTag()"
-            >
-              확인
-            </v-btn>
+            <v-btn style="background-color: #289672" text dark @click="addTag()"> 확인 </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -315,45 +298,25 @@
     <!-- 태그 추가 시 칩 표시되는 공간 -->
     <div class="mt-5 ml-6 mb-5" v-show="isSelected">
       <v-chip
-        style="
-          background-color: #289672;
-          font-size: 13px;
-          color: white;
-          text-align: center;
-        "
+        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
         class="text-align-center mr-1"
         small
         >{{ tag_big }}</v-chip
       >
       <v-chip
-        style="
-          background-color: #289672;
-          font-size: 13px;
-          color: white;
-          text-align: center;
-        "
+        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
         class="text-align-center mr-1"
         small
         >{{ tag_small }}</v-chip
       >
       <v-chip
-        style="
-          background-color: #289672;
-          font-size: 13px;
-          color: white;
-          text-align: center;
-        "
+        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
         class="text-align-center mr-1"
         small
         >{{ tag_who }}</v-chip
       >
       <v-chip
-        style="
-          background-color: #289672;
-          font-size: 13px;
-          color: white;
-          text-align: center;
-        "
+        style="background-color: #289672; font-size: 13px; color: white; text-align: center"
         class="text-align-center mr-1"
         small
         >{{ tag_where }}</v-chip
@@ -366,12 +329,7 @@
         <span class="mb-3">내용 작성</span>
       </v-row>
       <v-row>
-        <v-textarea
-          color="#289672"
-          v-model="post.content"
-          auto-grow
-          outlined
-        ></v-textarea>
+        <v-textarea color="#289672" v-model="post.content" auto-grow outlined></v-textarea>
       </v-row>
     </div>
   </v-container>
@@ -684,10 +642,7 @@ export default {
       this.dialog = false;
       this.isSelected = true;
       this.tag_big = this.categorys.tag[this.selected_1].big_name;
-      this.tag_small =
-        this.categorys.tag[this.selected_1].category[
-          this.selected_2
-        ].small_name;
+      this.tag_small = this.categorys.tag[this.selected_1].category[this.selected_2].small_name;
       this.tag_who = this.whos[this.selected_3];
       this.tag_where = this.wheres[this.selected_4];
     },
@@ -735,10 +690,7 @@ export default {
         // console.log(newPostId);
 
         //다중 이미지 업로드
-        const uploadImages = await http.post(
-          `/file/post/${newPostId}`,
-          this.post.image
-        );
+        const uploadImages = await http.post(`/file/post/${newPostId}`, this.post.image);
 
         if (uploadImages.data == 1) {
           console.log("다중 이미지 업로드 성공");
@@ -749,27 +701,24 @@ export default {
         }
       } else {
         // 수정할 때
-        const response = await http.put(
-          `/main/posts/${this.$route.params.postno}`,
-          {
-            classBig: this.tag_big,
-            classSmall: this.tag_small,
-            classWhere: this.tag_where,
-            classWho: this.tag_who,
-            commentCnt: 0,
-            content: this.post.content,
-            image: this.post.image[0],
-            likeCnt: 0,
-            nickname: this.userInfo.nickname,
-            postGpsName: this.userPlaceName,
-            postId: this.$route.params.postno,
-            postLat: this.userLat,
-            postLng: this.userLng,
-            uploadTime: "",
-            userId: this.userInfo.user_id,
-            userImage: this.userInfo.profileImage,
-          }
-        );
+        const response = await http.put(`/main/posts/${this.$route.params.postno}`, {
+          classBig: this.tag_big,
+          classSmall: this.tag_small,
+          classWhere: this.tag_where,
+          classWho: this.tag_who,
+          commentCnt: 0,
+          content: this.post.content,
+          image: this.post.image[0],
+          likeCnt: 0,
+          nickname: this.userInfo.nickname,
+          postGpsName: this.userPlaceName,
+          postId: this.$route.params.postno,
+          postLat: this.userLat,
+          postLng: this.userLng,
+          uploadTime: "",
+          userId: this.userInfo.user_id,
+          userImage: this.userInfo.profileImage,
+        });
         if (response.data == 1) {
           this.successDialog = true;
         }
@@ -779,10 +728,7 @@ export default {
       if (this.userInfo.bd == 0) {
         this.userInfo.bd = 1;
         // 뱃지 보유여부 1로 회원정보 수정
-        const modifyBD = await http.put(
-          `/users/${this.userInfo.user_id}`,
-          this.userInfo
-        );
+        const modifyBD = await http.put(`/users/${this.userInfo.user_id}`, this.userInfo);
         // console.log("뱃지보유여부 변경!!");
         // console.log(this.userInfo);
         console.log(modifyBD);
@@ -794,9 +740,7 @@ export default {
       }
 
       // 유저의 뱃지 불러오기
-      const getBadgeList = await http.get(
-        `/users/badge/${this.userInfo.user_id}`
-      );
+      const getBadgeList = await http.get(`/users/badge/${this.userInfo.user_id}`);
       this.badges = getBadgeList.data;
       console.log(this.badges);
 
@@ -808,9 +752,7 @@ export default {
       }
 
       // /search/posts/count/{userid} api 받아옴
-      const getClassBigCnt = await http.get(
-        `/search/posts/count/${this.userInfo.user_id}`
-      );
+      const getClassBigCnt = await http.get(`/search/posts/count/${this.userInfo.user_id}`);
       console.log(getClassBigCnt);
 
       // 3, 30, 100, 200, 300 개면 해당 레벨업에 맞게 /users/badge 뱃지수정 api(put)
@@ -906,9 +848,7 @@ export default {
   async created() {
     // this.type == 'modify' 인 경우 루트 경로의 게시글 내용 가져오기 함수 필요
     if (this.type == "modify") {
-      const getPost = await http.get(
-        `/main/posts/${this.$route.params.postno}`
-      );
+      const getPost = await http.get(`/main/posts/${this.$route.params.postno}`);
       this.post = getPost.data;
       // console.log(this.post);
       this.tag_big = getPost.data.classBig;

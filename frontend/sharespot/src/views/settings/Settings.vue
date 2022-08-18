@@ -6,7 +6,7 @@
       <v-subheader>Account Settings</v-subheader>
       <template>
         <v-list-item>
-          <v-list-item-avatar color="blue lighten-3"  @click="moveProfileModify()">
+          <v-list-item-avatar color="blue lighten-3" @click="moveProfileModify()">
             <v-icon color="white"> mdi-account-outline </v-icon>
           </v-list-item-avatar>
 
@@ -61,7 +61,7 @@
         <v-divider></v-divider>
         <v-list-item @click.prevent="logout()">
           <v-list-item-avatar color="#C37AFD">
-            <v-icon color="white"> mdi-alert-circle-outline </v-icon>
+            <v-icon color="white"> mdi-logout </v-icon>
           </v-list-item-avatar>
 
           <v-list-item-content>

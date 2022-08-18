@@ -38,9 +38,7 @@
         <!-- 메뉴옵션 버튼 -->
         <v-col style="padding: 0px 0px 0px 0px" align="right">
           <v-btn @click.stop="dialog = true" id="dotBtn" icon>
-            <v-icon style="padding: 0%" align="right"
-              >mdi-dots-horizontal</v-icon
-            >
+            <v-icon style="padding: 0%" align="right">mdi-dots-horizontal</v-icon>
           </v-btn>
         </v-col>
       </v-list-item>
@@ -76,9 +74,7 @@
               <span>공유하기</span>
             </v-col>
 
-            <v-divider
-              v-if="this.post.userId == this.userInfo.user_id"
-            ></v-divider>
+            <v-divider v-if="this.post.userId == this.userInfo.user_id"></v-divider>
 
             <v-col>
               <span
@@ -94,11 +90,7 @@
       </v-dialog>
 
       <template slot="progress">
-        <v-progress-linear
-          color="deep-purple"
-          height="10"
-          indeterminate
-        ></v-progress-linear>
+        <v-progress-linear color="deep-purple" height="10" indeterminate></v-progress-linear>
       </template>
 
       <!-- 사진 -->
@@ -106,10 +98,10 @@
         height="290px"
         width="290px"
         hide-delimiter-background
+        hide-delimiters
         show-arrows-on-hover
       >
-        <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img">
-        </v-carousel-item>
+        <v-carousel-item v-for="(img, i) in carouselImages" :key="i" :src="img"> </v-carousel-item>
       </v-carousel>
       <!-- <v-img :aspect-ratio="1 / 1" :src="this.post.image"></v-img> -->
 
@@ -121,9 +113,7 @@
               {{ like ? "mdi-heart" : "mdi-heart-outline" }}
             </v-icon>
           </v-btn>
-          <span style="font-size: 12px; font-weight: lighter"
-            >{{ cntLike }}개
-          </span>
+          <span style="font-size: 12px; font-weight: lighter">{{ cntLike }}개 </span>
 
           <!-- 댓글 버튼 -->
           <router-link
@@ -137,9 +127,7 @@
               <v-icon> mdi-comment-processing-outline </v-icon>
             </v-btn>
           </router-link>
-          <span style="font-size: 12px; font-weight: lighter"
-            >{{ cntComment }}개
-          </span>
+          <span style="font-size: 12px; font-weight: lighter">{{ cntComment }}개 </span>
         </v-col>
         <v-col cols="4" align="right">
           <!-- 스크랩 버튼 -->
@@ -188,9 +176,7 @@
       </v-chip>
 
       <!-- {{ article.content }}  -->
-      <v-card-text class="mt-2" style="padding: 0%">{{
-        post.content
-      }}</v-card-text>
+      <v-card-text class="mt-2" style="padding: 0%">{{ post.content }}</v-card-text>
     </div>
     <post-comment></post-comment>
 
@@ -212,9 +198,7 @@
         </div>
 
         <div class="text-center" style="margin-top: 10%">
-          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark>
-            확인
-          </v-btn>
+          <v-btn color="rgb(40,150,114)" @click="goProfile()" dark> 확인 </v-btn>
         </div>
 
         <div>
@@ -262,9 +246,7 @@ export default {
     // console.log(this.$route.params.postno);
 
     try {
-      const response = await http.get(
-        `/main/posts/${this.$route.params.postno}`
-      );
+      const response = await http.get(`/main/posts/${this.$route.params.postno}`);
       // console.log(response.data);
       this.post = response.data;
     } catch (error) {
@@ -300,9 +282,7 @@ export default {
     }
 
     // 댓글 갯수 받아오기
-    const commentTemp = await http.get(
-      `/main/posts/main/posts/${this.$route.params.postno}`
-    );
+    const commentTemp = await http.get(`/main/posts/main/posts/${this.$route.params.postno}`);
     // console.log(commentTemp.data.length);
     this.cntComment = commentTemp.data.length;
   },
@@ -349,10 +329,7 @@ export default {
         this.post.likeCnt += 1;
         this.cntLike = this.post.likeCnt;
 
-        const response2 = await http.put(
-          `/main/posts/${this.post.postId}`,
-          this.post
-        );
+        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
         if (response2.data == 1) {
           console.log("조아요 증가 성공");
         } else {
@@ -380,10 +357,7 @@ export default {
         this.post.likeCnt -= 1;
         this.cntLike = this.post.likeCnt;
 
-        const response2 = await http.put(
-          `/main/posts/${this.post.postId}`,
-          this.post
-        );
+        const response2 = await http.put(`/main/posts/${this.post.postId}`, this.post);
         if (response2.data == 1) {
           console.log("조아요 감소 성공");
         } else {

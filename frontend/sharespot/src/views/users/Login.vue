@@ -67,8 +67,8 @@ export default {
   data() {
     return {
       user: {
-        email: "happybee@naver.com",
-        password: "12341234",
+        email: "",
+        password: "",
       },
       isPwdShow: false,
     };

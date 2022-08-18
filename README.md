@@ -32,7 +32,7 @@ BE or FE-기능
 -ex) BE-로그인, FE-로그인 화면 구현
 ```
 ## 📌각 문서 링크 
-[기능명세서, 요구사항 정의서, API명세서 통합본](https://docs.google.com/spreadsheets/d/1Snsq4_rEgos0y4JuI4C1bfJfTSqp9-xIvPWQTEl6qoY/edit#gid=111537547)
+[기능명세서, 요구사항 정의서, API명세서 통합본](https://docs.google.com/spreadsheets/d/1Snsq4_rEgos0y4JuI4C1bfJfTSqp9-xIvPWQTEl6qoY/edit#gid=0)
 
 [와이어프레임](https://ovenapp.io/view/M10rj2Ij6jc580rV5fPBZKw8izPXFVDp/INGlZ)
 

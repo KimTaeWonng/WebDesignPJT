@@ -251,9 +251,9 @@ export default {
 
   mounted() {},
 
-  async created() {
-    this.getMylocation();
-  },
+  // async created() {
+  //   this.getMylocation();
+  // },
 
   methods: {
     // getDistance(lat1, lng1, lat2, lng2) {

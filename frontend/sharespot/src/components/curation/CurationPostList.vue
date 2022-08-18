@@ -174,12 +174,12 @@ import tag from "@/assets/json/tag.json";
 
 import PostCard from "../post/PostCard.vue";
 import LatestPostList from "./LatestPostList.vue";
-import Vue from "vue";
-import VueGeolocationApi from "vue-geolocation-api";
+// import Vue from "vue";
+// import VueGeolocationApi from "vue-geolocation-api";
 // import haversine from 'haversine'
 
 const userStore = "userStore";
-Vue.use(VueGeolocationApi);
+// Vue.use(VueGeolocationApi);
 
 export default {
   components: { PostCard, InfiniteLoading, LatestPostList },
@@ -356,13 +356,13 @@ export default {
         });
     },
 
-    getMylocation() {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        // console.log(pos)
-        this.latitude = pos.coords.latitude;
-        this.longitude = pos.coords.longitude;
-      });
-    },
+    // getMylocation() {
+    //   navigator.geolocation.getCurrentPosition((pos) => {
+    //     // console.log(pos)
+    //     this.latitude = pos.coords.latitude;
+    //     this.longitude = pos.coords.longitude;
+    //   });
+    // },
 
     detailSearch() {
       this.dialog = true;

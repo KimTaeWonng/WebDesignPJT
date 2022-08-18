@@ -170,8 +170,6 @@ export default {
 
     async getmembers() {
       http.get(`/group/members/${this.$route.params.groupno}`).then((res) => {
-        // console.log(res)
-        // console.log(res.data)
         this.members = res.data;
         // console.log('모임멤버', this.members)
         this.manager = res.data[0].userId;
@@ -228,6 +226,9 @@ export default {
   },
 
   async created() {
+    if (this.$router.history.current.name == "groupDetail") {
+      this.getmembers();
+  
     this.group = this.detailGroup;
     // console.log('백메뉴', typeof this.detailGroup)
     // console.log('백메뉴', this.group)
@@ -253,11 +254,10 @@ export default {
     }
 
     // console.log(this.$router.history.current.name)
-    if (this.$router.history.current.name == "groupDetail") {
-      this.getmembers();
-    }
+
 
     // console.log('백가입여부', this.isGmember)
+  }
   },
 
   computed: {

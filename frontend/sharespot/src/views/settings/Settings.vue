@@ -6,18 +6,18 @@
       <v-subheader>Account Settings</v-subheader>
       <template>
         <v-list-item>
-          <v-list-item-avatar color="blue lighten-3">
+          <v-list-item-avatar color="blue lighten-3"  @click="moveProfileModify()">
             <v-icon color="white"> mdi-account-outline </v-icon>
           </v-list-item-avatar>
 
-          <v-list-item-content @click="goRoute('/settings/info')">
+          <v-list-item-content @click="moveProfileModify()">
             <v-list-item-title>프로필 변경</v-list-item-title>
             <v-list-item-subtitle>개인 정보 변경</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item>
-          <v-list-item-avatar color="green lighten-2">
+          <v-list-item-avatar color="green lighten-2" @click="goRoute('/users/resetpass')">
             <v-icon color="white"> mdi-lock-outline </v-icon>
           </v-list-item-avatar>
           <v-list-item-content @click="goRoute('/users/resetpass')">
@@ -114,6 +114,9 @@ export default {
 
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    moveProfileModify() {
+      this.$router.push({ name: "profileModify" });
+    },
     logout() {
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);

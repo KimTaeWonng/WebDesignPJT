@@ -35,201 +35,201 @@ import ProfileTaste from "../views/profile/ProfileTaste.vue";
 // 에러
 import NotFound from '../views/error/NotFound.vue';
 
-// import store from "@/store/index.js";
+import store from "@/store/index.js";
 
 Vue.use(VueRouter);
 
-// const onlyAuthUser = async (to, from, next) => {
-//   const checkUserInfo = store.getters["userStore/checkUserInfo"];
-//   const getUserInfo = store._actions["userStore/getUserInfo"];
-//   let token = sessionStorage.getItem("Authorization");
+const onlyAuthUser = async (to, from, next) => {
+  const checkUserInfo = store.getters["userStore/checkUserInfo"];
+  const getUserInfo = store._actions["userStore/getUserInfo"];
+  let token = sessionStorage.getItem("Authorization");
 
-//   if (checkUserInfo == null && token) {
-//     await getUserInfo(token);
-//   }
+  if (checkUserInfo == null && token) {
+    await getUserInfo(token);
+  }
 
-//   if (checkUserInfo === null) {
-//     alert("로그인이 필요한 페이지입니다.");
-//     next({ name: "login" });
-//   } else {
-//     next();
-//   }
-// };
+  if (checkUserInfo === null) {
+    alert("로그인이 필요한 페이지입니다.");
+    next({ name: "login" });
+  } else {
+    next();
+  }
+};
 
-// const onlyNoAuthUser = async (to, from, next) => {
-//   const checkUserInfo = store.getters["userStore/checkUserInfo"];
-//   const getUserInfo = store._actions["userStore/getUserInfo"];
-//   let token = sessionStorage.getItem("Authorization");
-//   if (checkUserInfo == null && token) {
-//     await getUserInfo(token);
-//   }
-//   if (checkUserInfo === null) {
-//     next();
-//   } else {
-//     next({ name: "mainList" });
-//   }
-// };
+const onlyNoAuthUser = async (to, from, next) => {
+  const checkUserInfo = store.getters["userStore/checkUserInfo"];
+  const getUserInfo = store._actions["userStore/getUserInfo"];
+  let token = sessionStorage.getItem("Authorization");
+  if (checkUserInfo == null && token) {
+    await getUserInfo(token);
+  }
+  if (checkUserInfo === null) {
+    next();
+  } else {
+    next({ name: "mainList" });
+  }
+};
 
 const routes = [
   {
     path: "/",
     name: "home",
-    // beforeEnter: onlyNoAuthUser,
+    beforeEnter: onlyNoAuthUser,
     component: HomeView ,
   },
   {
     path: "/users/login",
     name: "login",
-    // beforeEnter: onlyNoAuthUser,
+    beforeEnter: onlyNoAuthUser,
     component: Login,
   },
   {
     path: "/users/signup",
     name: "signUp",
-    // beforeEnter: onlyNoAuthUser,
+    beforeEnter: onlyNoAuthUser,
     component: SignUp,
   },
   {
     path: "/users/findpass",
     name: "findPass",
-    // beforeEnter: onlyNoAuthUser,
+    beforeEnter: onlyNoAuthUser,
     component: FindPass,
   },
   {
     path: "/users/resetpass",
     name: "resetPass",
-    // beforeEnter: onlyNoAuthUser,
+    beforeEnter: onlyNoAuthUser,
     component: ResetPass,
   },
   //알림
   {
     path: "/main/notice",
     name: "notice",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: Notice,
   },
   //메인피드 
   {
     path: "/main/mainlist",
     name: "mainList",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: MainList,
   },
   //유저검색결과
   {
     path: "/main/usersearchresult/:word",
     name: "userSearchResult",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: UserSearchResult,
   },
   //설정
   {
     path: "/settings",
     name: "settings",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: Settings,
   },
   //알림설정
   {
     path: "/settings/notice",
     name: "settingsNotice",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: SettingsNotice,
   },
   //개인정보설정
   {
     path: "/settings/info",
     name: "settingsInfo",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: SettingsInfo,
   },
   //약관정보
   {
     path: "/settings/service",
     name: "settingsService",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: SettingsService,
   },
   //게시글
   {
     path: "/post/register",
     name: "postRegister",
-    // beforeEnter: onlyAuthUser,
+    beforeEnter: onlyAuthUser,
     component: PostRegister,
   },
   {
     path: "/post/detail/:postno",
     name: "postDetail",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: PostDetail,
   },
   {
     path: "/post/modify/:postno",
     name: "postModify",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: PostModify,
   },
   {
     path: "/curation",
     name: "curationList",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: CurationList,
   },
   {
     path: "/group/list",
     name: "groupList",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: GroupList,
   },
   {
     path: "/group/register",
     name: "groupRegister",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: GroupRegister,
   },
   {
     // /:groupno 추가해야 함!
     path: "/group/detail/:groupno",
     name: "groupDetail",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: GroupDetail,
   },
   {
     // /:groupno 추가해야 함!
     path: "/group/modify/:groupno",
     name: "groupModify",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: GroupModify,
   },
   {
     // /:userid 추가해야 함!
     path: "/profile/:userid",
     name: "profile",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: Profile,
   },
   {
     path: "/profile/modify",
     name: "profileModify",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: ProfileModify,
   },
   {
     path: "/profile/following/:userid",
     name: "profileFollowing",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: ProfileFollowing,
   },
   {
     path: "/profile/follower/:userid",
     name: "profileFollower",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: ProfileFollower,
   },
   {
     path: "/profile/taste/:userid",
     name: "profileTaste",
-    // beforeEnter: onlyAuthUser,
+     beforeEnter: onlyAuthUser,
     component: ProfileTaste,
   },
   //에러

@@ -239,13 +239,6 @@ export default {
         this.getmembers()
       }
 
-      else if (this.$router.name == 'groupRegister') {
-        this.getmembers()
-      }
-
-      else if (this.$router.name == 'groupModify') {
-        this.getmembers()
-      }
       // console.log('백가입여부', this.isGmember)
   },
 

@@ -222,7 +222,20 @@ export default {
   async created() {
     this.group.group_manager = this.userInfo.user_id;
     this.group.group_nick = this.userInfo.nickname;
+
     // 변경: this.groupType == 'modify' 인 경우 루트에 있는 정보로 axios통신 필요
+    if (this.groupType == "modify") {
+      const getGroup = await http.get(`group/${this.$route.params.groupno}`)
+      this.group = getGroup.data
+      this.group.group_name = getGroup.data.group_name
+      this.group.group_content = getGroup.data.group_content
+      this.group.group_age_max = getGroup.data.group_age_max
+      this.group.group_age_min = getGroup.data.group_age_min
+      this.group.group_gender = getGroup.data.group_gender
+      this.group.group_limit = getGroup.data.group_limit
+      this.image = getGroup.data.group_image
+
+    }
   },
 
   computed: {

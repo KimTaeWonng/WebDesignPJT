@@ -235,7 +235,7 @@ export default {
       };
 
       console.log(this.$router.history.current.name)
-      if (this.$router.name == 'groupDetail') {
+      if (this.$router.history.current.name == 'groupDetail') {
         this.getmembers()
       }
 

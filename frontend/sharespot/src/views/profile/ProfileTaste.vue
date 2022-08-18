@@ -25,105 +25,56 @@
           <canvas id="tasteChart" width="300"></canvas>
         </div>
         <div class="text-center mt-8">
-          <div
-            v-if="
-              this.postType.eatCnt - 1 == 0 || this.postType.eatCnt - 1 == -1
-            "
-          >
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >맛집</span
-            >
+          <div v-if="this.postType.eatCnt - 1 == 0 || this.postType.eatCnt - 1 == -1">
+            <span style="color: #289672; font-size: 20px; font-weight: bold">맛집</span>
             게시글이 아직 없어요.😥
           </div>
           <div v-else>
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >맛집</span
-            >
+            <span style="color: #289672; font-size: 20px; font-weight: bold">맛집</span>
             게시글은 총
-            <span style="font-size: 20px; font-weight: bold">{{
-              this.postType.eatCnt - 1
-            }}</span>
+            <span style="font-size: 20px; font-weight: bold">{{ this.postType.eatCnt - 1 }}</span>
             개 입니다.
           </div>
-          <div
-            v-if="
-              this.postType.cafeCnt - 1 == 0 || this.postType.cafeCnt - 1 == -1
-            "
-          >
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >카페</span
-            >
+          <div v-if="this.postType.cafeCnt - 1 == 0 || this.postType.cafeCnt - 1 == -1">
+            <span style="color: #289672; font-size: 20px; font-weight: bold">카페</span>
             게시글이 아직 없어요.😥
           </div>
           <div v-else>
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >카페</span
-            >
+            <span style="color: #289672; font-size: 20px; font-weight: bold">카페</span>
             게시글은 총
-            <span style="font-size: 20px; font-weight: bold">{{
-              this.postType.cafeCnt - 1
-            }}</span>
+            <span style="font-size: 20px; font-weight: bold">{{ this.postType.cafeCnt - 1 }}</span>
             개 입니다.
           </div>
-          <div
-            v-if="
-              this.postType.lifeCnt - 1 == 0 || this.postType.lifeCnt - 1 == -1
-            "
-          >
-            <strong style="color: #289672; font-size: 20px; font-weight: bold"
-              >생활</strong
-            >
+          <div v-if="this.postType.lifeCnt - 1 == 0 || this.postType.lifeCnt - 1 == -1">
+            <strong style="color: #289672; font-size: 20px; font-weight: bold">생활</strong>
             게시글이 아직 없어요.😥
           </div>
           <div v-else>
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >생활</span
-            >
+            <span style="color: #289672; font-size: 20px; font-weight: bold">생활</span>
             게시글은 총
-            <span style="font-size: 20px; font-weight: bold">{{
-              this.postType.lifeCnt - 1
-            }}</span>
+            <span style="font-size: 20px; font-weight: bold">{{ this.postType.lifeCnt - 1 }}</span>
             개 입니다.
           </div>
-          <div
-            v-if="
-              this.postType.cultureCnt - 1 == 0 ||
-              this.postType.cultureCnt - 1 == -1
-            "
-          >
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >문화</span
-            >
+          <div v-if="this.postType.cultureCnt - 1 == 0 || this.postType.cultureCnt - 1 == -1">
+            <span style="color: #289672; font-size: 20px; font-weight: bold">문화</span>
             게시글이 아직 없어요.😥
           </div>
           <div v-else>
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >문화</span
-            >
+            <span style="color: #289672; font-size: 20px; font-weight: bold">문화</span>
             게시글은 총
             <span style="font-size: 20px; font-weight: bold">{{
               this.postType.cultureCnt - 1
             }}</span>
             개 입니다.
           </div>
-          <div
-            v-if="
-              this.postType.tripCnt - 1 == 0 || this.postType.tripCnt - 1 == -1
-            "
-          >
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >여행</span
-            >
+          <div v-if="this.postType.tripCnt - 1 == 0 || this.postType.tripCnt - 1 == -1">
+            <span style="color: #289672; font-size: 20px; font-weight: bold">여행</span>
             게시글이 아직 없어요.😥
           </div>
           <div v-else>
-            <span style="color: #289672; font-size: 20px; font-weight: bold"
-              >여행</span
-            >
+            <span style="color: #289672; font-size: 20px; font-weight: bold">여행</span>
             게시글은 총
-            <span style="font-size: 20px; font-weight: bold">{{
-              this.postType.tripCnt - 1
-            }}</span>
+            <span style="font-size: 20px; font-weight: bold">{{ this.postType.tripCnt - 1 }}</span>
             개 입니다.
           </div>
         </div>
@@ -134,9 +85,30 @@
     <!-- 타임라인 start -->
     <div class="text-center mt-5 mb-5" style="margin: 0">
       <strong>{{ currentUser.nickname }}</strong> 님의
-      <span style="color: #289672; font-weight: bold">타임라인</span>
+      <span style="color: #289672; font-weight: bold">이번 주 타임라인</span>
 
-      <div>타임라인</div>
+      <div>
+        <v-timeline class="mt-2" align-top dense>
+          <v-timeline-item v-for="(p, i) in timelinePosts" :key="i" large>
+            <template v-slot:icon>
+              <v-avatar>
+                <img :src="p.image" />
+              </v-avatar>
+            </template>
+            <v-row class="pt-1">
+              <v-col cols="2" align-self="center" style="padding-left: 0px; padding-right: 0px">
+                <strong>{{ p.classBig }}</strong>
+              </v-col>
+              <v-col style="padding-left: 0px; padding-right: 0px">
+                <p style="font-size: 13px; color: #289672; margin-bottom: 3px">
+                  {{ p.postGpsName }}
+                </p>
+                <div class="text-caption">{{ p.uploadTime | moment("calendar") }}</div>
+              </v-col>
+            </v-row>
+          </v-timeline-item>
+        </v-timeline>
+      </div>
     </div>
     <!-- 타임라인 end -->
     <v-divider></v-divider>
@@ -186,15 +158,15 @@ export default {
         maxCnt: 0, // 최대 게시글 수
       },
       posts: [],
+
+      timelinePosts: [],
     };
   },
 
   async created() {
     this.currentUser.userid = this.$route.params.userid;
     // 현재 유저의 닉네임을 가져온다.
-    const response1 = await http.get(
-      `/users/info/user/${this.currentUser.userid}`
-    );
+    const response1 = await http.get(`/users/info/user/${this.currentUser.userid}`);
     this.currentUser.registTime = new Date(response1.data[0][6]);
     var today = new Date();
     this.currentUser.registTime = parseInt(
@@ -203,9 +175,7 @@ export default {
     this.currentUser.nickname = response1.data[0][1];
 
     // 현재 유저의 게시글을 가져온다.
-    const response2 = await http.get(
-      `/main/posts/user/${this.currentUser.userid}`
-    );
+    const response2 = await http.get(`/main/posts/user/${this.currentUser.userid}`);
     this.posts = response2.data;
     console.log(this.posts);
     for (var i = 0; i < response2.data.length; i++) {
@@ -244,6 +214,9 @@ export default {
 
     // 얻어온 데이터를 기준으로 차트 생성
     this.createChart();
+
+    const getTimeLinePosts = await http.get(`/main/posts/recent/${this.currentUser.userid}`);
+    this.timelinePosts = getTimeLinePosts.data;
   },
 
   computed: {},
@@ -259,25 +232,19 @@ export default {
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
-        process.env.VUE_APP_KAKAOMAP_KEY;
+        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + process.env.VUE_APP_KAKAOMAP_KEY;
       document.head.appendChild(script);
     },
     async initMap() {
       // 현재 유저의 게시글을 가져온다.
-      const response2 = await http.get(
-        `/main/posts/user/${this.currentUser.userid}`
-      );
+      const response2 = await http.get(`/main/posts/user/${this.currentUser.userid}`);
       this.posts = response2.data;
       console.log(this.posts);
 
       const container = await document.getElementById("map");
       let markerPosition = new kakao.maps.LatLng(33.450705, 126.570677);
       if (this.posts.length != 0) {
-        markerPosition = new kakao.maps.LatLng(
-          this.posts[0][5],
-          this.posts[0][6]
-        );
+        markerPosition = new kakao.maps.LatLng(this.posts[0][5], this.posts[0][6]);
       }
       const options = {
         center: markerPosition, // 변경: 접속한 유저의 위도경도로 바꿔보자
@@ -297,10 +264,7 @@ export default {
 
       if (this.posts.length != 0) {
         for (var i = 0; i < this.posts.length; i++) {
-          var markerPosition1 = new kakao.maps.LatLng(
-            this.posts[i][5],
-            this.posts[i][6]
-          );
+          var markerPosition1 = new kakao.maps.LatLng(this.posts[i][5], this.posts[i][6]);
           bounds.extend(markerPosition1); //범위 재설정에 필요한 bound
 
           var marker1 = new kakao.maps.Marker({

@@ -66,10 +66,14 @@
         },
         {
           "small_id": 2,
-          "small_name": "문화시설"
+          "small_name": "공연"
         },
         {
           "small_id": 3,
+          "small_name": "문화시설"
+        },
+        {
+          "small_id": 4,
           "small_name": "스포츠/레저"
         }
       ]

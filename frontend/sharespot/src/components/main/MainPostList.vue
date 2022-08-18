@@ -61,6 +61,8 @@ export default {
 
   methods: {
     async infiniteHandler($state) {
+      console.log("팔로워리스트 길이");
+      console.log(this.followingUserList.length);
       if (this.followingUserList.length === 0) {
         await http
           .get(`/main/search/posts/new`, {

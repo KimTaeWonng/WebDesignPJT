@@ -38,19 +38,22 @@
           >태그 상세 검색</v-card-title
         >
 
+
         <!-- 거리조절 -->
-        <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
-        <v-row class="distance-bar">
-          <v-col cols="12">
-            <v-slider
-              v-model="slider"
-              :max="max"
-              :min="min"
-              :thumb-size="24"
-              thumb-label="always"
-            ></v-slider>
-          </v-col>
-        </v-row>
+      
+          <!-- <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
+          <v-row class="distance-bar">
+            <v-col cols="12">
+              <v-slider
+                v-model="slider"
+                :max="max"
+                :min="min"
+                :thumb-size="24"
+                thumb-label="always"
+              ></v-slider>
+            </v-col>
+          </v-row> -->
+      
 
         <!-- 분류 제목 + 버튼 -->
         <!-- 대분류 -->
@@ -149,8 +152,12 @@ import tag from "@/assets/json/tag.json";
 
 import PostCard from "../post/PostCard.vue";
 import LatestPostList from "./LatestPostList.vue";
+import Vue from 'vue'
+import VueGeolocationApi from 'vue-geolocation-api'
+// import haversine from 'haversine'
 
 const userStore = "userStore";
+Vue.use(VueGeolocationApi)
 
 export default {
   components: { PostCard, InfiniteLoading, LatestPostList },
@@ -162,11 +169,13 @@ export default {
       loadNum: 0,
       curationLoadNum: 0,
       curationPosts: [],
+      // latitude: '',
+      // longitude: '',
 
       dialog: false,
       slider: 10,
       min: 0,
-      max: 30,
+      max: 200,
 
       categorys: tag, // 대분류,소분류 태그 json
       small: [
@@ -217,9 +226,30 @@ export default {
   computed: {
     ...mapState(userStore, ["userInfo"]),
   },
-  mounted() {},
-  async created() {},
+  
+  mounted() {
+
+  },
+
+  async created() {
+    this.getMylocation()
+  },
+
   methods: {
+    // getDistance(lat1, lng1, lat2, lng2) {
+    //   function deg2rad(deg) {
+    //     return deg * (Math.PI/180)
+    //   }
+
+    //   var R = 6371;
+    //   var dLat = deg2rad(lat2-lat1)
+    //   var dLng = deg2rad(lng2-lng1)
+    //  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLng/2) * Math.sin(dLng/2);
+    // var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    // var d = R * c;
+    // this.distance2 = d
+    // },
+
     async infiniteHandler($state) {
       // this.curationPosts = [];
 
@@ -240,8 +270,34 @@ export default {
           } else {
             setTimeout(() => {
               this.curationLoadNum++;
+              
+              console.log('전', res.data.content);
 
-              console.log(res.data.content);
+              // for(let i = 0; i < res.data.content.length; i++) {
+              //   if(this.getDistance(this.latitude, this.longitude, res.data.content[i].postLat, res.data.content[i].postLng) > this.distance) {
+              //       console.log(this.distance2)
+              //       res.data.content.splice(i, 1);
+              //       i--;
+              //     }
+              //   else{
+              //     console.log(this.distance2)
+              //   }
+              //   }  
+              // console.log('반경',this.slider)
+              // for(let i = 0; i < res.data.content.length; i++) {
+              //   const a = { latitude: this.latitude, longitude: this.longitude}
+              //   const b = { latitude: res.data.content[i].postLat, longitude: res.data.content[i].postLng}
+              //   const d = haversine(a,b, {unit:'kilometer'})
+              //   console.log(a)
+              //   console.log(b)
+              //   console.log(d)
+              //   if(d <= this.slider) {
+              //       res.data.content.splice(i, 1);
+              //       i--;
+              //     }
+              //   }  
+              // console.log('후', res.data.content)
+
               const items = res.data.content;
               for (const i of items) {
                 const datas = {
@@ -262,7 +318,10 @@ export default {
                   classWho: i.classWho,
                   content: i.content,
                 };
+
                 this.curationPosts.push(datas);
+
+            
               }
 
               $state.loaded();
@@ -279,6 +338,17 @@ export default {
         });
     },
 
+    getMylocation() {
+      navigator.geolocation.getCurrentPosition(pos => {
+          // console.log(pos)
+          this.latitude = pos.coords.latitude;
+          this.longitude = pos.coords.longitude;
+          console.log(this.latitude)
+          console.log(this.longitude)
+      })
+    },  
+
+
     detailSearch() {
       this.dialog = true;
     },
@@ -289,6 +359,7 @@ export default {
     clear() {
       // 초기화 버튼
     },
+
     addTag() {
       this.dialog = false;
       // this.type = "curation";
@@ -336,6 +407,7 @@ export default {
     season(val) {
       return this.icons[val];
     },
+
   },
 };
 </script>

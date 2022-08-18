@@ -38,7 +38,7 @@ const userLogStore = {
     mutations: {
         // 유저 정보 검색기록
         SET_SEARCH_WORD_LIST(state, searchWord) { 
-            if (state.searchWordList.length > 5) {
+            if (state.searchWordList.length > 4) {
                 state.searchWordList.splice(0, 1);
             }
             state.searchWordList.push(searchWord);

@@ -26,6 +26,9 @@ public interface ScrapRepository extends JpaRepository<Scrap, Integer>{
 
 	@Transactional
 	public void deleteAllByUserId(Integer user_id);
+
+	@Transactional
+	public void deleteAllByPostId(Integer postId);
 	
 
 }

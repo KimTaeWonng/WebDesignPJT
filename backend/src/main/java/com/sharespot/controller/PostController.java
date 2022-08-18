@@ -211,6 +211,7 @@ public class PostController {
 			postLikeRepository.deleteAllByPostId(postNo);
 			
 			commentRepository.deleteAllByPostId(postNo);
+			scrapRepository.deleteAllByPostId(postNo);
 			postRepository.deleteById(postNo);
 			result = 1;
 		}

@@ -1,32 +1,40 @@
 <template>
   <div>
-    <div v-if="!this.hasMainBadge" class="text-center" style="font-size: 4vw">
+    <div
+      v-if="!this.hasMainBadge1 && !this.hasMainBadge2 && !this.hasMainBadge3"
+      class="text-center"
+      style="font-size: 4vw"
+    >
       대표뱃지를 설정해주세요😋
     </div>
-    <v-row no-gutters align="center" v-if="!this.hasMainBadge">
+    <v-row no-gutters align="center">
       <v-col cols="1.5"></v-col>
       <v-col cols="3" align="center">
-        <v-img class="mt-1" :src="firstMainBadge" @click="changeMainBadge1()"></v-img>
+        <v-img
+          v-if="!this.hasMainBadge1"
+          class="mt-1"
+          :src="firstMainBadge"
+          @click="changeMainBadge1()"
+        ></v-img>
+        <v-img v-else class="mt-1" :src="mainbadge1[0]" @click="changeMainBadge1()"></v-img>
       </v-col>
       <v-col cols="3" align="center">
-        <v-img class="mt-1" :src="secondMainBadge" @click="changeMainBadge2()"></v-img>
+        <v-img
+          v-if="!this.hasMainBadge2"
+          class="mt-1"
+          :src="secondMainBadge"
+          @click="changeMainBadge2()"
+        ></v-img>
+        <v-img v-else class="mt-1" :src="mainbadge2[0]" @click="changeMainBadge2()"></v-img>
       </v-col>
       <v-col cols="3" align="center">
-        <v-img class="mt-1" :src="thirdMainBadge" @click="changeMainBadge3()"></v-img>
-      </v-col>
-      <v-col cols="1.5"></v-col>
-    </v-row>
-
-    <v-row no-gutters align="center" v-if="this.hasMainBadge">
-      <v-col cols="1.5"></v-col>
-      <v-col cols="3" align="center">
-        <v-img class="mt-1" :src="mainbadge1[0]" @click="changeMainBadge1()"></v-img>
-      </v-col>
-      <v-col cols="3" align="center">
-        <v-img class="mt-1" :src="mainbadge2[0]" @click="changeMainBadge2()"></v-img>
-      </v-col>
-      <v-col cols="3" align="center">
-        <v-img class="mt-1" :src="mainbadge3[0]" @click="changeMainBadge3()"></v-img>
+        <v-img
+          v-if="!this.hasMainBadge3"
+          class="mt-1"
+          :src="thirdMainBadge"
+          @click="changeMainBadge3()"
+        ></v-img>
+        <v-img v-else class="mt-1" :src="mainbadge3[0]" @click="changeMainBadge3()"></v-img>
       </v-col>
       <v-col cols="1.5"></v-col>
     </v-row>
@@ -203,6 +211,10 @@ export default {
       mainbadge1: [],
       mainbadge2: [],
       mainbadge3: [],
+
+      hasMainBadge1: false,
+      hasMainBadge2: false,
+      hasMainBadge3: false,
     };
   },
   computed: {
@@ -218,9 +230,12 @@ export default {
     // getBadgeList.data의 12번째 부터 22번째 인덱스까지 메인뱃지
     for (var i = 12; i < 23; i++) {
       // console.log(Object.keys(this.badges)[i]);
-      if (this.badges[Object.keys(this.badges)[i]] != 0) {
-        this.hasMainBadge = true;
-        break;
+      if (this.badges[Object.keys(this.badges)[i]] == 1) {
+        this.hasMainBadge1 = true;
+      } else if (this.badges[Object.keys(this.badges)[i]] == 2) {
+        this.hasMainBadge2 = true;
+      } else if (this.badges[Object.keys(this.badges)[i]] == 3) {
+        this.hasMainBadge3 = true;
       }
     }
 
@@ -255,14 +270,13 @@ export default {
     for (let a = 12; a < 23; a++) {
       if (this.badges[Object.keys(this.badges)[a]] == 1) {
         mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge1);
-        // console.log(this.mainbadge1);
+        console.log(this.mainbadge1);
       } else if (this.badges[Object.keys(this.badges)[a]] == 2) {
         mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge2);
-        console.log("sldkfsj");
-        // console.log(this.mainbadge2);
+        console.log(this.mainbadge2);
       } else if (this.badges[Object.keys(this.badges)[a]] == 3) {
         mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge3);
-        // console.log(this.mainbadge3);
+        console.log(this.mainbadge3);
       }
     }
     // console.log(this.mainbadge1[0]);
@@ -283,37 +297,45 @@ export default {
       this.dialog3 = true;
     },
     async confirm1() {
+      console.log("확인 111111");
       this.dialog1 = false;
       this.hasMainBadge = true;
-      modifyMainBadge(this.firstMainBadge, this.badges, 0);
+      modifyMainBadge(this.mainbadge1[0], this.badges, 0);
       // this.firstMainBadge = this.badgeList[this.selected];
       this.mainbadge1 = [];
       this.mainbadge1.push(this.badgeList[this.selected]);
-      modifyMainBadge(this.firstMainBadge, this.badges, 1);
+      modifyMainBadge(this.mainbadge1[0], this.badges, 1);
+      console.log(this.mainbadge1[0]);
       const modifyBadge = await http.put(`/users/badge`, this.badges);
       console.log(modifyBadge);
+      this.hasMainBadge1 = true;
     },
     async confirm2() {
       this.dialog2 = false;
       this.hasMainBadge = true;
-      modifyMainBadge(this.secondMainBadge, this.badges, 0);
+      modifyMainBadge(this.mainbadge2[0], this.badges, 0);
       // this.secondMainBadge = this.badgeList[this.selected];
       this.mainbadge2 = [];
       this.mainbadge2.push(this.badgeList[this.selected]);
-      modifyMainBadge(this.secondMainBadge, this.badges, 2);
+      modifyMainBadge(this.mainbadge2[0], this.badges, 2);
+      console.log(this.mainbadge2[0]);
       const modifyBadge = await http.put(`/users/badge`, this.badges);
       console.log(modifyBadge);
+      this.hasMainBadge2 = true;
     },
     async confirm3() {
       this.dialog3 = false;
       this.hasMainBadge = true;
-      modifyMainBadge(this.thirdMainBadge, this.badges, 0);
+      modifyMainBadge(this.mainbadge3[0], this.badges, 0);
       // this.thirdMainBadge = this.badgeList[this.selected];
       this.mainbadge3 = [];
       this.mainbadge3.push(this.badgeList[this.selected]);
-      modifyMainBadge(this.thirdMainBadge, this.badges, 3);
+      modifyMainBadge(this.mainbadge3[0], this.badges, 3);
+      console.log(this.mainbadge3[0]);
       const modifyBadge = await http.put(`/users/badge`, this.badges);
       console.log(modifyBadge);
+      console.log(this.badges);
+      this.hasMainBadge3 = true;
     },
   },
 };

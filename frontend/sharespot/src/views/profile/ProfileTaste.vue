@@ -161,9 +161,6 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 // 지도 키
-
-const MAP_API_KEY = process.env.VUE_APP_KAKAOMAP_KEY;
-
 export default {
   components: { BackMenu },
   name: "ProfileTaste",
@@ -198,7 +195,6 @@ export default {
     const response1 = await http.get(
       `/users/info/user/${this.currentUser.userid}`
     );
-
     this.currentUser.registTime = new Date(response1.data[0][6]);
     var today = new Date();
     this.currentUser.registTime = parseInt(
@@ -261,24 +257,60 @@ export default {
       const script = document.createElement("script");
 
       /* global kakao */
-      script.addEventListener("load", () => {
-        kakao.maps.load(this.initMap);
-      });
-
+      script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
-        MAP_API_KEY;
-
+        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
+        process.env.VUE_APP_KAKAOMAP_KEY;
       document.head.appendChild(script);
     },
-    initMap() {
-      const container = document.getElementById("map");
+    async initMap() {
+      // 현재 유저의 게시글을 가져온다.
+      const response2 = await http.get(
+        `/main/posts/user/${this.currentUser.userid}`
+      );
+      this.posts = response2.data;
+      console.log(this.posts);
+
+      const container = await document.getElementById("map");
+      let markerPosition = new kakao.maps.LatLng(33.450705, 126.570677);
+      if (this.posts.length != 0) {
+        markerPosition = new kakao.maps.LatLng(
+          this.posts[0][5],
+          this.posts[0][6]
+        );
+      }
       const options = {
-        center: new kakao.maps.LatLng(37.5665734, 126.978179), // 변경: 접속한 유저의 위도경도로 바꿔보자
+        center: markerPosition, // 변경: 접속한 유저의 위도경도로 바꿔보자
         level: 3,
         maxLevel: 13, // 지도 레벨
       };
       this.map = new kakao.maps.Map(container, options); //지도 생성
+
+      var imageSrc = require("@/assets/marker_icon3.png");
+      // "../../assets/marker_icon.png"; //왜안됨
+      // "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      var imageSize = new kakao.maps.Size(24, 35);
+
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+      var bounds = new kakao.maps.LatLngBounds();
+
+      if (this.posts.length != 0) {
+        for (var i = 0; i < this.posts.length; i++) {
+          var markerPosition1 = new kakao.maps.LatLng(
+            this.posts[i][5],
+            this.posts[i][6]
+          );
+          bounds.extend(markerPosition1); //범위 재설정에 필요한 bound
+
+          var marker1 = new kakao.maps.Marker({
+            position: markerPosition1,
+            image: markerImage,
+          });
+          await marker1.setMap(this.map);
+        }
+        this.map.setBounds(bounds);
+      }
     },
     createChart() {
       const ctx = document.getElementById("tasteChart");

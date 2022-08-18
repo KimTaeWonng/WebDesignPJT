@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!this.hasMainBadge" class="text-center mb-3" style="font-size: 4vw">
+    <div v-if="!this.hasMainBadge" class="text-center" style="font-size: 4vw">
       대표뱃지를 설정해주세요😋
     </div>
     <v-row no-gutters align="center" v-if="!this.hasMainBadge">
@@ -31,7 +31,11 @@
       <v-col cols="1.5"></v-col>
     </v-row>
 
-    <v-dialog v-model="dialog1" max-width="600px">
+    <v-dialog
+      v-if="this.userInfo.user_id == this.$route.params.userid"
+      v-model="dialog1"
+      max-width="600px"
+    >
       <v-card>
         <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
           >첫번째 대표뱃지 설정</v-card-title
@@ -61,7 +65,11 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog2" max-width="600px">
+    <v-dialog
+      v-if="this.userInfo.user_id == this.$route.params.userid"
+      v-model="dialog2"
+      max-width="600px"
+    >
       <v-card>
         <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
           >두번째 대표뱃지 설정</v-card-title
@@ -91,7 +99,11 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog3" max-width="600px">
+    <v-dialog
+      v-if="this.userInfo.user_id == this.$route.params.userid"
+      v-model="dialog3"
+      max-width="600px"
+    >
       <v-card>
         <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
           >세번째 대표뱃지 설정</v-card-title
@@ -198,7 +210,7 @@ export default {
   },
   async created() {
     //유저의 뱃지 정보 불러오기
-    const getBadgeList = await http.get(`/users/badge/${this.userInfo.user_id}`);
+    const getBadgeList = await http.get(`/users/badge/${this.$route.params.userid}`);
     this.badges = getBadgeList.data;
 
     // console.log(this.badges);
@@ -215,7 +227,7 @@ export default {
     // console.log(this.hasMainBadge);
 
     // 유저의 뱃지 리스트 불러오기
-    const getBadge = await http.get(`/users/badge/${this.userInfo.user_id}`);
+    const getBadge = await http.get(`/users/badge/${this.$route.params.userid}`);
     // console.log(getBadge.data);
     // 맛집 뱃지
     getBadgeFood(getBadge.data.badgeFood, this.badgeList);
@@ -243,12 +255,14 @@ export default {
     for (let a = 12; a < 23; a++) {
       if (this.badges[Object.keys(this.badges)[a]] == 1) {
         mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge1);
+        // console.log(this.mainbadge1);
       } else if (this.badges[Object.keys(this.badges)[a]] == 2) {
         mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge2);
         console.log("sldkfsj");
-        console.log(this.mainbadge2);
+        // console.log(this.mainbadge2);
       } else if (this.badges[Object.keys(this.badges)[a]] == 3) {
         mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge3);
+        // console.log(this.mainbadge3);
       }
     }
     // console.log(this.mainbadge1[0]);

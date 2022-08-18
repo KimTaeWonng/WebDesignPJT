@@ -622,7 +622,7 @@ export default {
 
           const imagePath = res.data[0];
           this.image = `https://i7a505.p.ssafy.io/api/file?imagePath=${imagePath}`;
-          console.log(this.image);
+          // console.log(this.image);
           this.post.image.push(this.image);
           // console.log(this.user.img)
           // console.log(this.group.group_image)
@@ -667,9 +667,9 @@ export default {
       // console.log(this.user);
       const data = this.categorys;
       console.log(data);
-      console.log(data.tag);
-      console.log(data.tag[0]);
-      console.log(data.tag[0].big_id);
+      // console.log(data.tag);
+      // console.log(data.tag[0]);
+      // console.log(data.tag[0].big_id);
     },
     selectBig(n) {
       // this.componentKey = new Date();
@@ -722,7 +722,7 @@ export default {
           image: this.post.image[0],
           likeCnt: 0,
           nickname: this.userInfo.nickname,
-          postGpsName: this.userPlaceName, // 메타데이터 구현 후 변경 필요
+          postGpsName: this.userPlaceName,
           postLat: this.userLat,
           postLng: this.userLng,
           uploadTime: "",
@@ -732,7 +732,7 @@ export default {
 
         const getPosts = await http.get(`/main/posts`);
         const newPostId = getPosts.data[0].postId;
-        console.log(newPostId);
+        // console.log(newPostId);
 
         //다중 이미지 업로드
         const uploadImages = await http.post(
@@ -761,10 +761,10 @@ export default {
             image: this.post.image[0],
             likeCnt: 0,
             nickname: this.userInfo.nickname,
-            postGpsName: "해안이네", // 메타데이터 구현 후 변경 필요
+            postGpsName: this.userPlaceName,
             postId: this.$route.params.postno,
-            postLat: 30, // 메타데이터 구현 후 변경 필요
-            postLng: 120, // 메타데이터 구현 후 변경 필요
+            postLat: this.userLat,
+            postLng: this.userLng,
             uploadTime: "",
             userId: this.userInfo.user_id,
             userImage: this.userInfo.profileImage,
@@ -783,7 +783,7 @@ export default {
           `/users/${this.userInfo.user_id}`,
           this.userInfo
         );
-        console.log("뱃지보유여부 변경!!");
+        // console.log("뱃지보유여부 변경!!");
         // console.log(this.userInfo);
         console.log(modifyBD);
 
@@ -794,7 +794,9 @@ export default {
       }
 
       // 유저의 뱃지 불러오기
-      const getBadgeList = await http.get(`/users/badge/${this.userInfo.user_id}`);
+      const getBadgeList = await http.get(
+        `/users/badge/${this.userInfo.user_id}`
+      );
       this.badges = getBadgeList.data;
       console.log(this.badges);
 

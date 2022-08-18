@@ -31,7 +31,10 @@
       ></v-text-field>
     </v-row>
     <v-row justify="end" class="mr-5 mb-5">
-      <router-link to="/users/findpass" style="color: #289672; text-decoration: none">
+      <router-link
+        to="/users/findpass"
+        style="color: #289672; text-decoration: none"
+      >
         비밀번호를 잊으셨나요?
       </router-link>
     </v-row>
@@ -42,7 +45,10 @@
     <v-row justify="center" class="mb-5">
       <p style="font-size: 4vw; font-weight: bold">
         계정이 없으신가요?
-        <router-link to="/users/signup" style="color: #289672; text-decoration: none">
+        <router-link
+          to="/users/signup"
+          style="color: #289672; text-decoration: none"
+        >
           회원가입</router-link
         >
       </p>
@@ -67,8 +73,8 @@ export default {
   data() {
     return {
       user: {
-        email: "happybee@naver.com",
-        password: "12341234",
+        email: "",
+        password: "",
       },
       isPwdShow: false,
     };
@@ -78,7 +84,11 @@ export default {
     ...mapState(userStore, ["isLogin", "isLoginError", "kakaoUserInfo"]),
   },
   methods: {
-    ...mapActions(userStore, ["userConfirm", "getUserInfo", "setKakaoUserInfo"]),
+    ...mapActions(userStore, [
+      "userConfirm",
+      "getUserInfo",
+      "setKakaoUserInfo",
+    ]),
     async confirm() {
       // 토큰 서버에서 생성 후 저장
       await this.userConfirm(this.user);

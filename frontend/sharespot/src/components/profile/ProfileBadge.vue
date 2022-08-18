@@ -16,7 +16,12 @@
           :src="firstMainBadge"
           @click="changeMainBadge1()"
         ></v-img>
-        <v-img v-else class="mt-1" :src="mainbadge1[0]" @click="changeMainBadge1()"></v-img>
+        <v-img
+          v-else
+          class="mt-1"
+          :src="mainbadge1[0]"
+          @click="changeMainBadge1()"
+        ></v-img>
       </v-col>
       <v-col cols="3" align="center">
         <v-img
@@ -25,7 +30,12 @@
           :src="secondMainBadge"
           @click="changeMainBadge2()"
         ></v-img>
-        <v-img v-else class="mt-1" :src="mainbadge2[0]" @click="changeMainBadge2()"></v-img>
+        <v-img
+          v-else
+          class="mt-1"
+          :src="mainbadge2[0]"
+          @click="changeMainBadge2()"
+        ></v-img>
       </v-col>
       <v-col cols="3" align="center">
         <v-img
@@ -34,7 +44,12 @@
           :src="thirdMainBadge"
           @click="changeMainBadge3()"
         ></v-img>
-        <v-img v-else class="mt-1" :src="mainbadge3[0]" @click="changeMainBadge3()"></v-img>
+        <v-img
+          v-else
+          class="mt-1"
+          :src="mainbadge3[0]"
+          @click="changeMainBadge3()"
+        ></v-img>
       </v-col>
       <v-col cols="1.5"></v-col>
     </v-row>
@@ -45,7 +60,9 @@
       max-width="600px"
     >
       <v-card>
-        <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
+        <v-card-title
+          class="justify-center"
+          style="font-weight: bolder; font-size: 5vw"
           >첫번째 대표뱃지 설정</v-card-title
         >
         <v-container class="pa-1">
@@ -53,7 +70,12 @@
             <v-row>
               <v-col v-for="(b, i) in badgeList" :key="i" cols="4">
                 <v-item v-slot="{ active, toggle }">
-                  <v-img :src="b" height="70" class="text-right" @click="toggle">
+                  <v-img
+                    :src="b"
+                    height="70"
+                    class="text-right"
+                    @click="toggle"
+                  >
                     <v-btn icon dark>
                       <v-icon color="red">
                         {{ active ? "mdi-heart" : "mdi-heart-outline" }}
@@ -66,10 +88,20 @@
           </v-item-group>
         </v-container>
         <v-divider class="mt-4"></v-divider>
-        <v-card-actions class="mt-2 d-flex justify-end" style="background-color: #ffffff">
+        <v-card-actions
+          class="mt-2 d-flex justify-end"
+          style="background-color: #ffffff"
+        >
           <!-- 초기화 버튼 회색 배경 넣어주기  -->
           <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
-          <v-btn style="background-color: #289672" text dark @click="confirm1()"> 확인 </v-btn>
+          <v-btn
+            style="background-color: #289672"
+            text
+            dark
+            @click="confirm1()"
+          >
+            확인
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -79,7 +111,9 @@
       max-width="600px"
     >
       <v-card>
-        <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
+        <v-card-title
+          class="justify-center"
+          style="font-weight: bolder; font-size: 5vw"
           >두번째 대표뱃지 설정</v-card-title
         >
         <v-container class="pa-1">
@@ -87,7 +121,12 @@
             <v-row>
               <v-col v-for="(b, i) in badgeList" :key="i" cols="4">
                 <v-item v-slot="{ active, toggle }">
-                  <v-img :src="b" height="70" class="text-right" @click="toggle">
+                  <v-img
+                    :src="b"
+                    height="70"
+                    class="text-right"
+                    @click="toggle"
+                  >
                     <v-btn icon dark>
                       <v-icon color="red">
                         {{ active ? "mdi-heart" : "mdi-heart-outline" }}
@@ -100,10 +139,20 @@
           </v-item-group>
         </v-container>
         <v-divider class="mt-4"></v-divider>
-        <v-card-actions class="mt-2 d-flex justify-end" style="background-color: #ffffff">
+        <v-card-actions
+          class="mt-2 d-flex justify-end"
+          style="background-color: #ffffff"
+        >
           <!-- 초기화 버튼 회색 배경 넣어주기  -->
           <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
-          <v-btn style="background-color: #289672" text dark @click="confirm2()"> 확인 </v-btn>
+          <v-btn
+            style="background-color: #289672"
+            text
+            dark
+            @click="confirm2()"
+          >
+            확인
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -113,7 +162,9 @@
       max-width="600px"
     >
       <v-card>
-        <v-card-title class="justify-center" style="font-weight: bolder; font-size: 5vw"
+        <v-card-title
+          class="justify-center"
+          style="font-weight: bolder; font-size: 5vw"
           >세번째 대표뱃지 설정</v-card-title
         >
         <v-container class="pa-1">
@@ -121,7 +172,12 @@
             <v-row>
               <v-col v-for="(b, i) in badgeList" :key="i" cols="4">
                 <v-item v-slot="{ active, toggle }">
-                  <v-img :src="b" height="70" class="text-right" @click="toggle">
+                  <v-img
+                    :src="b"
+                    height="70"
+                    class="text-right"
+                    @click="toggle"
+                  >
                     <v-btn icon dark>
                       <v-icon color="red">
                         {{ active ? "mdi-heart" : "mdi-heart-outline" }}
@@ -134,10 +190,20 @@
           </v-item-group>
         </v-container>
         <v-divider class="mt-4"></v-divider>
-        <v-card-actions class="mt-2 d-flex justify-end" style="background-color: #ffffff">
+        <v-card-actions
+          class="mt-2 d-flex justify-end"
+          style="background-color: #ffffff"
+        >
           <!-- 초기화 버튼 회색 배경 넣어주기  -->
           <!-- 버튼 색깔 회색 좀 옅은거로 바꿔야 될듯 -->
-          <v-btn style="background-color: #289672" text dark @click="confirm3()"> 확인 </v-btn>
+          <v-btn
+            style="background-color: #289672"
+            text
+            dark
+            @click="confirm3()"
+          >
+            확인
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -222,7 +288,9 @@ export default {
   },
   async created() {
     //유저의 뱃지 정보 불러오기
-    const getBadgeList = await http.get(`/users/badge/${this.$route.params.userid}`);
+    const getBadgeList = await http.get(
+      `/users/badge/${this.$route.params.userid}`
+    );
     this.badges = getBadgeList.data;
 
     // console.log(this.badges);
@@ -242,7 +310,9 @@ export default {
     // console.log(this.hasMainBadge);
 
     // 유저의 뱃지 리스트 불러오기
-    const getBadge = await http.get(`/users/badge/${this.$route.params.userid}`);
+    const getBadge = await http.get(
+      `/users/badge/${this.$route.params.userid}`
+    );
     // console.log(getBadge.data);
     // 맛집 뱃지
     getBadgeFood(getBadge.data.badgeFood, this.badgeList);
@@ -269,14 +339,26 @@ export default {
 
     for (let a = 12; a < 23; a++) {
       if (this.badges[Object.keys(this.badges)[a]] == 1) {
-        mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge1);
-        console.log(this.mainbadge1);
+        mainBadgeImage(
+          Object.keys(this.badges)[a],
+          getBadge.data,
+          this.mainbadge1
+        );
+        // console.log(this.mainbadge1);
       } else if (this.badges[Object.keys(this.badges)[a]] == 2) {
-        mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge2);
-        console.log(this.mainbadge2);
+        mainBadgeImage(
+          Object.keys(this.badges)[a],
+          getBadge.data,
+          this.mainbadge2
+        );
+        // console.log(this.mainbadge2);
       } else if (this.badges[Object.keys(this.badges)[a]] == 3) {
-        mainBadgeImage(Object.keys(this.badges)[a], getBadge.data, this.mainbadge3);
-        console.log(this.mainbadge3);
+        mainBadgeImage(
+          Object.keys(this.badges)[a],
+          getBadge.data,
+          this.mainbadge3
+        );
+        // console.log(this.mainbadge3);
       }
     }
     // console.log(this.mainbadge1[0]);
@@ -297,7 +379,7 @@ export default {
       this.dialog3 = true;
     },
     async confirm1() {
-      console.log("확인 111111");
+      // console.log("확인 111111");
       this.dialog1 = false;
       this.hasMainBadge = true;
       modifyMainBadge(this.mainbadge1[0], this.badges, 0);
@@ -305,7 +387,7 @@ export default {
       this.mainbadge1 = [];
       this.mainbadge1.push(this.badgeList[this.selected]);
       modifyMainBadge(this.mainbadge1[0], this.badges, 1);
-      console.log(this.mainbadge1[0]);
+      // console.log(this.mainbadge1[0]);
       const modifyBadge = await http.put(`/users/badge`, this.badges);
       console.log(modifyBadge);
       this.hasMainBadge1 = true;
@@ -318,7 +400,7 @@ export default {
       this.mainbadge2 = [];
       this.mainbadge2.push(this.badgeList[this.selected]);
       modifyMainBadge(this.mainbadge2[0], this.badges, 2);
-      console.log(this.mainbadge2[0]);
+      // console.log(this.mainbadge2[0]);
       const modifyBadge = await http.put(`/users/badge`, this.badges);
       console.log(modifyBadge);
       this.hasMainBadge2 = true;
@@ -331,10 +413,10 @@ export default {
       this.mainbadge3 = [];
       this.mainbadge3.push(this.badgeList[this.selected]);
       modifyMainBadge(this.mainbadge3[0], this.badges, 3);
-      console.log(this.mainbadge3[0]);
+      // console.log(this.mainbadge3[0]);
       const modifyBadge = await http.put(`/users/badge`, this.badges);
       console.log(modifyBadge);
-      console.log(this.badges);
+      // console.log(this.badges);
       this.hasMainBadge3 = true;
     },
   },

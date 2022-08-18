@@ -164,9 +164,9 @@ export default {
 
   methods: {
     async resetPass() {
-      console.log(this.email);
+      // console.log(this.email);
       const response = await http.post(`/users/login/reset/${this.email}`);
-      console.log(response);
+      // console.log(response);
       if (response.data == 1) {
         this.dialog = true;
       } else {

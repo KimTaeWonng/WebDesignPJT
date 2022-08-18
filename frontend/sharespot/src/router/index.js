@@ -98,7 +98,7 @@ const routes = [
   {
     path: "/users/resetpass",
     name: "resetPass",
-    beforeEnter: onlyNoAuthUser,
+    beforeEnter: onlyAuthUser,
     component: ResetPass,
   },
   //알림

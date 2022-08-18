@@ -1,15 +1,28 @@
 <template>
   <div>
     <v-list>
-      <post-card v-for="(post, i) in posts" :key="i" v-bind="post" :detailPost="post"></post-card>
+      <post-card
+        v-for="(post, i) in posts"
+        :key="i"
+        v-bind="post"
+        :detailPost="post"
+      ></post-card>
     </v-list>
     <infinite-loading @infinite="infiniteHandler" spinner="wavedots">
-      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px">
+      <div
+        slot="no-more"
+        style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
+      >
         게시글을 다 봤어요 :)
       </div>
     </infinite-loading>
 
-    <v-snackbar style="margin-bottom: 17%" v-model="snackbar" shaped color="#289672">
+    <v-snackbar
+      style="margin-bottom: 17%"
+      v-model="snackbar"
+      shaped
+      color="#289672"
+    >
       팔로우한 유저의 게시글이 없어서 <br />모든 게시물이 표시됩니다.
 
       <template v-slot:action="{ attrs }">
@@ -129,8 +142,8 @@ export default {
                   this.loadNum++;
 
                   const items = res.data.content;
-                  console.log(items.length);
-                  console.log("data " + res.data.totalPages);
+                  // console.log(items.length);
+                  // console.log("data " + res.data.totalPages);
 
                   for (const i of items) {
                     const data = {

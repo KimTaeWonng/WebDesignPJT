@@ -92,9 +92,9 @@ export default {
     const comment = await http.get(
       `/main/posts/main/posts/${this.$route.params.postno}`
     );
-    console.log(comment);
+    // console.log(comment);
     this.comments = comment.data;
-    console.log(comment.data);
+    // console.log(comment.data);
 
     const getBadgeList = await http.get(
       `/users/badge/${this.userInfo.user_id}`
@@ -108,8 +108,7 @@ export default {
 
   methods: {
     async submitComment() {
-      console.log("ㅎㅇ");
-      console.log(this.$route.params.postno);
+      // console.log(this.$route.params.postno);
       const res = {
         uploadTime: "2022-08-11T06:02:10.994Z",
         userImage: "string",
@@ -118,7 +117,7 @@ export default {
         postId: Number(this.$route.params.postno),
         userId: this.userInfo.user_id,
       };
-      console.log(res);
+      // console.log(res);
 
       await http.post(`/main/posts/${this.$route.params.postno}/comments`, res);
 

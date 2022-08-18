@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <router-view />
-    <nav-bar v-if="this.show"></nav-bar>
+    <nav-bar v-if="this.show" style="width:100%;"></nav-bar>
   </v-app>
 </template>
 

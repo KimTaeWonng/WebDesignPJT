@@ -34,7 +34,6 @@
         <!-- 모달 content start -->
         <v-card>
           <!-- searchBar -->
-          <div>
             <v-row
               class="text-center d-flex"
               align="center"
@@ -64,18 +63,19 @@
                 <v-icon>mdi-magnify</v-icon>
               </v-col>
             </v-row>
-          </div>
-          <v-row
-            ><!-- 변경: 최근 검색 v-if 걸어서 최근 검색 있는 경우 보여주기 -->
-            <v-list three-line subheader>
+          <v-row style="margin-left: 3%;">
+            <!-- 변경: 최근 검색 v-if 걸어서 최근 검색 있는 경우 보여주기 -->
+            <v-list subheader>
               <v-row v-if="searchContent == ''">
                 <v-subheader class="ml-4">최근 검색</v-subheader>
                 <search-item
-                  style="margin-left: 10px"
+                  style="margin-left: 10px; margin-bottom: 5%;" 
                   v-for="user1 in this.searchWordList"
                   :key="`${user1.user_id}`"
                   :userDetail="user1"
-                ></search-item>
+                >
+                </search-item>
+
                 <!-- 유저 프로필 + 닉네임 + 소개 -->
               </v-row>
             </v-list>

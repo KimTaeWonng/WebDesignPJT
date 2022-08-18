@@ -1,25 +1,31 @@
 <template>
   <v-list-item>
-    <v-col cols="2" align="center">
+
       <v-list-item-avatar @click="moveProfile(userItem.user_id)">
         <v-img v-if="userItem.profileImage == null">
           <v-icon size="60">mdi-account-circle</v-icon></v-img
         >
         <v-img v-else :src="userItem.profileImage" size="60"></v-img>
       </v-list-item-avatar>
-    </v-col>
-    <v-col cols="10">
+
+
       <v-list-item-content class="mr-3" @click="moveProfile(userItem.user_id)">
         <v-list-item-title
           v-text="userItem.nickname"
           style="font-weight: bold"
         ></v-list-item-title>
         <v-list-item-subtitle
+          v-if="userItem.introduce.length < 22"
           v-text="userItem.introduce"
           style="font-size: 13px"
         ></v-list-item-subtitle>
+        <v-list-item-subtitle
+        v-else
+          v-text="userItem.introduce.slice(0, 22) + '...'"
+          style="font-size: 13px"
+        ></v-list-item-subtitle>
       </v-list-item-content>
-    </v-col>
+
   </v-list-item>
 </template>
 
@@ -39,6 +45,7 @@ export default {
   },
   async created() {
     this.userItem = this.userDetail;
+
   },
 
   computed: {
@@ -55,7 +62,7 @@ export default {
         nickname: this.userItem.nickname,
         introduce: this.userItem.introduce,
       };
-      // console.log('유저데이터', data)
+  
 
       // 중복 제거
       // console.log('this.setSearchWordList.length', this.searchWordList)

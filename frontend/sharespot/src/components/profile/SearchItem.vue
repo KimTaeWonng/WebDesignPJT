@@ -1,32 +1,37 @@
 <template>
-<v-list-item @click="moveProfile(userItem.user_id)">
+  <v-list-item>
     <v-col cols="2" align="center">
       <v-list-item-avatar @click="moveProfile(userItem.user_id)">
-      <v-img v-if="userItem.profileImage == null">
-          <v-icon size="60">mdi-account-circle</v-icon></v-img>
-      <v-img v-else :src="userItem.profileImage" size="60"></v-img>
-    </v-list-item-avatar>
+        <v-img v-if="userItem.profileImage == null">
+          <v-icon size="60">mdi-account-circle</v-icon></v-img
+        >
+        <v-img v-else :src="userItem.profileImage" size="60"></v-img>
+      </v-list-item-avatar>
     </v-col>
     <v-col cols="10">
-      <v-list-item-content class="mr-3"  @click="moveProfile(userItem.user_id)">
-        <v-list-item-title v-text="userItem.nickname" style="font-weight: bold;"></v-list-item-title>
-        <v-list-item-subtitle v-text="userItem.introduce" style="font-size: 13px;"></v-list-item-subtitle>
+      <v-list-item-content class="mr-3" @click="moveProfile(userItem.user_id)">
+        <v-list-item-title
+          v-text="userItem.nickname"
+          style="font-weight: bold"
+        ></v-list-item-title>
+        <v-list-item-subtitle
+          v-text="userItem.introduce"
+          style="font-size: 13px"
+        ></v-list-item-subtitle>
       </v-list-item-content>
     </v-col>
-
-</v-list-item>
+  </v-list-item>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
 const userLogStore = "userLogStore";
 
-  export default {
+export default {
   data() {
     return {
       userItem: {},
-
-      };
+    };
   },
   name: "SearchItem",
   props: {
@@ -34,17 +39,13 @@ const userLogStore = "userLogStore";
   },
   async created() {
     this.userItem = this.userDetail;
-
-
- 
   },
 
   computed: {
-    
     ...mapState(userLogStore, ["searchWordList"]),
   },
   methods: {
-    ...mapActions(userLogStore, ["setSearchWordList"]),
+    ...mapActions(userLogStore, ["setSearchWordList", "saveSearchWord"]),
 
     moveProfile(user_id) {
       // 스토어 저장 코드
@@ -52,38 +53,35 @@ const userLogStore = "userLogStore";
         user_id: this.userItem.user_id,
         profileImage: this.userItem.profileImage,
         nickname: this.userItem.nickname,
-        introduce: this.userItem.introduce
-      }
-      console.log('유저데이터', data)
+        introduce: this.userItem.introduce,
+      };
+      // console.log('유저데이터', data)
 
       // 중복 제거
-      console.log('this.setSearchWordList.length', this.searchWordList)
+      // console.log('this.setSearchWordList.length', this.searchWordList)
       if (this.searchWordList.length != 0) {
-
         for (var i = 0; i < this.searchWordList.length; i++) {
           if (this.searchWordList[i].user_id == this.userItem.user_id) {
-            break
+            break;
           }
-          else {
+          if (i == this.searchWordList.length - 1) {
             this.setSearchWordList(data);
           }
         }
-      }
-      else {
+      } else {
         this.setSearchWordList(data);
-
       }
 
-      console.log('user_id', user_id)
+      // console.log('user_id', user_id)
 
       //아래는 이동 코드
 
       this.$router.push({
         name: "profile",
-        params: { userid: user_id }
-      })
+        params: { userid: user_id },
+      });
     },
-  }
+  },
 };
 </script>
 

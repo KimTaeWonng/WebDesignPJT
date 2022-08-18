@@ -110,7 +110,9 @@
 
     <v-dialog id="hotspotDialog" v-model="dialog" scrollable max-width="300px">
       <v-card>
-        <v-card-title class="text-weight-900">이달의 {{ menus }} HotSpot🔥</v-card-title>
+        <v-card-title class="text-weight-900"
+          >이달의 {{ menus }} HotSpot🔥</v-card-title
+        >
         <v-divider></v-divider>
         <v-card-text style="height: 300px">
           <v-list three-line>
@@ -126,14 +128,21 @@
                     <h4 class="text-weight-bold">{{ item.postGpsName }}</h4>
                   </v-row>
                   <v-row no-gutters>
-                    <div style="font-size: 13px">작성자: {{ item.nickname }}</div>
+                    <div style="font-size: 13px">
+                      작성자: {{ item.nickname }}
+                    </div>
                   </v-row>
                   <v-row no-gutters>
                     <router-link
                       class="link"
-                      :to="{ name: 'postDetail', params: { postno: item.postId } }"
+                      :to="{
+                        name: 'postDetail',
+                        params: { postno: item.postId },
+                      }"
                     >
-                      <div style="font-size: 13px; color: #289672">자세히 보기</div>
+                      <div style="font-size: 13px; color: #289672">
+                        자세히 보기
+                      </div>
                     </router-link>
                   </v-row>
                 </v-col>
@@ -176,11 +185,11 @@ export default {
   methods: {
     async clicked(menu) {
       this.menus = menu;
-      console.log(this.menus);
+      // console.log(this.menus);
 
       const response = await http.get(`/search/posts/hotspot/${this.menus}`);
       this.items = response.data;
-      console.log(this.items);
+      // console.log(this.items);
 
       this.dialog = true;
     },

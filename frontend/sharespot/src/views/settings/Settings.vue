@@ -1,48 +1,23 @@
 <template>
   <v-container>
     <back-menu title="설정"></back-menu>
-    <!-- <v-list>
-      <template v-for="(item, index) in accountitems">
-        <v-subheader
-          v-if="item.header"
-          :key="item.header"
-          v-text="item.header"
-          class="font-weight-bold"
-        ></v-subheader>
-
-        <v-divider v-else-if="item.divider" :key="index"></v-divider>
-
-        <v-list-item v-else :key="item.title" class="my-1">
-          <v-list-item-avatar :color="item.bgc">
-            <v-icon :color="item.color">
-              {{ item.icon }}
-            </v-icon>
-          </v-list-item-avatar>
-
-          <v-list-item-content @click="goRoute(item.route)">
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-            <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-list> -->
 
     <v-list>
       <v-subheader>Account Settings</v-subheader>
       <template>
         <v-list-item>
-          <v-list-item-avatar color="blue lighten-3">
+          <v-list-item-avatar color="blue lighten-3"  @click="moveProfileModify()">
             <v-icon color="white"> mdi-account-outline </v-icon>
           </v-list-item-avatar>
 
-          <v-list-item-content @click="goRoute('/settings/info')">
+          <v-list-item-content @click="moveProfileModify()">
             <v-list-item-title>프로필 변경</v-list-item-title>
             <v-list-item-subtitle>개인 정보 변경</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item>
-          <v-list-item-avatar color="green lighten-2">
+          <v-list-item-avatar color="green lighten-2" @click="goRoute('/users/resetpass')">
             <v-icon color="white"> mdi-lock-outline </v-icon>
           </v-list-item-avatar>
           <v-list-item-content @click="goRoute('/users/resetpass')">
@@ -139,6 +114,9 @@ export default {
 
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    moveProfileModify() {
+      this.$router.push({ name: "profileModify" });
+    },
     logout() {
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
@@ -148,10 +126,9 @@ export default {
       if (this.$route.path != "/") {
         this.$router.push({ name: "login" });
       }
-      console.log(this.userInfo);
+      // console.log(this.userInfo);
     },
     goRoute(pageURL) {
-      console.log("yeeeeeeeeeeeeeeeeeeeeeeeeee");
       this.$router.push({ path: pageURL });
     },
   },

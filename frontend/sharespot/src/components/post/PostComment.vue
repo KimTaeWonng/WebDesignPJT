@@ -9,7 +9,6 @@
 
     <div>
       <v-row class="text-center d-flex" align="center">
-        <!-- 검색창 -->
         <v-col cols="2">
           <v-list-item-avatar>
             <v-img v-if="this.userInfo.profileImage == null">
@@ -19,11 +18,6 @@
           </v-list-item-avatar>
         </v-col>
         <v-col cols="8" style="padding: 0" class="mt-8">
-          <!-- <div class="text-center text-no-wrap rounded-pill" style="color:#289672;">
-          <v-text-field
-            pa-4 text-no-wrap rounded-pill
-            @keyup.enter="search(searchContent)"
-          ></v-text-field> -->
           <v-text-field
             v-model="commentContent"
             placeholder="댓글 작성"
@@ -33,8 +27,6 @@
             color="#289672"
             @keyup.enter="submitComment()"
           ></v-text-field>
-          <!-- </div> -->
-          <!-- keyup 바꿔줘야됨 -->
         </v-col>
         <v-col
           cols="2"
@@ -100,12 +92,13 @@ export default {
     const comment = await http.get(
       `/main/posts/main/posts/${this.$route.params.postno}`
     );
-    console.log("하는중");
-    console.log(comment);
+    // console.log(comment);
     this.comments = comment.data;
-    console.log(comment.data);
+    // console.log(comment.data);
 
-    const getBadgeList = await http.get(`/users/badge/${this.userInfo.user_id}`);
+    const getBadgeList = await http.get(
+      `/users/badge/${this.userInfo.user_id}`
+    );
     this.badges = getBadgeList.data;
   },
 
@@ -115,8 +108,7 @@ export default {
 
   methods: {
     async submitComment() {
-      console.log("ㅎㅇ");
-      console.log(this.$route.params.postno);
+      // console.log(this.$route.params.postno);
       const res = {
         uploadTime: "2022-08-11T06:02:10.994Z",
         userImage: "string",
@@ -125,7 +117,7 @@ export default {
         postId: Number(this.$route.params.postno),
         userId: this.userInfo.user_id,
       };
-      console.log(res);
+      // console.log(res);
 
       await http.post(`/main/posts/${this.$route.params.postno}/comments`, res);
 

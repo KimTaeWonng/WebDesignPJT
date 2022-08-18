@@ -26,8 +26,8 @@
       팔로우한 유저의 게시글이 없어서 <br />모든 게시물이 표시됩니다.
 
       <template v-slot:action="{ attrs }">
-        <v-btn color="#289672" text v-bind="attrs" @click="snackbar = false">
-          Close
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          <v-icon>mdi-window-close</v-icon>
         </v-btn>
       </template>
     </v-snackbar>
@@ -59,16 +59,18 @@ export default {
     ...mapState(userStore, ["userInfo"]),
     ...mapState(userLogStore, ["followingUserList"]),
   },
-  async created() {
+  created() {},
+  mounted() {
     // 팔로잉 유저가 없는 경우 스낵바 나타남
     if (this.followingUserList.length === 0) {
       this.snackbar = true;
     }
   },
-  mounted() {},
 
   methods: {
     async infiniteHandler($state) {
+      // console.log("팔로워리스트 길이");
+      // console.log(this.followingUserList.length);
       if (this.followingUserList.length === 0) {
         await http
           .get(`/main/search/posts/new`, {
@@ -136,8 +138,8 @@ export default {
                   this.loadNum++;
 
                   const items = res.data.content;
-                  console.log(items.length);
-                  console.log("data " + res.data.totalPages);
+                  // console.log(items.length);
+                  // console.log("data " + res.data.totalPages);
 
                   for (const i of items) {
                     const data = {

@@ -41,8 +41,7 @@
 
         <!-- 거리조절 -->
       
-          <v-subheader>기준: {{ this.mylocation }}</v-subheader>
-          <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
+          <!-- <v-subheader>거리조절 : {{ slider }} km 이내</v-subheader>
           <v-row class="distance-bar">
             <v-col cols="12">
               <v-slider
@@ -53,7 +52,7 @@
                 thumb-label="always"
               ></v-slider>
             </v-col>
-          </v-row>
+          </v-row> -->
       
 
         <!-- 분류 제목 + 버튼 -->
@@ -170,9 +169,8 @@ export default {
       loadNum: 0,
       curationLoadNum: 0,
       curationPosts: [],
-      mylocation: '현위치',
-      latitude: '',
-      longitude: '',
+      // latitude: '',
+      // longitude: '',
 
       dialog: false,
       slider: 10,
